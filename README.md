@@ -6,15 +6,31 @@ An Excel VSTO Add-in featuring a collection of different tools.
 <img src="images/MainIcons.png" alt="Screenshot">
 </div>
 
-### 
+### Table of Contents
 - [How to Install](#how-to-install)
+- Features
+  - [Remove Excess Formatting](#remove-excess-formatting)
+  - [Trim and Clean](#trim-and-clean)
+  - [Quick Settings](#quick-settings)
+  - [Quick Format](#quick-format)
+  - [Date/Text Converter](#datetext-converter)
+  - [Text Tools](#text-tools)
+  - [Additional Formatting Options](#additional-formatting-options)
+  - [Find Missing Data](#find-missing-data)
+  - [Check for Duplicates](#check-for-duplicates)
+  - [Compare Worksheets](#compare-worksheets)
+  - [Copy Data to New Worksheets](#copy-data-to-new-worksheets)
+  - [Selection/Selection+ to Clipboard](#selection)
+  - [Create Delimited File](#worksheet-to-file)
+  - [Split Columns to Rows](#split-columns-to-rows)
+  - [Add/Remove Hyperlinks](#addremove-hyperlinks)
 
 ## Features
 
 ### **Remove Excess Formatting**
 Delete unnecessary formatting from rows or columns that extend beyond the data in your worksheet. This helps reduce file size and improve performance by removing potentially thousands of blank, formatted rows.
 
-### **Trim & Clean**
+### **Trim and Clean**
 - Removes leading, trailing, and multiple spaces.
 - Removes non-printable characters that can cause issues in your dataset.
 - Can be applied to a selected range, active worksheet or workbook.
@@ -46,7 +62,7 @@ Converts a selected range to a desired text or Excel format, allowing seamless s
 ### **Undo**
 Restores the range back to its original state. Excels Undo button will not work so this was added and works with the Date/Text Converter, Character Menu and Fill Down features.
 
-### **Character Menu**
+### **Text Tools**
 - **Upper Case:** Sets the selected range to all UPPER CASE.
 - **Lower Case:** Sets the selected range to all lower case.
 - **Proper Case:** Sets the selected range to all Proper Case.
@@ -89,7 +105,7 @@ Compares two worksheets, even if they belong to different workbooks, provided bo
 ### **Filter**
 The built-in Excel Filter button, placed on the Quick Tools tab for easier access while using other tools in the add-in.
 
-### **Copy Data to New Workheets**
+### **Copy Data to New Worksheets**
 Copies data to new worksheets based on the unique values from a selected column.
 
 <div align="center">
