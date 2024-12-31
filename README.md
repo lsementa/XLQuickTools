@@ -6,8 +6,8 @@ An Excel VSTO Add-in featuring a collection of different tools.
 <img src="images/MainIcons.png" alt="Screenshot">
 </div>
 
-
-[How to Install](#how-to-install)
+### 
+- [How to Install](#how-to-install)
 
 ## Features
 
