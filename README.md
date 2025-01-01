@@ -11,11 +11,11 @@ An Excel VSTO Add-in featuring a collection of different tools.
 - Features
   - [Remove Excess Formatting](#remove-excess-formatting)
   - [Trim and Clean](#trim-and-clean)
-  - [Quick Settings](#quick-settings)
+  - [Quick Format Settings](#quick-format-settings)
   - [Quick Format](#quick-format)
   - [Date/Text Converter](#datetext-converter)
   - [Text Tools](#text-tools)
-  - [Additional Formatting Options](#additional-formatting-options)
+  - [Additional Formatting Tools](#additional-formatting-tools)
   - [Find Missing Data](#find-missing-data)
   - [Check for Duplicates](#check-for-duplicates)
   - [Compare Worksheets](#compare-worksheets)
@@ -35,7 +35,7 @@ Delete unnecessary formatting from rows or columns that extend beyond the data i
 - Removes non-printable characters that can cause issues in your dataset.
 - Can be applied to a selected range, active worksheet or workbook.
 
-### **Quick Settings**
+### **Quick Format Settings**
 Configure and save your desired formatting preferences. These settings are applied when using the "Quick Format" button.
 
 <div align="center">
@@ -72,7 +72,7 @@ Restores the range back to its original state. Excels Undo button will not work 
 - **Remove Diacritics:** Normalizes text in the selected range. Déjà vu becomes Deja vu.
 - **Subscript Chemical Formulas:** Sets numbers in text to subscript in the selected range. C6H12O6 becomes C₆H₁₂O₆.
 
-### **Additional Formatting Options**
+### **Additional Formatting Tools**
 - **Fill Down:** Fills blank cells with the value above, based on the selected range.
 - **Delete Empty Rows:** Deletes any empty rows on the active worksheet.
 - **Delete Empty Columns:** Deletes any empty columns on the active worksheet. This includes deleting columns with headings if the rest of the rows are empty.

@@ -115,8 +115,8 @@
             this.BtnRemoveExcess.Name = "BtnRemoveExcess";
             this.BtnRemoveExcess.OfficeImageId = "TableEraser";
             this.BtnRemoveExcess.ShowImage = true;
-            this.BtnRemoveExcess.SuperTip = "Remove Excess Formatting\n\nRemove any excess formatting on every worksheet in the active work" +
-    "book.";
+            this.BtnRemoveExcess.SuperTip = "Remove Excess Formatting\n\nRemove any excess formatting on every worksheet in the " +
+    "active workbook.";
             this.BtnRemoveExcess.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnRemoveExcess_Click);
             // 
             // SBtnTrimClean
@@ -224,12 +224,12 @@
             this.CharacterMenu.Items.Add(this.BtnRemoveSpecial);
             this.CharacterMenu.Items.Add(this.BtnNormalizeText);
             this.CharacterMenu.Items.Add(this.BtnSubscript);
-            this.CharacterMenu.Label = "Case Menu";
+            this.CharacterMenu.Label = "Character Menu";
             this.CharacterMenu.Name = "CharacterMenu";
             this.CharacterMenu.OfficeImageId = "CharacterBorder";
             this.CharacterMenu.ShowImage = true;
             this.CharacterMenu.ShowLabel = false;
-            this.CharacterMenu.SuperTip = "Character Menu";
+            this.CharacterMenu.SuperTip = "Text Options";
             // 
             // BtnUppercase
             // 
@@ -369,8 +369,8 @@
             this.BtnMissing.Name = "BtnMissing";
             this.BtnMissing.OfficeImageId = "WhatIfAnalysisMenu";
             this.BtnMissing.ShowImage = true;
-            this.BtnMissing.SuperTip = "Find Missing Data\n\nToggle on/off the task pane used for finding missing data between t" +
-    "wo ranges.";
+            this.BtnMissing.SuperTip = "Find Missing Data\n\nToggle on/off the task pane used for finding missing data betw" +
+    "een two ranges.";
             this.BtnMissing.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnMissing_Click);
             // 
             // BtnDuplicates
@@ -379,8 +379,8 @@
             this.BtnDuplicates.Name = "BtnDuplicates";
             this.BtnDuplicates.OfficeImageId = "PivotPlusMinusFieldHeadersShowHide";
             this.BtnDuplicates.ShowImage = true;
-            this.BtnDuplicates.SuperTip = "Check for Duplicates\n\nCheck if a selected column contains duplicates. Toggle on/off a count" +
-    " column based on the selected column.";
+            this.BtnDuplicates.SuperTip = "Check for Duplicates\n\nCheck if a selected column contains duplicates. Toggle on/o" +
+    "ff a count column based on the selected column.";
             this.BtnDuplicates.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnDuplicates_Click);
             // 
             // BtnCompare
@@ -413,8 +413,8 @@
             this.BtnCopyToSheets.Name = "BtnCopyToSheets";
             this.BtnCopyToSheets.OfficeImageId = "DuplicateThisPage";
             this.BtnCopyToSheets.ShowImage = true;
-            this.BtnCopyToSheets.SuperTip = "Copy Data to New Worksheets\n\nCreate worksheets based on the unique values of a column and " +
-    "copy data to each one.";
+            this.BtnCopyToSheets.SuperTip = "Copy Data to New Worksheets\n\nCreate worksheets based on the unique values of a co" +
+    "lumn and copy data to each one.";
             this.BtnCopyToSheets.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnCopyToSheets_Click);
             // 
             // Group_Delimiter
@@ -493,8 +493,8 @@
             this.BtnHyperlinks.Name = "BtnHyperlinks";
             this.BtnHyperlinks.OfficeImageId = "HyperlinkCreate";
             this.BtnHyperlinks.ShowImage = true;
-            this.BtnHyperlinks.SuperTip = "Add/Remove Hyperlinks\n\nToggle hyperlinks on/off on a selected column using your active parameterized URL.";
-
+            this.BtnHyperlinks.SuperTip = "Add/Remove Hyperlinks\n\nToggle hyperlinks on/off on a selected column using your a" +
+    "ctive parameterized URL.";
             this.BtnHyperlinks.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnHyperlinks_Click);
             // 
             // XLQuickTools
