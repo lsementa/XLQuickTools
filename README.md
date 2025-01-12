@@ -148,8 +148,44 @@ Adds or removes hyperlinks on an entire column using a saved parameterized URL. 
 <img src="images/AddHyperlinks.gif" alt="Video">
 </div>
 
+<p>&nbsp;</p>
+
+---
+
 ## How to Install
-Instructions for installation will go here. Provide steps for downloading, installing, and activating the add-in.
+
+1. **Download the XLQuickTools ZIP File**  
+   Click [here](https://github.com/lsementa/XLQuickTools/releases/tag/v1.0.0.2) to download the XLQuickTools installation package.
+
+2. **Extract the Contents**  
+   Locate the downloaded ZIP file, extract its contents, and open the folder.
+
+3. **Run the Installer**  
+   Double-click on `Setup.exe` to start the installation process.  
+   > **Note**: If Microsoft Defender SmartScreen appears, click **More Info** and then **Run Anyway** to proceed.
+
+4. **Verification**  
+   This add-in is code-signed with an official certificate, and the publisher is verified for your safety.
+
+<div align="center">
+  <img src="images/Install.png" alt="Screenshot of installation process" width="500">
+</div>
+
+## How to Uninstall
+
+1. **Open Add or Remove Programs**  
+   On your Windows device, search for "Add or Remove Programs" in the Start menu.
+
+2. **Find XLQuickTools**  
+   Scroll through the list or search for **XLQuickTools**.
+
+3. **Uninstall**  
+   Select **XLQuickTools**, click **Uninstall**, and follow the prompts to remove the application.
+
+<div align="center">
+  <img src="images/Uninstall.png" alt="Screenshot of uninstallation process" width="500">
+</div>
+  
 
 
 
