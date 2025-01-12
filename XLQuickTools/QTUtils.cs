@@ -118,13 +118,14 @@ namespace XLQuickTools
         }
 
         // Method to clean up resources
-        public static void CleanupResources(Excel.Range range, Excel.Application excelApp)
+        public static void CleanupResources(Excel.Range range)
         {
             if (range != null && Marshal.IsComObject(range))
             {
                 Marshal.ReleaseComObject(range);
             }
-            excelApp.ScreenUpdating = true;
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
         }
 
         // Method to return the delimiter

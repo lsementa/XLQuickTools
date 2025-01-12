@@ -336,10 +336,11 @@
     <SignManifests>true</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>luigiSPC.pfx</ManifestKeyFile>
+    <ManifestKeyFile>
+    </ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>8C26B2B5F862250F59D105721CB0B2395E874A81</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>C9047AA45B34146400DF38B96C2BB054DAF3D701</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestTimestampUrl>http://timestamp.digicert.com</ManifestTimestampUrl>

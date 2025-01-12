@@ -59,13 +59,6 @@ namespace XLQuickTools
                 {
                     rangeToProcess.Value2 = values;
                 }
-
-                // If it's Trim & Clean then select the first cell
-                // This is to visually show the user that the task was completed
-                if (option == 7)
-                {
-                    rangeToProcess.Cells[1, 1].Select();
-                }
             }
             catch (Exception ex)
             {
@@ -73,7 +66,8 @@ namespace XLQuickTools
             }
             finally
             {
-                QTUtils.CleanupResources(rangeToProcess, excelApp);
+                excelApp.ScreenUpdating = true;
+                QTUtils.CleanupResources(rangeToProcess);
             }
         }
 
@@ -615,8 +609,8 @@ namespace XLQuickTools
             }
             finally
             {
-                QTUtils.CleanupResources(rangeToProcess, excelApp);
                 excelApp.ScreenUpdating = true;
+                QTUtils.CleanupResources(rangeToProcess);
             }
         }
 
@@ -693,7 +687,7 @@ namespace XLQuickTools
                 }
                 finally
                 {
-                    QTUtils.CleanupResources(selectedRange, excelApp);
+                    QTUtils.CleanupResources(selectedRange);
                 }
 
             }

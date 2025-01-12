@@ -82,8 +82,6 @@ namespace XLQuickTools
                 if (sb.Length > 0)
                 {
                     System.Windows.Forms.Clipboard.SetText(sb.ToString());
-                    // Select the first cell of the processed range
-                    rangeToProcess.Cells[1, 1].Select();
                 }
             }
             catch (Exception ex)
@@ -92,7 +90,8 @@ namespace XLQuickTools
             }
             finally
             {
-                QTUtils.CleanupResources(rangeToProcess, excelApp);
+                excelApp.StatusBar = "";
+                QTUtils.CleanupResources(rangeToProcess);
             }
         }
 
