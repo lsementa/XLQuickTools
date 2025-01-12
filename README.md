@@ -165,7 +165,7 @@ Adds or removes hyperlinks on an entire column using a saved parameterized URL. 
    > **Note**: If Microsoft Defender SmartScreen appears, click **More Info** and then **Run Anyway** to proceed.
 
 4. **Verification**  
-   This add-in is code-signed with an official certificate, and the publisher is verified for your safety.
+   This add-in is code-signed with an official certificate, and verified.
 
 <div align="center">
   <img src="images/Install.png" alt="Screenshot of installation process" width="500">
