@@ -227,7 +227,12 @@ namespace XLQuickTools
             QTFormat.TrimClean("workbook");
         }
 
-
+        // Add leading or trailing characters
+        private void BtnAddLeadingTrailing_Click(object sender, RibbonControlEventArgs e)
+        {
+            LeadTrailForm form1 = new LeadTrailForm();
+            form1.ShowDialog();
+        }
     }
 }
 

@@ -209,6 +209,12 @@
     can be found.
   -->
   <ItemGroup>
+    <Compile Include="Form_LeadTrail.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form_LeadTrail.Designer.cs">
+      <DependentUpon>Form_LeadTrail.cs</DependentUpon>
+    </Compile>
     <Compile Include="QTUtils.cs" />
     <Compile Include="QTClipboard.cs" />
     <Compile Include="QTFormat.cs" />
@@ -265,6 +271,9 @@
     <Compile Include="UserControl_Compare.Designer.cs">
       <DependentUpon>UserControl_Compare.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Form_LeadTrail.resx">
+      <DependentUpon>Form_LeadTrail.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form_SelectionPlus.resx">
       <DependentUpon>Form_SelectionPlus.cs</DependentUpon>
     </EmbeddedResource>

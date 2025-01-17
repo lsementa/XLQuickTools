@@ -11,7 +11,7 @@ namespace XLQuickTools
     public class QTFormat
     {
         // Method to transform text based on an option
-        private static string TransformText(string input, int option)
+        private static string TransformText(string input, int option, string leading = null, string trailing = null)
         {
             switch (option)
             {
@@ -31,13 +31,15 @@ namespace XLQuickTools
                     return RemoveDiacritics(input);
                 case 7: // Trim and Clean
                     return Clean(input.Trim());
+                case 8: // Add leading or trailing
+                    return (leading ?? "") + input + (trailing ?? "");
                 default:
                     throw new ArgumentException("Invalid option.");
             }
         }
 
         // Format select menu
-        public static void FormatMenu(int option)
+        public static void FormatMenu(int option, string leading = null, string trailing = null)
         {
             Excel.Application excelApp = Globals.ThisAddIn.Application;
             Excel.Range rangeToProcess = null;
@@ -55,7 +57,7 @@ namespace XLQuickTools
                 // Copy and store values
                 clipboard.CopyAndStoreFormat(rangeToProcess);
 
-                if (ProcessFormat(values, option))
+                if (ProcessFormat(values, option, leading, trailing))
                 {
                     rangeToProcess.Value2 = values;
                 }
@@ -72,7 +74,7 @@ namespace XLQuickTools
         }
 
         // Process the Format Menu option array and modify values if necessary
-        private static bool ProcessFormat(object[,] values, int option)
+        private static bool ProcessFormat(object[,] values, int option, string leading = null, string trailing = null)
         {
             if (values == null) return false;
 
@@ -87,7 +89,7 @@ namespace XLQuickTools
                 {
                     if (values[row, col] is string cellValue && !string.IsNullOrWhiteSpace(cellValue))
                     {
-                        values[row, col] = TransformText(cellValue, option).Trim();
+                        values[row, col] = TransformText(cellValue, option, leading, trailing).Trim();
                         modified = true;
                     }
                 }
