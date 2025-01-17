@@ -650,6 +650,7 @@ namespace XLQuickTools
             {
                 Excel.Worksheet activeSheet = excelApp.ActiveSheet;
                 Excel.Range selectedRange = excelApp.Selection;
+                Excel.Range dataRange = null;
 
                 try
                 {
@@ -664,12 +665,17 @@ namespace XLQuickTools
                         }
                     }
 
+                    // Limit the operation to the actual rows with data
+                    dataRange = selectedRange.SpecialCells(Excel.XlCellType.xlCellTypeConstants, Type.Missing)
+                        ?? selectedRange.SpecialCells(Excel.XlCellType.xlCellTypeFormulas, Type.Missing)
+                        ?? selectedRange;
+
                     // Set column to general format
                     selectedRange.NumberFormat = "General";
 
                     // Perform TextToColumns to reset it
-                    selectedRange.TextToColumns(
-                        Destination: selectedRange.Cells[1, 1],  // Start destination
+                    dataRange.TextToColumns(
+                        Destination: dataRange.Cells[1, 1],  // Start destination
                         DataType: Excel.XlTextParsingType.xlDelimited,
                         TextQualifier: Excel.XlTextQualifier.xlTextQualifierDoubleQuote,
                         ConsecutiveDelimiter: false,
@@ -690,6 +696,7 @@ namespace XLQuickTools
                 finally
                 {
                     QTUtils.CleanupResources(selectedRange);
+                    QTUtils.CleanupResources(dataRange);
                 }
 
             }
