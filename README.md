@@ -71,6 +71,7 @@ Restores the range back to its original state. Excels Undo button will not work 
 - **Remove Special:** Removes special characters !@#$%^&*()_+ etc. from text in the selected range.
 - **Remove Diacritics:** Normalizes text in the selected range. Déjà vu becomes Deja vu.
 - **Subscript Chemical Formulas:** Sets numbers in text to subscript in the selected range. C6H12O6 becomes C₆H₁₂O₆.
+- **Add Leading or Trailing:** Adds leading or trailing characters/text.
 
 ### **Additional Formatting Tools**
 - **Fill Down:** Fills blank cells with the value above, based on the selected range.
@@ -126,6 +127,10 @@ Windows form version of **Selection** that:
 
 ### **Worksheet to File**
 Generates a delimited file from the active worksheet.
+
+<div align="center">
+<img src="images/WorksheetToFile.png" alt="Screenshot" width="300">
+</div>
 
 ### **Split Columns to Rows**
 Splits delimited columns into rows. It can handle columns with varying delimited lengths.
