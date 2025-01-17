@@ -39,6 +39,8 @@
             this.CbDelimiter = new System.Windows.Forms.ComboBox();
             this.label4 = new System.Windows.Forms.Label();
             this.CbOpenFolder = new System.Windows.Forms.CheckBox();
+            this.CbQuoteText = new System.Windows.Forms.CheckBox();
+            this.CbContainsHeaders = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // TbCustom
@@ -79,7 +81,7 @@
             // FileForm_Cancel
             // 
             this.FileForm_Cancel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.FileForm_Cancel.Location = new System.Drawing.Point(315, 378);
+            this.FileForm_Cancel.Location = new System.Drawing.Point(315, 520);
             this.FileForm_Cancel.Margin = new System.Windows.Forms.Padding(4);
             this.FileForm_Cancel.Name = "FileForm_Cancel";
             this.FileForm_Cancel.Size = new System.Drawing.Size(164, 56);
@@ -91,7 +93,7 @@
             // FileForm_Ok
             // 
             this.FileForm_Ok.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.FileForm_Ok.Location = new System.Drawing.Point(132, 378);
+            this.FileForm_Ok.Location = new System.Drawing.Point(132, 520);
             this.FileForm_Ok.Margin = new System.Windows.Forms.Padding(4);
             this.FileForm_Ok.Name = "FileForm_Ok";
             this.FileForm_Ok.Size = new System.Drawing.Size(164, 56);
@@ -161,18 +163,44 @@
             this.CbOpenFolder.AutoSize = true;
             this.CbOpenFolder.BackColor = System.Drawing.SystemColors.Control;
             this.CbOpenFolder.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.CbOpenFolder.Location = new System.Drawing.Point(306, 315);
+            this.CbOpenFolder.Location = new System.Drawing.Point(32, 471);
             this.CbOpenFolder.Name = "CbOpenFolder";
-            this.CbOpenFolder.Size = new System.Drawing.Size(173, 33);
+            this.CbOpenFolder.Size = new System.Drawing.Size(343, 33);
             this.CbOpenFolder.TabIndex = 8;
-            this.CbOpenFolder.Text = "&Open folder";
+            this.CbOpenFolder.Text = "&Open folder when complete";
             this.CbOpenFolder.UseVisualStyleBackColor = false;
+            // 
+            // CbQuoteText
+            // 
+            this.CbQuoteText.AutoSize = true;
+            this.CbQuoteText.BackColor = System.Drawing.SystemColors.Control;
+            this.CbQuoteText.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.CbQuoteText.Location = new System.Drawing.Point(32, 423);
+            this.CbQuoteText.Name = "CbQuoteText";
+            this.CbQuoteText.Size = new System.Drawing.Size(455, 33);
+            this.CbQuoteText.TabIndex = 11;
+            this.CbQuoteText.Text = "&Automatically add text qualifiers (\"text\")";
+            this.CbQuoteText.UseVisualStyleBackColor = false;
+            // 
+            // CbContainsHeaders
+            // 
+            this.CbContainsHeaders.AutoSize = true;
+            this.CbContainsHeaders.BackColor = System.Drawing.SystemColors.Control;
+            this.CbContainsHeaders.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.CbContainsHeaders.Location = new System.Drawing.Point(32, 374);
+            this.CbContainsHeaders.Name = "CbContainsHeaders";
+            this.CbContainsHeaders.Size = new System.Drawing.Size(327, 33);
+            this.CbContainsHeaders.TabIndex = 12;
+            this.CbContainsHeaders.Text = "&First row contains headers";
+            this.CbContainsHeaders.UseVisualStyleBackColor = false;
             // 
             // SheetFileForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(515, 473);
+            this.ClientSize = new System.Drawing.Size(515, 607);
+            this.Controls.Add(this.CbContainsHeaders);
+            this.Controls.Add(this.CbQuoteText);
             this.Controls.Add(this.CbOpenFolder);
             this.Controls.Add(this.CbDelimiter);
             this.Controls.Add(this.FileForm_Cancel);
@@ -209,5 +237,7 @@
         private System.Windows.Forms.ComboBox CbDelimiter;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.CheckBox CbOpenFolder;
+        private System.Windows.Forms.CheckBox CbQuoteText;
+        private System.Windows.Forms.CheckBox CbContainsHeaders;
     }
 }

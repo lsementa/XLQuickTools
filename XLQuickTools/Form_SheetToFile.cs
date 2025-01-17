@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Windows.Forms;
 using Excel = Microsoft.Office.Interop.Excel;
 
@@ -51,6 +52,9 @@ namespace XLQuickTools
             // Default delimiter
             this.TbCustom.Text = ",";
 
+            // Set Default contains headers
+            this.CbContainsHeaders.Checked = true;
+
             // Put the cursor in the custom textbox
             this.TbCustom.Select();
         }
@@ -70,17 +74,19 @@ namespace XLQuickTools
             string extension = this.CbExtension.Text.ToLower();
             string fileName = this.TbFilename.Text;
             string fullFileName = $"{fileName}.{extension}";
+            bool headers = this.CbContainsHeaders.Checked;
+            bool quoteText = this.CbQuoteText.Checked;
             bool openFolder = this.CbOpenFolder.Checked;
 
             // Call the method and pass the user input
-            SheetToFile(_activeSheet, delimText, customText, fullFileName, openFolder);
+            SheetToFile(_activeSheet, delimText, customText, fullFileName, headers, quoteText, openFolder);
 
             this.Close();
         }
 
         // Sheet to file
         private void SheetToFile(Excel.Worksheet activeSheet, string delimText,
-            string customText, string fileName, bool openFolder)
+            string customText, string fileName, bool headers, bool quoteText, bool openFolder)
         {
             // Use FolderBrowserDialog to select a folder
             string savePath = QTUtils.SelectSaveFolder();
@@ -124,10 +130,22 @@ namespace XLQuickTools
                                 // Clean and trim the value
                                 cellValue = QTFormat.Clean(cellValue);
 
-                                // If the value contains the delimiter, quote it
-                                if (cellValue.Contains(delimiter))
+                                // Determine if text qualifiers should be added
+                                bool addQualifiers = !(rowIndex == 1 && headers) // Skip qualifiers for the first row if headers are enabled
+                                                     && !string.IsNullOrEmpty(cellValue); // Skip qualifiers for blank cell values
+
+                                if (addQualifiers)
                                 {
-                                    cellValue = "\"" + cellValue.Replace("\"", "\"\"") + "\"";
+                                    if (quoteText && IsText(cellValue) && !(cellValue.StartsWith("\"") && cellValue.EndsWith("\"")))
+                                    {
+                                        // Quote the value if it's text and not already quoted
+                                        cellValue = "\"" + cellValue.Replace("\"", "\"\"") + "\"";
+                                    }
+                                    else if (!quoteText && cellValue.Contains(delimiter) && !(cellValue.StartsWith("\"") && cellValue.EndsWith("\"")))
+                                    {
+                                        // Quote the value only if it contains the delimiter and is not already quoted
+                                        cellValue = "\"" + cellValue.Replace("\"", "\"\"") + "\"";
+                                    }
                                 }
 
                                 // Add the cleaned value to the list
@@ -138,9 +156,9 @@ namespace XLQuickTools
                             writer.WriteLine(string.Join(delimiter, rowValues));
                         }
 
+                        // Open the folder when complete
                         if (openFolder)
                         {
-                            // Open the folder when complete
                             System.Diagnostics.Process.Start("explorer.exe", savePath);
                         }
                     }
@@ -150,6 +168,13 @@ namespace XLQuickTools
             {
                 System.Windows.Forms.MessageBox.Show("Error while creating the file: " + ex.Message);
             }
+        }
+
+        // Check if the value is not numeric or a date
+        private bool IsText(string value)
+        {
+            return !decimal.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out _) &&
+                   !DateTime.TryParse(value, CultureInfo.InvariantCulture, DateTimeStyles.None, out _);
         }
 
         private void CbDelimiter_SelectedIndexChanged(object sender, EventArgs e)
@@ -167,5 +192,6 @@ namespace XLQuickTools
             }
         }
 
+      
     }
 }
