@@ -87,10 +87,16 @@ namespace XLQuickTools
             {
                 for (int col = baseIndex; col <= colsCount; col++)
                 {
-                    if (values[row, col] is string cellValue && !string.IsNullOrWhiteSpace(cellValue))
+                    if (values[row, col] != null)
                     {
-                        values[row, col] = TransformText(cellValue, option, leading, trailing).Trim();
-                        modified = true;
+                        // Convert to string
+                        string cellValue = values[row, col].ToString();
+
+                        if (!string.IsNullOrWhiteSpace(cellValue))
+                        {
+                            values[row, col] = TransformText(cellValue, option, leading, trailing).Trim();
+                            modified = true;
+                        }
                     }
                 }
             }
