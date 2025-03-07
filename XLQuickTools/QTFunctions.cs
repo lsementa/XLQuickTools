@@ -185,6 +185,14 @@ namespace XLQuickTools
                         return;
                     }
 
+                    // Ensure Column A contains a header for it to be a complete worksheet
+                    if (activeSheet.Cells[1, 1].Value == null || string.IsNullOrWhiteSpace(activeSheet.Cells[1, 1].Value.ToString()))
+                    {
+                        MessageBox.Show("No heading in column A.", "Incomplete Worksheet",
+                                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+
                     // Turn off screen updating
                     excelApp.ScreenUpdating = false;
 
