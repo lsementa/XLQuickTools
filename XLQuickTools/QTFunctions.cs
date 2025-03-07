@@ -621,7 +621,47 @@ namespace XLQuickTools
                 System.Windows.Forms.MessageBoxIcon.Information);
         }
 
+        // Get the Unique count
+        public static void GetUniqueCount()
+        {
+            Excel.Application excelApp = Globals.ThisAddIn.Application;
+            Excel.Range rangeToProcess = null;
 
+            try
+            {
+                rangeToProcess = QTUtils.GetRangeToProcess(excelApp);
+                if (rangeToProcess == null) return;
+
+                excelApp.ScreenUpdating = false;
+                var values = QTUtils.GetRangeValues(rangeToProcess);
+
+                // Flatten the values into a single list, excluding null or empty cells
+                var allValues = values.Cast<object>()
+                                      .Where(v => v != null && !string.IsNullOrWhiteSpace(v.ToString()))
+                                      .Select(v => v.ToString())
+                                      .ToList();
+
+                // Unique count including the first row
+                int uniqueCountAll = allValues.Distinct().Count();
+
+                // Unique count excluding the first row (assuming headers)
+                var valuesExcludingFirstRow = allValues.Skip(values.GetLength(1)).Distinct().ToList();
+                int uniqueCountExcludingHeaders = valuesExcludingFirstRow.Count;
+
+                // Display both counts in a message box
+                System.Windows.Forms.MessageBox.Show($"Unique Count (All Rows): {uniqueCountAll}\nUnique Count (Headers): {uniqueCountExcludingHeaders}", "Unique Counts", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Information);
+
+            }
+            catch (Exception ex)
+            {
+                QTUtils.ShowError(ex);
+            }
+            finally
+            {
+                excelApp.ScreenUpdating = true;
+                QTUtils.CleanupResources(rangeToProcess);
+            }
+        }
 
     }
 }

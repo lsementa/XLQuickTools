@@ -233,6 +233,17 @@ namespace XLQuickTools
             LeadTrailForm form1 = new LeadTrailForm();
             form1.ShowDialog();
         }
+
+        // Count of Unique values
+        private void BtnUniqueCount_Click(object sender, RibbonControlEventArgs e)
+        {
+            QTFunctions.GetUniqueCount();
+        }
+
+        private void BtnUniqueClipboard_Click(object sender, RibbonControlEventArgs e)
+        {
+
+        }
     }
 }
 
