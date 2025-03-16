@@ -643,7 +643,6 @@ namespace XLQuickTools
                                       .Where(v => v != null && !string.IsNullOrWhiteSpace(v.ToString()))
                                       .Select(v => v.ToString())
                                       .ToList();
-
                 // Unique count
                 int uniqueCount = allValues.Distinct().Count();
 
@@ -780,7 +779,55 @@ namespace XLQuickTools
             }
         }
 
+        // Unique select options for count or copying to clipboard
+        public static void UniqueSelect(bool copyToClipboard)
+        {
+            Excel.Application excelApp = Globals.ThisAddIn.Application;
+            Excel.Worksheet activeSheet = excelApp.ActiveSheet;
+            Excel.Range rangeToProcess = null;
+ 
+            try
+            {
+                rangeToProcess = QTUtils.GetRangeToProcess(excelApp);
+                if (rangeToProcess == null) return;
 
+                // Check if the range is a single cell
+                if (rangeToProcess.Rows.Count == 1 && rangeToProcess.Columns.Count == 1)
+                {
+                    // Get the CurrentRegion of the selected cell
+                    rangeToProcess = rangeToProcess.CurrentRegion;
+                    // Check if valid range
+                    if (rangeToProcess.Rows.Count == 1 && rangeToProcess.Columns.Count == 1)
+                    {
+                        // Get the used range
+                        rangeToProcess = activeSheet.UsedRange;
+
+                        // Check if valid range
+                        if (rangeToProcess.Rows.Count == 1 && rangeToProcess.Columns.Count == 1)
+                        {
+                            // Show error and don't run
+                            MessageBox.Show("Please select a valid range!", "Invalid Range", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                            return;
+                        }
+                    }
+                }
+
+                // Select range
+                rangeToProcess.Select();
+
+                // Show form
+                UniqueDataForm form1 = new UniqueDataForm(rangeToProcess, copyToClipboard);
+                form1.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                QTUtils.ShowError(ex);
+            }
+            finally
+            {
+                QTUtils.CleanupResources(rangeToProcess);
+            }
+        }
 
 
 

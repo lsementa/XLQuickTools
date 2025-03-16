@@ -5,26 +5,45 @@ using Excel = Microsoft.Office.Interop.Excel;
 
 namespace XLQuickTools
 {
-    public partial class UniqueDataForm: Form
+    public partial class UniqueDataForm : Form
     {
         private Excel.Range rangeToProcess;
+        private bool copyToClipboard;
 
-        public UniqueDataForm(Excel.Range rangeToProcess)
+        public UniqueDataForm(Excel.Range rangeToProcess, bool copyToClipboard)
         {
             InitializeComponent();
             this.rangeToProcess = rangeToProcess;
+            this.copyToClipboard = copyToClipboard;
         }
 
         // On Load
         private void UniqueDataForm_Load(object sender, EventArgs e)
         {
+            // Change title
+            if (copyToClipboard)
+            {
+                this.Text = "Selection to Clipboard";
+            }
+            else
+            {
+                this.Text = "Selection Count";
+            }
 
-            // Check if the range has more than 1 row and starts at row 1
-            if (rangeToProcess.Rows.Count > 1 && rangeToProcess.Row == 1) {
+            // Check if the range has more than 2 rows and starts at row 1
+            if (rangeToProcess.Rows.Count > 2 && rangeToProcess.Row == 1)
+            {
+                // Automatically check there are headers
                 CbHeaders.Checked = true;
             }
             else
             {
+                // Disable checkbox for headers if row count = 2
+                if (rangeToProcess.Rows.Count == 2)
+                {
+                    CbHeaders.Enabled = false;
+                }
+
                 // Populate columns list
                 PopulateColumnList(rangeToProcess, false);
             }
@@ -162,6 +181,12 @@ namespace XLQuickTools
         // OK button
         private void UniqueForm_Ok_Click(object sender, EventArgs e)
         {
+            if (copyToClipboard)
+            {
+                // Copy unique data to clipboard
+                _ = QTFunctions.GetUniqueRows(rangeToProcess, ClbColumns, true);
+            }
+
             this.Close();
         }
 
@@ -170,5 +195,6 @@ namespace XLQuickTools
         {
             this.Close();
         }
+
     }
 }

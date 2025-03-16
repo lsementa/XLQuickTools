@@ -70,9 +70,9 @@
             this.BtnMissing = this.Factory.CreateRibbonButton();
             this.BtnCompare = this.Factory.CreateRibbonButton();
             this.UniqueMenu = this.Factory.CreateRibbonMenu();
-            this.BtnCopyToSheets = this.Factory.CreateRibbonButton();
-            this.BtnUniqueClipboard = this.Factory.CreateRibbonButton();
             this.BtnUniqueCount = this.Factory.CreateRibbonButton();
+            this.BtnUniqueClipboard = this.Factory.CreateRibbonButton();
+            this.BtnCopyToSheets = this.Factory.CreateRibbonButton();
             this.BtnFilter = this.Factory.CreateRibbonButton();
             this.BtnDuplicates = this.Factory.CreateRibbonButton();
             this.BtnCommaSelection = this.Factory.CreateRibbonButton();
@@ -120,11 +120,11 @@
             // Group_Data
             // 
             this.Group_Data.Items.Add(this.BtnMissing);
+            this.Group_Data.Items.Add(this.BtnDuplicates);
             this.Group_Data.Items.Add(this.BtnCompare);
-            this.Group_Data.Items.Add(this.UniqueMenu);
             this.Group_Data.Items.Add(this.Separator_Data);
             this.Group_Data.Items.Add(this.BtnFilter);
-            this.Group_Data.Items.Add(this.BtnDuplicates);
+            this.Group_Data.Items.Add(this.UniqueMenu);
             this.Group_Data.Label = "Data";
             this.Group_Data.Name = "Group_Data";
             // 
@@ -423,32 +423,15 @@
             // 
             // UniqueMenu
             // 
-            this.UniqueMenu.Items.Add(this.BtnCopyToSheets);
-            this.UniqueMenu.Items.Add(this.BtnUniqueClipboard);
+            this.UniqueMenu.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
             this.UniqueMenu.Items.Add(this.BtnUniqueCount);
-            this.UniqueMenu.Label = "Unique Data";
+            this.UniqueMenu.Items.Add(this.BtnUniqueClipboard);
+            this.UniqueMenu.Items.Add(this.BtnCopyToSheets);
+            this.UniqueMenu.Label = "Unique";
             this.UniqueMenu.Name = "UniqueMenu";
             this.UniqueMenu.OfficeImageId = "ReviewCombineRevisions";
             this.UniqueMenu.ShowImage = true;
             this.UniqueMenu.SuperTip = "Unique Data Options";
-            // 
-            // BtnCopyToSheets
-            // 
-            this.BtnCopyToSheets.Label = "Create &New Sheets";
-            this.BtnCopyToSheets.Name = "BtnCopyToSheets";
-            this.BtnCopyToSheets.OfficeImageId = "DuplicateThisPage";
-            this.BtnCopyToSheets.ShowImage = true;
-            this.BtnCopyToSheets.SuperTip = "Create New Worksheets\n\nCreate worksheets based on the unique values of a column a" +
-    "nd copy data to each one.";
-            this.BtnCopyToSheets.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnCopyToSheets_Click);
-            // 
-            // BtnUniqueClipboard
-            // 
-            this.BtnUniqueClipboard.Label = "Selection to &Clipboard";
-            this.BtnUniqueClipboard.Name = "BtnUniqueClipboard";
-            this.BtnUniqueClipboard.OfficeImageId = "Copy";
-            this.BtnUniqueClipboard.ShowImage = true;
-            this.BtnUniqueClipboard.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnUniqueClipboard_Click);
             // 
             // BtnUniqueCount
             // 
@@ -456,8 +439,27 @@
             this.BtnUniqueCount.Name = "BtnUniqueCount";
             this.BtnUniqueCount.OfficeImageId = "InformationDialog";
             this.BtnUniqueCount.ShowImage = true;
-            this.BtnUniqueCount.SuperTip = "Selection Count\n\nGet the count of unique values with and without headers.";
+            this.BtnUniqueCount.SuperTip = "Get the count of unique values and unique rows.";
             this.BtnUniqueCount.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnUniqueCount_Click);
+            // 
+            // BtnUniqueClipboard
+            // 
+            this.BtnUniqueClipboard.Label = "Selection to &Clipboard";
+            this.BtnUniqueClipboard.Name = "BtnUniqueClipboard";
+            this.BtnUniqueClipboard.OfficeImageId = "Copy";
+            this.BtnUniqueClipboard.ShowImage = true;
+            this.BtnUniqueClipboard.SuperTip = "Copy the selections unique data to clipboard.";
+            this.BtnUniqueClipboard.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnUniqueClipboard_Click);
+            // 
+            // BtnCopyToSheets
+            // 
+            this.BtnCopyToSheets.Label = "Create &New Sheets";
+            this.BtnCopyToSheets.Name = "BtnCopyToSheets";
+            this.BtnCopyToSheets.OfficeImageId = "DuplicateThisPage";
+            this.BtnCopyToSheets.ShowImage = true;
+            this.BtnCopyToSheets.SuperTip = "Create worksheets based on the unique values of a column and copy data to each on" +
+    "e.";
+            this.BtnCopyToSheets.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnCopyToSheets_Click);
             // 
             // BtnFilter
             // 
@@ -471,8 +473,7 @@
             // 
             // BtnDuplicates
             // 
-            this.BtnDuplicates.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.BtnDuplicates.Label = "Duplicates";
+            this.BtnDuplicates.Label = "Check Duplicates";
             this.BtnDuplicates.Name = "BtnDuplicates";
             this.BtnDuplicates.OfficeImageId = "PivotPlusMinusFieldHeadersShowHide";
             this.BtnDuplicates.ShowImage = true;

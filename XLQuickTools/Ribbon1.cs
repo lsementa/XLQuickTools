@@ -235,47 +235,16 @@ namespace XLQuickTools
             form1.ShowDialog();
         }
 
-        // Count of Unique values
+        // Count of unique values
         private void BtnUniqueCount_Click(object sender, RibbonControlEventArgs e)
         {
-            Excel.Application excelApp = Globals.ThisAddIn.Application;
-            Excel.Worksheet activeSheet = excelApp.ActiveSheet;
-            Excel.Range rangeToProcess = QTUtils.GetRangeToProcess(excelApp);
-            if (rangeToProcess == null) return;
-
-            // Check if the range is a single cell
-            if (rangeToProcess.Rows.Count == 1 && rangeToProcess.Columns.Count == 1)
-            {
-                // Get the CurrentRegion of the selected cell
-                rangeToProcess = rangeToProcess.CurrentRegion;
-                // Check if valid range
-                if (rangeToProcess.Rows.Count == 1 && rangeToProcess.Columns.Count == 1)
-                {
-                    // Get the used range
-                    rangeToProcess = activeSheet.UsedRange;
-
-                    // Check if valid range
-                    if (rangeToProcess.Rows.Count == 1 && rangeToProcess.Columns.Count == 1)
-                    {
-                        // Show error and don't run
-                        MessageBox.Show("Please select a valid range!", "Invalid Range", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                        return;
-                    }
-                }
-            }
-
-            // Select range
-            rangeToProcess.Select();
-
-            // Show form
-            UniqueDataForm form1 = new UniqueDataForm(rangeToProcess);
-            form1.ShowDialog();
-
+            QTFunctions.UniqueSelect(false);
         }
 
+        // Copy unique to clipboard
         private void BtnUniqueClipboard_Click(object sender, RibbonControlEventArgs e)
         {
-
+            QTFunctions.UniqueSelect(true);
         }
     }
 }
