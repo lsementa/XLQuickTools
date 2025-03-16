@@ -656,8 +656,8 @@ namespace XLQuickTools
             }
         }
 
-        // Get the unique row count
-        public static int GetUniqueRowCount(Excel.Range rangeToProcess, CheckedListBox clbColumns)
+        // Get the unique row count with optional clipboard copy
+        public static int GetUniqueRows(Excel.Range rangeToProcess, CheckedListBox clbColumns, bool copyToClipboard = false)
         {
             try
             {
@@ -673,8 +673,8 @@ namespace XLQuickTools
                         checkedColumnIndices.Add(index);
                 }
 
-                // Create a set to track unique combinations
-                HashSet<string> uniqueRows = new HashSet<string>();
+                // Dictionary to track unique combinations with their original row data
+                Dictionary<string, List<object>> uniqueRowData = new Dictionary<string, List<object>>();
 
                 // Convert range to array for faster processing
                 object[,] data = rangeToProcess.Value;
@@ -711,11 +711,67 @@ namespace XLQuickTools
                     // Only add non-blank rows to the unique set
                     if (rowHasValue)
                     {
-                        uniqueRows.Add(keyBuilder.ToString());
+                        string key = keyBuilder.ToString();
+
+                        // If we're copying to clipboard, store the entire row
+                        if (copyToClipboard)
+                        {
+                            // Only store the row data if we need to copy to clipboard
+                            if (!uniqueRowData.ContainsKey(key))
+                            {
+                                // Extract all cell values for this row
+                                List<object> rowValues = new List<object>();
+                                for (int col = 1; col <= colCount; col++)
+                                {
+                                    rowValues.Add(data[row, col]);
+                                }
+
+                                uniqueRowData.Add(key, rowValues);
+                            }
+                        }
+                        else
+                        {
+                            // If not copying, just track the unique keys
+                            if (!uniqueRowData.ContainsKey(key))
+                            {
+                                uniqueRowData.Add(key, null); // Just use null as we don't need the data
+                            }
+                        }
                     }
                 }
 
-                return uniqueRows.Count;
+                // Copy to clipboard if requested
+                if (copyToClipboard && uniqueRowData.Count > 0)
+                {
+                    // Create a string builder for the clipboard text
+                    StringBuilder clipboardContent = new StringBuilder();
+
+                    // Add each unique row to the clipboard content
+                    foreach (var kvp in uniqueRowData)
+                    {
+                        if (kvp.Value != null) // Should always be non-null when copyToClipboard is true
+                        {
+                            for (int i = 0; i < kvp.Value.Count; i++)
+                            {
+                                clipboardContent.Append(kvp.Value[i]?.ToString() ?? string.Empty);
+
+                                // Add tab separator between cells, but not after the last cell
+                                if (i < kvp.Value.Count - 1)
+                                {
+                                    clipboardContent.Append("\t");
+                                }
+                            }
+
+                            // Add newline after each row
+                            clipboardContent.AppendLine();
+                        }
+                    }
+
+                    // Copy to clipboard
+                    System.Windows.Forms.Clipboard.SetText(clipboardContent.ToString());
+                }
+
+                return uniqueRowData.Count;
             }
             catch (Exception ex)
             {

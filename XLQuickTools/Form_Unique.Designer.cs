@@ -38,6 +38,7 @@
             this.BtnUnselectAll = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.UniqueForm_Ok = new System.Windows.Forms.Button();
+            this.UniqueForm_Cancel = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // ClbColumns
@@ -136,7 +137,7 @@
             // UniqueForm_Ok
             // 
             this.UniqueForm_Ok.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.UniqueForm_Ok.Location = new System.Drawing.Point(482, 430);
+            this.UniqueForm_Ok.Location = new System.Drawing.Point(296, 439);
             this.UniqueForm_Ok.Margin = new System.Windows.Forms.Padding(4);
             this.UniqueForm_Ok.Name = "UniqueForm_Ok";
             this.UniqueForm_Ok.Size = new System.Drawing.Size(164, 56);
@@ -145,11 +146,24 @@
             this.UniqueForm_Ok.UseVisualStyleBackColor = true;
             this.UniqueForm_Ok.Click += new System.EventHandler(this.UniqueForm_Ok_Click);
             // 
+            // UniqueForm_Cancel
+            // 
+            this.UniqueForm_Cancel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.UniqueForm_Cancel.Location = new System.Drawing.Point(482, 439);
+            this.UniqueForm_Cancel.Margin = new System.Windows.Forms.Padding(4);
+            this.UniqueForm_Cancel.Name = "UniqueForm_Cancel";
+            this.UniqueForm_Cancel.Size = new System.Drawing.Size(164, 56);
+            this.UniqueForm_Cancel.TabIndex = 10;
+            this.UniqueForm_Cancel.Text = "Cancel";
+            this.UniqueForm_Cancel.UseVisualStyleBackColor = true;
+            this.UniqueForm_Cancel.Click += new System.EventHandler(this.UniqueForm_Cancel_Click);
+            // 
             // UniqueDataForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(677, 508);
+            this.ClientSize = new System.Drawing.Size(677, 516);
+            this.Controls.Add(this.UniqueForm_Cancel);
             this.Controls.Add(this.UniqueForm_Ok);
             this.Controls.Add(this.BtnUnselectAll);
             this.Controls.Add(this.BtnSelectAll);
@@ -182,5 +196,6 @@
         private System.Windows.Forms.Button BtnUnselectAll;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button UniqueForm_Ok;
+        private System.Windows.Forms.Button UniqueForm_Cancel;
     }
 }

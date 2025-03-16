@@ -39,20 +39,46 @@ namespace XLQuickTools
 
             if (isEntireColumnsSelected)
             {
-                // Determine the last used row within the selected range
-                Excel.Range usedRange = activeSheet.UsedRange;
-                int lastUsedRow = usedRange.SpecialCells(Excel.XlCellType.xlCellTypeLastCell).Row;
+                int lastUsedRow = 1; // Start with the first row
+
+                // Iterate over selected columns to find the actual last row
+                foreach (Excel.Range column in selectedRange.Columns)
+                {
+                    Excel.Range columnCells = activeSheet.Range[
+                        activeSheet.Cells[1, column.Column],
+                        activeSheet.Cells[activeSheet.Rows.Count, column.Column]
+                    ];
+
+                    // Find the last non-empty row in this column
+                    Excel.Range lastCell = columnCells.Find(
+                        "*",
+                        Type.Missing,
+                        Excel.XlFindLookIn.xlValues,
+                        Excel.XlLookAt.xlPart,
+                        Excel.XlSearchOrder.xlByRows,
+                        Excel.XlSearchDirection.xlPrevious,
+                        false,
+                        Type.Missing,
+                        Type.Missing
+                    );
+
+                    if (lastCell != null)
+                    {
+                        lastUsedRow = Math.Max(lastUsedRow, lastCell.Row);
+                    }
+                }
 
                 // Restrict the range to the selected columns and last used row
                 return activeSheet.Range[
                     selectedRange.Cells[1, 1],
-                    selectedRange.Cells[lastUsedRow, selectedRange.Columns.Count]
+                    activeSheet.Cells[lastUsedRow, selectedRange.Columns[selectedRange.Columns.Count].Column]
                 ];
             }
 
             // For all other cases, return the selected range
             return selectedRange;
         }
+
 
         // Set the range values to an array
         public static object[,] GetRangeValues(Excel.Range range)

@@ -115,7 +115,7 @@ namespace XLQuickTools
         {
             // Populate Unique Values Count
             TbUniqueValues.Text = QTFunctions.GetUniqueCount(rangeToProcess).ToString();
-            TbUniqueRows.Text = QTFunctions.GetUniqueRowCount(rangeToProcess, ClbColumns).ToString();
+            TbUniqueRows.Text = QTFunctions.GetUniqueRows(rangeToProcess, ClbColumns, false).ToString();
 
         }
 
@@ -135,7 +135,7 @@ namespace XLQuickTools
         // Checkbox Listbox Change
         private void ClbColumns_SelectedIndexChanged(object sender, EventArgs e)
         {
-            TbUniqueRows.Text = QTFunctions.GetUniqueRowCount(rangeToProcess, ClbColumns).ToString();
+            TbUniqueRows.Text = QTFunctions.GetUniqueRows(rangeToProcess, ClbColumns, false).ToString();
         }
 
         // Select all columns
@@ -165,5 +165,10 @@ namespace XLQuickTools
             this.Close();
         }
 
+        // Cancel button
+        private void UniqueForm_Cancel_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
     }
 }

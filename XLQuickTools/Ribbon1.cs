@@ -239,6 +239,7 @@ namespace XLQuickTools
         private void BtnUniqueCount_Click(object sender, RibbonControlEventArgs e)
         {
             Excel.Application excelApp = Globals.ThisAddIn.Application;
+            Excel.Worksheet activeSheet = excelApp.ActiveSheet;
             Excel.Range rangeToProcess = QTUtils.GetRangeToProcess(excelApp);
             if (rangeToProcess == null) return;
 
@@ -250,9 +251,16 @@ namespace XLQuickTools
                 // Check if valid range
                 if (rangeToProcess.Rows.Count == 1 && rangeToProcess.Columns.Count == 1)
                 {
-                    // Show error and don't run
-                    MessageBox.Show("Please select a valid range!", "Invalid Range", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                    return;
+                    // Get the used range
+                    rangeToProcess = activeSheet.UsedRange;
+
+                    // Check if valid range
+                    if (rangeToProcess.Rows.Count == 1 && rangeToProcess.Columns.Count == 1)
+                    {
+                        // Show error and don't run
+                        MessageBox.Show("Please select a valid range!", "Invalid Range", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                        return;
+                    }
                 }
             }
 
