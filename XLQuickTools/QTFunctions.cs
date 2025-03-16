@@ -630,17 +630,12 @@ namespace XLQuickTools
         }
 
         // Get the Unique count
-        public static void GetUniqueCount()
+        public static int GetUniqueCount(Excel.Range rangeToProcess)
         {
-            Excel.Application excelApp = Globals.ThisAddIn.Application;
-            Excel.Range rangeToProcess = null;
-
             try
             {
-                rangeToProcess = QTUtils.GetRangeToProcess(excelApp);
-                if (rangeToProcess == null) return;
+                if (rangeToProcess == null) return 0;
 
-                excelApp.ScreenUpdating = false;
                 var values = QTUtils.GetRangeValues(rangeToProcess);
 
                 // Flatten the values into a single list, excluding null or empty cells
@@ -649,27 +644,90 @@ namespace XLQuickTools
                                       .Select(v => v.ToString())
                                       .ToList();
 
-                // Unique count including the first row
-                int uniqueCountAll = allValues.Distinct().Count();
+                // Unique count
+                int uniqueCount = allValues.Distinct().Count();
 
-                // Unique count excluding the first row (assuming headers)
-                var valuesExcludingFirstRow = allValues.Skip(values.GetLength(1)).Distinct().ToList();
-                int uniqueCountExcludingHeaders = valuesExcludingFirstRow.Count;
-
-                // Display both counts in a message box
-                System.Windows.Forms.MessageBox.Show($"Unique Count (All Rows): {uniqueCountAll}\nUnique Count (Headers): {uniqueCountExcludingHeaders}", "Unique Counts", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Information);
-
+                return uniqueCount;
             }
             catch (Exception ex)
             {
                 QTUtils.ShowError(ex);
-            }
-            finally
-            {
-                excelApp.ScreenUpdating = true;
-                QTUtils.CleanupResources(rangeToProcess);
+                return 0; // Return a default value in case of an error
             }
         }
+
+        // Get the unique row count
+        public static int GetUniqueRowCount(Excel.Range rangeToProcess, CheckedListBox clbColumns)
+        {
+            try
+            {
+                if (rangeToProcess == null || clbColumns.CheckedItems.Count == 0)
+                    return 0; // No selection, return 0
+
+                // Get the indices of checked columns
+                List<int> checkedColumnIndices = new List<int>();
+                foreach (var item in clbColumns.CheckedItems)
+                {
+                    int index = clbColumns.Items.IndexOf(item);
+                    if (index >= 0)
+                        checkedColumnIndices.Add(index);
+                }
+
+                // Create a set to track unique combinations
+                HashSet<string> uniqueRows = new HashSet<string>();
+
+                // Convert range to array for faster processing
+                object[,] data = rangeToProcess.Value;
+                int rowCount = data.GetLength(0);
+                int colCount = data.GetLength(1);
+
+                // Process each row
+                for (int row = 1; row <= rowCount; row++)
+                {
+                    // Build a key string from the checked columns for this row
+                    StringBuilder keyBuilder = new StringBuilder();
+                    bool rowHasValue = false;
+
+                    foreach (int colIndex in checkedColumnIndices)
+                    {
+                        // Check if the column index is within the range
+                        if (colIndex < colCount)
+                        {
+                            // Get column value
+                            object value = data[row, colIndex + 1]; // +1 because Excel arrays are 1-based
+                            string strValue = value?.ToString() ?? string.Empty;
+
+                            // Check if this cell has a value
+                            if (!string.IsNullOrWhiteSpace(strValue))
+                            {
+                                rowHasValue = true;
+                            }
+
+                            keyBuilder.Append(strValue);
+                            keyBuilder.Append("|"); // Use a separator unlikely to appear in cell values
+                        }
+                    }
+
+                    // Only add non-blank rows to the unique set
+                    if (rowHasValue)
+                    {
+                        uniqueRows.Add(keyBuilder.ToString());
+                    }
+                }
+
+                return uniqueRows.Count;
+            }
+            catch (Exception ex)
+            {
+                QTUtils.ShowError(ex);
+                return 0;
+            }
+        }
+
+
+
+
+
 
     }
 }

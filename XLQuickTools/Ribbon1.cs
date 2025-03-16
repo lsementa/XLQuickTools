@@ -1,4 +1,5 @@
-﻿using Microsoft.Office.Tools.Ribbon;
+﻿using System.Windows.Forms;
+using Microsoft.Office.Tools.Ribbon;
 using static XLQuickTools.QTUtils;
 using Excel = Microsoft.Office.Interop.Excel;
 
@@ -237,7 +238,31 @@ namespace XLQuickTools
         // Count of Unique values
         private void BtnUniqueCount_Click(object sender, RibbonControlEventArgs e)
         {
-            QTFunctions.GetUniqueCount();
+            Excel.Application excelApp = Globals.ThisAddIn.Application;
+            Excel.Range rangeToProcess = QTUtils.GetRangeToProcess(excelApp);
+            if (rangeToProcess == null) return;
+
+            // Check if the range is a single cell
+            if (rangeToProcess.Rows.Count == 1 && rangeToProcess.Columns.Count == 1)
+            {
+                // Get the CurrentRegion of the selected cell
+                rangeToProcess = rangeToProcess.CurrentRegion;
+                // Check if valid range
+                if (rangeToProcess.Rows.Count == 1 && rangeToProcess.Columns.Count == 1)
+                {
+                    // Show error and don't run
+                    MessageBox.Show("Please select a valid range!", "Invalid Range", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    return;
+                }
+            }
+
+            // Select range
+            rangeToProcess.Select();
+
+            // Show form
+            UniqueDataForm form1 = new UniqueDataForm(rangeToProcess);
+            form1.ShowDialog();
+
         }
 
         private void BtnUniqueClipboard_Click(object sender, RibbonControlEventArgs e)
