@@ -19,6 +19,7 @@ An Excel VSTO Add-in featuring a collection of different tools.
   - [Find Missing Data](#find-missing-data)
   - [Check for Duplicates](#check-for-duplicates)
   - [Compare Worksheets](#compare-worksheets)
+  - [Unique Data Options](#unique-data-options)
   - [Copy Data to New Worksheets](#copy-data-to-new-worksheets)
   - [Selection/Selection+ to Clipboard](#selection)
   - [Create Delimited File](#worksheet-to-file)
@@ -69,7 +70,8 @@ Restores the range back to its original state. Excels Undo button will not work 
 - **Remove Letters:** Removes letters from text in the selected range.
 - **Remove Numbers:** Removes numbers from text in the selected range.
 - **Remove Special:** Removes special characters !@#$%^&*()_+ etc. from text in the selected range.
-- **Remove Diacritics:** Normalizes text in the selected range. Déjà vu becomes Deja vu.
+- **Replace Diacritics:** Normalizes text in the selected range. Déjà vu becomes Deja vu.
+- **Replace Non-ASCII:** Replaces characters that fall outside the 128-character ASCII set.
 - **Subscript Chemical Formulas:** Sets numbers in text to subscript in the selected range. C6H12O6 becomes C₆H₁₂O₆.
 - **Add Leading or Trailing:** Adds leading or trailing characters/text.
 
@@ -105,6 +107,11 @@ Compares two worksheets, even if they belong to different workbooks, provided bo
 
 ### **Filter**
 The built-in Excel Filter button, placed on the Quick Tools tab for easier access while using other tools in the add-in.
+
+### **Unique Data Options**
+- **Selection Count:** Get the count of unique values and unique rows.
+- **Selection to Clipboard:** Copy the selections unique data to clipboard.
+- **Copy Data to New Worksheets:**
 
 ### **Copy Data to New Worksheets**
 Copies data to new worksheets based on the unique values from a selected column.
