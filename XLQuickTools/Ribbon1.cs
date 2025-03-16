@@ -180,6 +180,31 @@ namespace XLQuickTools
             QTFormat.FormatMenu(6);
         }
 
+        // Trim & Clean a selected range (Main button)
+        private void BtnTrimClean_Click_1(object sender, RibbonControlEventArgs e)
+        {
+            QTFormat.FormatMenu(7);
+        }
+
+        // Trim & Clean a selected range (Dropdown button)
+        private void BtnTrimClean_Click_2(object sender, RibbonControlEventArgs e)
+        {
+            QTFormat.FormatMenu(7);
+        }
+
+        // Add leading or trailing characters FormatMenu(8)
+        private void BtnAddLeadingTrailing_Click(object sender, RibbonControlEventArgs e)
+        {
+            LeadTrailForm form1 = new LeadTrailForm();
+            form1.ShowDialog();
+        }
+
+        // Remove Non-ASCII characters
+        private void BtnRemoveNonASCII_Click(object sender, RibbonControlEventArgs e)
+        {
+            QTFormat.FormatMenu(9);
+        }
+
         // Subscript chemical formulas
         private void BtnSubscript_Click(object sender, RibbonControlEventArgs e)
         {
@@ -204,18 +229,6 @@ namespace XLQuickTools
             QTFormat.ResetColumn();
         }
 
-        // Trim & Clean a selected range (Main button)
-        private void BtnTrimClean_Click_1(object sender, RibbonControlEventArgs e)
-        {
-            QTFormat.FormatMenu(7);
-        }
-
-        // Trim & Clean a selected range (Dropdown button)
-        private void BtnTrimClean_Click_2(object sender, RibbonControlEventArgs e)
-        {
-            QTFormat.FormatMenu(7);
-        }
-
         // Trim & Clean active worksheet
         private void BtnTrimCleanWorksheet_Click(object sender, RibbonControlEventArgs e)
         {
@@ -226,13 +239,6 @@ namespace XLQuickTools
         private void BtnTrimCleanWorkbook_Click(object sender, RibbonControlEventArgs e)
         {
             QTFormat.TrimClean("workbook");
-        }
-
-        // Add leading or trailing characters
-        private void BtnAddLeadingTrailing_Click(object sender, RibbonControlEventArgs e)
-        {
-            LeadTrailForm form1 = new LeadTrailForm();
-            form1.ShowDialog();
         }
 
         // Count of unique values
@@ -246,6 +252,8 @@ namespace XLQuickTools
         {
             QTFunctions.UniqueSelect(true);
         }
+
+
     }
 }
 

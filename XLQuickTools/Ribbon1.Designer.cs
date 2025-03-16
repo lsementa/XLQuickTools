@@ -60,6 +60,7 @@
             this.BtnRemoveNumbers = this.Factory.CreateRibbonButton();
             this.BtnRemoveSpecial = this.Factory.CreateRibbonButton();
             this.BtnNormalizeText = this.Factory.CreateRibbonButton();
+            this.BtnRemoveNonASCII = this.Factory.CreateRibbonButton();
             this.BtnSubscript = this.Factory.CreateRibbonButton();
             this.BtnAddLeadingTrailing = this.Factory.CreateRibbonButton();
             this.AdditionalMenu = this.Factory.CreateRibbonMenu();
@@ -68,13 +69,13 @@
             this.BtnDeleteColumns = this.Factory.CreateRibbonButton();
             this.BtnResetColumn = this.Factory.CreateRibbonButton();
             this.BtnMissing = this.Factory.CreateRibbonButton();
+            this.BtnDuplicates = this.Factory.CreateRibbonButton();
             this.BtnCompare = this.Factory.CreateRibbonButton();
+            this.BtnFilter = this.Factory.CreateRibbonButton();
             this.UniqueMenu = this.Factory.CreateRibbonMenu();
             this.BtnUniqueCount = this.Factory.CreateRibbonButton();
             this.BtnUniqueClipboard = this.Factory.CreateRibbonButton();
             this.BtnCopyToSheets = this.Factory.CreateRibbonButton();
-            this.BtnFilter = this.Factory.CreateRibbonButton();
-            this.BtnDuplicates = this.Factory.CreateRibbonButton();
             this.BtnCommaSelection = this.Factory.CreateRibbonButton();
             this.BtnDelimSelection = this.Factory.CreateRibbonButton();
             this.BtnSheetToFile = this.Factory.CreateRibbonButton();
@@ -263,6 +264,7 @@
             this.CharacterMenu.Items.Add(this.BtnRemoveNumbers);
             this.CharacterMenu.Items.Add(this.BtnRemoveSpecial);
             this.CharacterMenu.Items.Add(this.BtnNormalizeText);
+            this.CharacterMenu.Items.Add(this.BtnRemoveNonASCII);
             this.CharacterMenu.Items.Add(this.BtnSubscript);
             this.CharacterMenu.Items.Add(this.BtnAddLeadingTrailing);
             this.CharacterMenu.Label = "Character Menu";
@@ -328,12 +330,21 @@
             // 
             // BtnNormalizeText
             // 
-            this.BtnNormalizeText.Label = "Remove &Diacritics [é > e]";
+            this.BtnNormalizeText.Label = "Replace &Diacritics [é > e]";
             this.BtnNormalizeText.Name = "BtnNormalizeText";
             this.BtnNormalizeText.OfficeImageId = "EncodingMenu";
             this.BtnNormalizeText.ShowImage = true;
-            this.BtnNormalizeText.SuperTip = "Remove diacritics from a string in the selected range.";
+            this.BtnNormalizeText.SuperTip = "Replace diacritics within the selected range.";
             this.BtnNormalizeText.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnNormalizeText_Click);
+            // 
+            // BtnRemoveNonASCII
+            // 
+            this.BtnRemoveNonASCII.Label = "Replace N&on-ASCII [> ?]";
+            this.BtnRemoveNonASCII.Name = "BtnRemoveNonASCII";
+            this.BtnRemoveNonASCII.OfficeImageId = "JapaneseGreetingsInsertMenu";
+            this.BtnRemoveNonASCII.ShowImage = true;
+            this.BtnRemoveNonASCII.SuperTip = "Replace characters that fall outside the 128-character ASCII set.";
+            this.BtnRemoveNonASCII.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnRemoveNonASCII_Click);
             // 
             // BtnSubscript
             // 
@@ -412,6 +423,16 @@
     "een two ranges.";
             this.BtnMissing.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnMissing_Click);
             // 
+            // BtnDuplicates
+            // 
+            this.BtnDuplicates.Label = "Check Duplicates";
+            this.BtnDuplicates.Name = "BtnDuplicates";
+            this.BtnDuplicates.OfficeImageId = "PivotPlusMinusFieldHeadersShowHide";
+            this.BtnDuplicates.ShowImage = true;
+            this.BtnDuplicates.SuperTip = "Check for Duplicates\n\nCheck if a selected column contains duplicates. Toggle on/o" +
+    "ff a count column based on the selected column.";
+            this.BtnDuplicates.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnDuplicates_Click);
+            // 
             // BtnCompare
             // 
             this.BtnCompare.Label = "Compare Sheets";
@@ -420,6 +441,16 @@
             this.BtnCompare.ShowImage = true;
             this.BtnCompare.SuperTip = "Compare Worksheets\n\nToggle on/off the task pane to compare two worksheets.";
             this.BtnCompare.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnCompare_Click);
+            // 
+            // BtnFilter
+            // 
+            this.BtnFilter.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.BtnFilter.Label = "Filter";
+            this.BtnFilter.Name = "BtnFilter";
+            this.BtnFilter.OfficeImageId = "DataFilter";
+            this.BtnFilter.ShowImage = true;
+            this.BtnFilter.SuperTip = "Filter\n\nToggle filtering on/off";
+            this.BtnFilter.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnFilter_Click);
             // 
             // UniqueMenu
             // 
@@ -460,26 +491,6 @@
             this.BtnCopyToSheets.SuperTip = "Create worksheets based on the unique values of a column and copy data to each on" +
     "e.";
             this.BtnCopyToSheets.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnCopyToSheets_Click);
-            // 
-            // BtnFilter
-            // 
-            this.BtnFilter.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.BtnFilter.Label = "Filter";
-            this.BtnFilter.Name = "BtnFilter";
-            this.BtnFilter.OfficeImageId = "DataFilter";
-            this.BtnFilter.ShowImage = true;
-            this.BtnFilter.SuperTip = "Filter\n\nToggle filtering on/off";
-            this.BtnFilter.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnFilter_Click);
-            // 
-            // BtnDuplicates
-            // 
-            this.BtnDuplicates.Label = "Check Duplicates";
-            this.BtnDuplicates.Name = "BtnDuplicates";
-            this.BtnDuplicates.OfficeImageId = "PivotPlusMinusFieldHeadersShowHide";
-            this.BtnDuplicates.ShowImage = true;
-            this.BtnDuplicates.SuperTip = "Check for Duplicates\n\nCheck if a selected column contains duplicates. Toggle on/o" +
-    "ff a count column based on the selected column.";
-            this.BtnDuplicates.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnDuplicates_Click);
             // 
             // BtnCommaSelection
             // 
@@ -608,6 +619,7 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonMenu UniqueMenu;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnUniqueCount;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnUniqueClipboard;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnRemoveNonASCII;
     }
 
     partial class ThisRibbonCollection

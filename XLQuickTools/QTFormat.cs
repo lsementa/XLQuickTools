@@ -28,11 +28,13 @@ namespace XLQuickTools
                 case 5: // Remove special characters (keep spaces and accents)
                     return System.Text.RegularExpressions.Regex.Replace(input, @"[^a-zA-Z0-9\u00C0-\u024F\s]", "");
                 case 6: // Remove diacritics (accents)
-                    return RemoveDiacritics(input);
+                    return ReplaceDiacritics(input);
                 case 7: // Trim and Clean
                     return Clean(input.Trim());
                 case 8: // Add leading or trailing
                     return (leading ?? "") + input + (trailing ?? "");
+                case 9: // Remove non-ASCII
+                    return ReplaceNonAscii(input);
                 default:
                     throw new ArgumentException("Invalid option.");
             }
@@ -567,8 +569,8 @@ namespace XLQuickTools
             }
         }
 
-        // Method to remove diacritics (accents)
-        private static string RemoveDiacritics(string input)
+        // Method to replace diacritics (accents)
+        private static string ReplaceDiacritics(string input)
         {
             string normalized = input.Normalize(System.Text.NormalizationForm.FormD);
             System.Text.StringBuilder sb = new System.Text.StringBuilder();
@@ -582,6 +584,19 @@ namespace XLQuickTools
             }
 
             return sb.ToString().Normalize(System.Text.NormalizationForm.FormC); // Re-normalize to FormC
+        }
+
+        // Method to replace non-ASCII characters with '?'
+        private static string ReplaceNonAscii(string input)
+        {
+            System.Text.StringBuilder sb = new System.Text.StringBuilder();
+
+            foreach (char c in input)
+            {
+                sb.Append(c <= 127 ? c : '?'); // ASCII range is 0-127
+            }
+
+            return sb.ToString();
         }
 
         // Method to subscript Chemical formulas
