@@ -20,15 +20,11 @@ namespace XLQuickTools
         // On Load
         private void UniqueDataForm_Load(object sender, EventArgs e)
         {
+            // Process pending Windows messages to clear the spinning cursor
+            Application.DoEvents();
+
             // Change title
-            if (copyToClipboard)
-            {
-                this.Text = "Selection to Clipboard";
-            }
-            else
-            {
-                this.Text = "Selection Count";
-            }
+            this.Text = copyToClipboard ? "Selection to Clipboard" : "Selection Count";
 
             // Check if the range has more than 2 rows and starts at row 1
             if (rangeToProcess.Rows.Count > 2 && rangeToProcess.Row == 1)
@@ -43,11 +39,9 @@ namespace XLQuickTools
                 {
                     CbHeaders.Enabled = false;
                 }
-
                 // Populate columns list
                 PopulateColumnList(rangeToProcess, false);
             }
-
         }
 
         // Checkbox Changed

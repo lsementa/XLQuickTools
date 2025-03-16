@@ -67,7 +67,7 @@
             // 
             // TbUniqueValues
             // 
-            this.TbUniqueValues.BackColor = System.Drawing.Color.LightGray;
+            this.TbUniqueValues.BackColor = System.Drawing.Color.Gainsboro;
             this.TbUniqueValues.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.TbUniqueValues.Enabled = false;
             this.TbUniqueValues.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -99,7 +99,7 @@
             // 
             // TbUniqueRows
             // 
-            this.TbUniqueRows.BackColor = System.Drawing.Color.LightGray;
+            this.TbUniqueRows.BackColor = System.Drawing.Color.Gainsboro;
             this.TbUniqueRows.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.TbUniqueRows.Enabled = false;
             this.TbUniqueRows.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));

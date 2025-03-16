@@ -785,7 +785,7 @@ namespace XLQuickTools
             Excel.Application excelApp = Globals.ThisAddIn.Application;
             Excel.Worksheet activeSheet = excelApp.ActiveSheet;
             Excel.Range rangeToProcess = null;
- 
+
             try
             {
                 rangeToProcess = QTUtils.GetRangeToProcess(excelApp);
@@ -801,23 +801,17 @@ namespace XLQuickTools
                     {
                         // Get the used range
                         rangeToProcess = activeSheet.UsedRange;
-
                         // Check if valid range
                         if (rangeToProcess.Rows.Count == 1 && rangeToProcess.Columns.Count == 1)
-                        {
-                            // Show error and don't run
-                            MessageBox.Show("Please select a valid range!", "Invalid Range", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                             return;
-                        }
                     }
                 }
 
-                // Select range
-                rangeToProcess.Select();
-
-                // Show form
-                UniqueDataForm form1 = new UniqueDataForm(rangeToProcess, copyToClipboard);
-                form1.ShowDialog();
+                // Show form without selecting the range first
+                using (UniqueDataForm form1 = new UniqueDataForm(rangeToProcess, copyToClipboard))
+                {
+                    form1.ShowDialog();
+                }
             }
             catch (Exception ex)
             {
@@ -828,9 +822,5 @@ namespace XLQuickTools
                 QTUtils.CleanupResources(rangeToProcess);
             }
         }
-
-
-
-
     }
 }

@@ -40,10 +40,10 @@
             // 
             this.TbTrailing.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.TbTrailing.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TbTrailing.Location = new System.Drawing.Point(17, 77);
-            this.TbTrailing.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.TbTrailing.Location = new System.Drawing.Point(34, 148);
+            this.TbTrailing.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.TbTrailing.Name = "TbTrailing";
-            this.TbTrailing.Size = new System.Drawing.Size(184, 35);
+            this.TbTrailing.Size = new System.Drawing.Size(366, 35);
             this.TbTrailing.TabIndex = 3;
             this.TbTrailing.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
@@ -51,10 +51,10 @@
             // 
             this.TbLeading.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.TbLeading.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TbLeading.Location = new System.Drawing.Point(17, 29);
-            this.TbLeading.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.TbLeading.Location = new System.Drawing.Point(34, 56);
+            this.TbLeading.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.TbLeading.Name = "TbLeading";
-            this.TbLeading.Size = new System.Drawing.Size(184, 35);
+            this.TbLeading.Size = new System.Drawing.Size(366, 35);
             this.TbLeading.TabIndex = 1;
             this.TbLeading.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
@@ -62,8 +62,8 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(14, 12);
-            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label1.Location = new System.Drawing.Point(28, 23);
+            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(282, 29);
             this.label1.TabIndex = 0;
@@ -73,8 +73,8 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(14, 60);
-            this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label2.Location = new System.Drawing.Point(28, 115);
+            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(277, 29);
             this.label2.TabIndex = 2;
@@ -83,10 +83,10 @@
             // LeadTrailForm_Cancel
             // 
             this.LeadTrailForm_Cancel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LeadTrailForm_Cancel.Location = new System.Drawing.Point(112, 109);
-            this.LeadTrailForm_Cancel.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.LeadTrailForm_Cancel.Location = new System.Drawing.Point(224, 210);
+            this.LeadTrailForm_Cancel.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.LeadTrailForm_Cancel.Name = "LeadTrailForm_Cancel";
-            this.LeadTrailForm_Cancel.Size = new System.Drawing.Size(82, 29);
+            this.LeadTrailForm_Cancel.Size = new System.Drawing.Size(164, 56);
             this.LeadTrailForm_Cancel.TabIndex = 5;
             this.LeadTrailForm_Cancel.Text = "Cancel";
             this.LeadTrailForm_Cancel.UseVisualStyleBackColor = true;
@@ -95,10 +95,10 @@
             // LeadTrailForm_Ok
             // 
             this.LeadTrailForm_Ok.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LeadTrailForm_Ok.Location = new System.Drawing.Point(21, 109);
-            this.LeadTrailForm_Ok.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.LeadTrailForm_Ok.Location = new System.Drawing.Point(42, 210);
+            this.LeadTrailForm_Ok.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.LeadTrailForm_Ok.Name = "LeadTrailForm_Ok";
-            this.LeadTrailForm_Ok.Size = new System.Drawing.Size(82, 29);
+            this.LeadTrailForm_Ok.Size = new System.Drawing.Size(164, 56);
             this.LeadTrailForm_Ok.TabIndex = 4;
             this.LeadTrailForm_Ok.Text = "Ok";
             this.LeadTrailForm_Ok.UseVisualStyleBackColor = true;
@@ -106,16 +106,16 @@
             // 
             // LeadTrailForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(232, 154);
+            this.ClientSize = new System.Drawing.Size(432, 296);
             this.Controls.Add(this.LeadTrailForm_Cancel);
             this.Controls.Add(this.LeadTrailForm_Ok);
             this.Controls.Add(this.TbTrailing);
             this.Controls.Add(this.TbLeading);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.label2);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "LeadTrailForm";
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
