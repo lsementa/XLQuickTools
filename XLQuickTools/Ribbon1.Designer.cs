@@ -36,13 +36,18 @@
         {
             this.XLQuickTools_Tab = this.Factory.CreateRibbonTab();
             this.Group_Formatting = this.Factory.CreateRibbonGroup();
+            this.Separator_Formatting = this.Factory.CreateRibbonSeparator();
+            this.Group_Data = this.Factory.CreateRibbonGroup();
+            this.Separator_Data = this.Factory.CreateRibbonSeparator();
+            this.Group_Delimiter = this.Factory.CreateRibbonGroup();
+            this.Separator_Delimiter = this.Factory.CreateRibbonSeparator();
+            this.Group_Hyperlinks = this.Factory.CreateRibbonGroup();
             this.BtnRemoveExcess = this.Factory.CreateRibbonButton();
             this.SBtnTrimClean = this.Factory.CreateRibbonSplitButton();
             this.BtnTrimClean = this.Factory.CreateRibbonButton();
             this.BtnTrimCleanWorksheet = this.Factory.CreateRibbonButton();
             this.BtnTrimCleanWorkbook = this.Factory.CreateRibbonButton();
             this.BtnQuickSettings = this.Factory.CreateRibbonButton();
-            this.Separator_Formatting = this.Factory.CreateRibbonSeparator();
             this.BtnQuickFormat = this.Factory.CreateRibbonButton();
             this.BtnRemoveFormatting = this.Factory.CreateRibbonButton();
             this.BtnDateText = this.Factory.CreateRibbonButton();
@@ -63,23 +68,18 @@
             this.BtnDeleteRows = this.Factory.CreateRibbonButton();
             this.BtnDeleteColumns = this.Factory.CreateRibbonButton();
             this.BtnResetColumn = this.Factory.CreateRibbonButton();
-            this.Group_Data = this.Factory.CreateRibbonGroup();
             this.BtnMissing = this.Factory.CreateRibbonButton();
             this.BtnDuplicates = this.Factory.CreateRibbonButton();
             this.BtnCompare = this.Factory.CreateRibbonButton();
-            this.Separator_Data = this.Factory.CreateRibbonSeparator();
             this.BtnFilter = this.Factory.CreateRibbonButton();
             this.UniqueMenu = this.Factory.CreateRibbonMenu();
             this.BtnUniqueCount = this.Factory.CreateRibbonButton();
             this.BtnUniqueClipboard = this.Factory.CreateRibbonButton();
             this.BtnCopyToSheets = this.Factory.CreateRibbonButton();
-            this.Group_Delimiter = this.Factory.CreateRibbonGroup();
             this.BtnCommaSelection = this.Factory.CreateRibbonButton();
             this.BtnDelimSelection = this.Factory.CreateRibbonButton();
             this.BtnSheetToFile = this.Factory.CreateRibbonButton();
-            this.Separator_Delimiter = this.Factory.CreateRibbonSeparator();
             this.BtnSplitToRows = this.Factory.CreateRibbonButton();
-            this.Group_Hyperlinks = this.Factory.CreateRibbonGroup();
             this.BtnHyperlinkSettings = this.Factory.CreateRibbonButton();
             this.BtnHyperlinks = this.Factory.CreateRibbonButton();
             this.XLQuickTools_Tab.SuspendLayout();
@@ -113,6 +113,46 @@
             this.Group_Formatting.Items.Add(this.AdditionalMenu);
             this.Group_Formatting.Label = "Formatting";
             this.Group_Formatting.Name = "Group_Formatting";
+            // 
+            // Separator_Formatting
+            // 
+            this.Separator_Formatting.Name = "Separator_Formatting";
+            // 
+            // Group_Data
+            // 
+            this.Group_Data.Items.Add(this.BtnMissing);
+            this.Group_Data.Items.Add(this.BtnDuplicates);
+            this.Group_Data.Items.Add(this.BtnCompare);
+            this.Group_Data.Items.Add(this.Separator_Data);
+            this.Group_Data.Items.Add(this.BtnFilter);
+            this.Group_Data.Items.Add(this.UniqueMenu);
+            this.Group_Data.Label = "Data";
+            this.Group_Data.Name = "Group_Data";
+            // 
+            // Separator_Data
+            // 
+            this.Separator_Data.Name = "Separator_Data";
+            // 
+            // Group_Delimiter
+            // 
+            this.Group_Delimiter.Items.Add(this.BtnCommaSelection);
+            this.Group_Delimiter.Items.Add(this.BtnDelimSelection);
+            this.Group_Delimiter.Items.Add(this.BtnSheetToFile);
+            this.Group_Delimiter.Items.Add(this.Separator_Delimiter);
+            this.Group_Delimiter.Items.Add(this.BtnSplitToRows);
+            this.Group_Delimiter.Label = "Delimiter";
+            this.Group_Delimiter.Name = "Group_Delimiter";
+            // 
+            // Separator_Delimiter
+            // 
+            this.Separator_Delimiter.Name = "Separator_Delimiter";
+            // 
+            // Group_Hyperlinks
+            // 
+            this.Group_Hyperlinks.Items.Add(this.BtnHyperlinkSettings);
+            this.Group_Hyperlinks.Items.Add(this.BtnHyperlinks);
+            this.Group_Hyperlinks.Label = "Hyperlinks";
+            this.Group_Hyperlinks.Name = "Group_Hyperlinks";
             // 
             // BtnRemoveExcess
             // 
@@ -172,10 +212,6 @@
             this.BtnQuickSettings.SuperTip = "Quick Format Settings\n\nSettings you want applied when using the \"Quick Format\" bu" +
     "tton.";
             this.BtnQuickSettings.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnQuickSettings_Click);
-            // 
-            // Separator_Formatting
-            // 
-            this.Separator_Formatting.Name = "Separator_Formatting";
             // 
             // BtnQuickFormat
             // 
@@ -303,11 +339,12 @@
             // 
             // BtnRemoveNonASCII
             // 
-            this.BtnRemoveNonASCII.Label = "Replace N&on-ASCII [> ?]";
+            this.BtnRemoveNonASCII.Label = "Replace N&on-ASCII [é > &&#233;]";
             this.BtnRemoveNonASCII.Name = "BtnRemoveNonASCII";
             this.BtnRemoveNonASCII.OfficeImageId = "JapaneseGreetingsInsertMenu";
             this.BtnRemoveNonASCII.ShowImage = true;
-            this.BtnRemoveNonASCII.SuperTip = "Replace characters that fall outside the 128-character ASCII set.";
+            this.BtnRemoveNonASCII.SuperTip = "Replace characters that fall outside the 128-character ASCII set with the HTML en" +
+    "tity code.";
             this.BtnRemoveNonASCII.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnRemoveNonASCII_Click);
             // 
             // BtnSubscript
@@ -377,17 +414,6 @@
             this.BtnResetColumn.SuperTip = "Reset the selected column. Numbers stored as text will be converted to numbers.";
             this.BtnResetColumn.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnResetColumn_Click);
             // 
-            // Group_Data
-            // 
-            this.Group_Data.Items.Add(this.BtnMissing);
-            this.Group_Data.Items.Add(this.BtnDuplicates);
-            this.Group_Data.Items.Add(this.BtnCompare);
-            this.Group_Data.Items.Add(this.Separator_Data);
-            this.Group_Data.Items.Add(this.BtnFilter);
-            this.Group_Data.Items.Add(this.UniqueMenu);
-            this.Group_Data.Label = "Data";
-            this.Group_Data.Name = "Group_Data";
-            // 
             // BtnMissing
             // 
             this.BtnMissing.Label = "Find Missing";
@@ -416,10 +442,6 @@
             this.BtnCompare.ShowImage = true;
             this.BtnCompare.SuperTip = "Compare Worksheets\n\nToggle on/off the task pane to compare two worksheets.";
             this.BtnCompare.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnCompare_Click);
-            // 
-            // Separator_Data
-            // 
-            this.Separator_Data.Name = "Separator_Data";
             // 
             // BtnFilter
             // 
@@ -471,16 +493,6 @@
     "e.";
             this.BtnCopyToSheets.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnCopyToSheets_Click);
             // 
-            // Group_Delimiter
-            // 
-            this.Group_Delimiter.Items.Add(this.BtnCommaSelection);
-            this.Group_Delimiter.Items.Add(this.BtnDelimSelection);
-            this.Group_Delimiter.Items.Add(this.BtnSheetToFile);
-            this.Group_Delimiter.Items.Add(this.Separator_Delimiter);
-            this.Group_Delimiter.Items.Add(this.BtnSplitToRows);
-            this.Group_Delimiter.Label = "Delimiter";
-            this.Group_Delimiter.Name = "Group_Delimiter";
-            // 
             // BtnCommaSelection
             // 
             this.BtnCommaSelection.Label = "Selection";
@@ -509,10 +521,6 @@
             this.BtnSheetToFile.SuperTip = "Worksheet to File\n\nCreate a delimited file using the current active worksheet.";
             this.BtnSheetToFile.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnSheetToFile_Click);
             // 
-            // Separator_Delimiter
-            // 
-            this.Separator_Delimiter.Name = "Separator_Delimiter";
-            // 
             // BtnSplitToRows
             // 
             this.BtnSplitToRows.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
@@ -522,13 +530,6 @@
             this.BtnSplitToRows.ShowImage = true;
             this.BtnSplitToRows.SuperTip = "Split Columns to Rows\n\nSplit delimited column(s) to rows.";
             this.BtnSplitToRows.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnSplitToRows_Click);
-            // 
-            // Group_Hyperlinks
-            // 
-            this.Group_Hyperlinks.Items.Add(this.BtnHyperlinkSettings);
-            this.Group_Hyperlinks.Items.Add(this.BtnHyperlinks);
-            this.Group_Hyperlinks.Label = "Hyperlinks";
-            this.Group_Hyperlinks.Name = "Group_Hyperlinks";
             // 
             // BtnHyperlinkSettings
             // 

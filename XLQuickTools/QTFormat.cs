@@ -586,14 +586,21 @@ namespace XLQuickTools
             return sb.ToString().Normalize(System.Text.NormalizationForm.FormC); // Re-normalize to FormC
         }
 
-        // Method to replace non-ASCII characters with '?'
+        // Method to replace non-ASCII characters with HTML entity
         private static string ReplaceNonAscii(string input)
         {
             System.Text.StringBuilder sb = new System.Text.StringBuilder();
 
             foreach (char c in input)
             {
-                sb.Append(c <= 127 ? c : '?'); // ASCII range is 0-127
+                if (c <= 127)
+                {
+                    sb.Append(c); // Keep
+                }
+                else
+                {
+                    sb.Append($"&#{(int)c};"); // Convert
+                }
             }
 
             return sb.ToString();
