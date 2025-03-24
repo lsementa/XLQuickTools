@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using Excel = Microsoft.Office.Interop.Excel;
 
@@ -358,5 +359,221 @@ namespace XLQuickTools
                 }
             }
         }
+
+        // Dictionary to store special character replacements
+        public static Dictionary<char, string> specialReplacements = new Dictionary<char, string>
+        {
+            // Scandinavian
+            {'ø', "o"},
+            {'Ø', "O"},
+            {'æ', "ae"},
+            {'Æ', "AE"},
+            {'å', "a"},
+            {'Å', "A"},
+
+            // German
+            {'ß', "ss"},
+            {'ẞ', "SS"}, // Capital ß
+
+            // French Ligatures
+            {'œ', "oe"},
+            {'Œ', "OE"},
+
+            // Polish
+            {'ł', "l"},
+            {'Ł', "L"},
+
+            // Croatian/Slovak/Slovenian
+            {'đ', "d"},
+            {'Đ', "D"},
+
+            // Icelandic/Old English
+            {'þ', "th"},
+            {'Þ', "Th"},
+            {'ð', "d"},
+            {'Ð', "D"},
+
+            // Turkish
+            {'ğ', "g"},
+            {'Ğ', "G"},
+            {'ı', "i"}, // dotless i
+            {'İ', "I"}, // dotted I
+            {'ş', "s"},
+            {'Ş', "S"},
+
+            // Czech/Slovak
+            {'č', "c"},
+            {'Č', "C"},
+            {'ř', "r"},
+            {'Ř', "R"},
+            {'š', "s"},
+            {'Š', "S"},
+            {'ž', "z"},
+            {'Ž', "Z"},
+
+            // Hungarian
+            {'ő', "o"},
+            {'Ő', "O"},
+            {'ű', "u"},
+            {'Ű', "U"},
+
+            // Romanian
+            {'ă', "a"},
+            {'Ă', "A"},
+            {'ș', "s"},
+            {'Ș', "S"},
+            {'ț', "t"},
+            {'Ț', "T"},
+
+            // Cyrillic (basic transliteration)
+            {'а', "a"},
+            {'б', "b"},
+            {'в', "v"},
+            {'г', "g"},
+            {'д', "d"},
+            {'е', "e"},
+            {'ё', "yo"},
+            {'ж', "zh"},
+            {'з', "z"},
+            {'и', "i"},
+            {'й', "y"},
+            {'к', "k"},
+            {'л', "l"},
+            {'м', "m"},
+            {'н', "n"},
+            {'о', "o"},
+            {'п', "p"},
+            {'р', "r"},
+            {'с', "s"},
+            {'т', "t"},
+            {'у', "u"},
+            {'ф', "f"},
+            {'х', "kh"},
+            {'ц', "ts"},
+            {'ч', "ch"},
+            {'ш', "sh"},
+            {'щ', "shch"},
+            {'ъ', ""},
+            {'ы', "y"},
+            {'ь', ""},
+            {'э', "e"},
+            {'ю', "yu"},
+            {'я', "ya"},
+
+            // Cyrillic uppercase
+            {'А', "A"},
+            {'Б', "B"},
+            {'В', "V"},
+            {'Г', "G"},
+            {'Д', "D"},
+            {'Е', "E"},
+            {'Ё', "Yo"},
+            {'Ж', "Zh"},
+            {'З', "Z"},
+            {'И', "I"},
+            {'Й', "Y"},
+            {'К', "K"},
+            {'Л', "L"},
+            {'М', "M"},
+            {'Н', "N"},
+            {'О', "O"},
+            {'П', "P"},
+            {'Р', "R"},
+            {'С', "S"},
+            {'Т', "T"},
+            {'У', "U"},
+            {'Ф', "F"},
+            {'Х', "Kh"},
+            {'Ц', "Ts"},
+            {'Ч', "Ch"},
+            {'Ш', "Sh"},
+            {'Щ', "Shch"},
+            {'Ъ', ""},
+            {'Ы', "Y"},
+            {'Ь', ""},
+            {'Э', "E"},
+            {'Ю', "Yu"},
+            {'Я', "Ya"},
+
+            // Greek (most common transliterations)
+            {'α', "a"},
+            {'β', "b"},
+            {'γ', "g"},
+            {'δ', "d"},
+            {'ε', "e"},
+            {'ζ', "z"},
+            {'η', "i"},  // Changed from 'h' to 'i' for modern Greek
+            {'θ', "th"},
+            {'ι', "i"},
+            {'κ', "k"},
+            {'λ', "l"},
+            {'μ', "m"},
+            {'ν', "n"},
+            {'ξ', "x"},
+            {'ο', "o"},
+            {'π', "p"},
+            {'ρ', "r"},
+            {'σ', "s"},
+            {'ς', "s"},  // Final sigma
+            {'τ', "t"},
+            {'υ', "y"},  // Changed from 'u' to 'y' for modern Greek
+            {'φ', "f"},
+            {'χ', "ch"},
+            {'ψ', "ps"},
+            {'ω', "o"},
+            {'ϑ', "th"}, // Theta symbol
+            {'ϒ', "Y"},  // Upsilon with hook
+            {'ϖ', "p"},  // Variant pi
+
+            // Greek uppercase
+            {'Α', "A"},
+            {'Β', "B"},
+            {'Γ', "G"},
+            {'Δ', "D"},
+            {'Ε', "E"},
+            {'Ζ', "Z"},
+            {'Η', "I"},  // Changed from 'H' to 'I' for modern Greek
+            {'Θ', "Th"},
+            {'Ι', "I"},
+            {'Κ', "K"},
+            {'Λ', "L"},
+            {'Μ', "M"},
+            {'Ν', "N"},
+            {'Ξ', "X"},
+            {'Ο', "O"},
+            {'Π', "P"},
+            {'Ρ', "R"},
+            {'Σ', "S"},
+            {'Τ', "T"},
+            {'Υ', "Y"},  // Changed from 'U' to 'Y' for modern Greek
+            {'Φ', "F"},
+            {'Χ', "Ch"},
+            {'Ψ', "Ps"},
+            {'Ω', "O"},
+
+            // Arabic-Indic digits
+            {'٠', "0"},
+            {'١', "1"},
+            {'٢', "2"},
+            {'٣', "3"},
+            {'٤', "4"},
+            {'٥', "5"},
+            {'٦', "6"},
+            {'٧', "7"},
+            {'٨', "8"},
+            {'٩', "9"},
+
+            // Eastern Arabic-Indic digits
+            {'۰', "0"},
+            {'۱', "1"},
+            {'۲', "2"},
+            {'۳', "3"},
+            {'۴', "4"},
+            {'۵', "5"},
+            {'۶', "6"},
+            {'۷', "7"},
+            {'۸', "8"},
+            {'۹', "9"}
+        };
     }
 }

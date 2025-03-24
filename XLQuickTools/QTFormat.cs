@@ -5,6 +5,8 @@ using System.Linq;
 using static XLQuickTools.QTSettings;
 using System.Windows.Forms;
 using Excel = Microsoft.Office.Interop.Excel;
+using System.Globalization;
+using System.Text;
 
 namespace XLQuickTools
 {
@@ -27,8 +29,8 @@ namespace XLQuickTools
                     return System.Text.RegularExpressions.Regex.Replace(input, "[0-9]", "");
                 case 5: // Remove special characters (keep spaces and accents)
                     return System.Text.RegularExpressions.Regex.Replace(input, @"[^a-zA-Z0-9\u00C0-\u024F\s]", "");
-                case 6: // Remove diacritics (accents)
-                    return ReplaceDiacritics(input);
+                case 6: // Normalize Text/Remove diacritics
+                    return NormalizeText(input);
                 case 7: // Trim and Clean
                     return Clean(input.Trim());
                 case 8: // Add leading or trailing
@@ -569,21 +571,45 @@ namespace XLQuickTools
             }
         }
 
-        // Method to replace diacritics (accents)
-        private static string ReplaceDiacritics(string input)
+        // Method to normalize text/remove diacritics
+        public static string NormalizeText(string input)
         {
-            string normalized = input.Normalize(System.Text.NormalizationForm.FormD);
-            System.Text.StringBuilder sb = new System.Text.StringBuilder();
+            if (string.IsNullOrEmpty(input))
+                return input;
+
+            // First, remove diacritics
+            string normalized = input.Normalize(NormalizationForm.FormD);
+            StringBuilder diacriticRemoved = new StringBuilder();
 
             foreach (char c in normalized)
             {
-                if (System.Globalization.CharUnicodeInfo.GetUnicodeCategory(c) != System.Globalization.UnicodeCategory.NonSpacingMark)
+                // Keep only non-diacritic characters
+                if (CharUnicodeInfo.GetUnicodeCategory(c) != UnicodeCategory.NonSpacingMark)
                 {
-                    sb.Append(c);
+                    diacriticRemoved.Append(c);
                 }
             }
 
-            return sb.ToString().Normalize(System.Text.NormalizationForm.FormC); // Re-normalize to FormC
+            // Convert to string and re-normalize
+            string diacriticFreeText = diacriticRemoved.ToString().Normalize(NormalizationForm.FormC);
+
+            // Then replace special characters
+            StringBuilder result = new StringBuilder(diacriticFreeText.Length);
+
+            foreach (char c in diacriticFreeText)
+            {
+                // Check if the character is in our special replacements dictionary
+                if (QTUtils.specialReplacements.TryGetValue(c, out string replacement))
+                {
+                    result.Append(replacement);
+                }
+                else
+                {
+                    result.Append(c);
+                }
+            }
+
+            return result.ToString();
         }
 
         // Method to replace non-ASCII characters with HTML entity

@@ -265,8 +265,8 @@
             this.CharacterMenu.Items.Add(this.BtnRemoveSpecial);
             this.CharacterMenu.Items.Add(this.BtnNormalizeText);
             this.CharacterMenu.Items.Add(this.BtnRemoveNonASCII);
-            this.CharacterMenu.Items.Add(this.BtnSubscript);
             this.CharacterMenu.Items.Add(this.BtnAddLeadingTrailing);
+            this.CharacterMenu.Items.Add(this.BtnSubscript);
             this.CharacterMenu.Label = "Character Menu";
             this.CharacterMenu.Name = "CharacterMenu";
             this.CharacterMenu.OfficeImageId = "CharacterBorder";
@@ -330,11 +330,11 @@
             // 
             // BtnNormalizeText
             // 
-            this.BtnNormalizeText.Label = "Replace &Diacritics [é > e]";
+            this.BtnNormalizeText.Label = "Normalize &Text [é > e]";
             this.BtnNormalizeText.Name = "BtnNormalizeText";
             this.BtnNormalizeText.OfficeImageId = "EncodingMenu";
             this.BtnNormalizeText.ShowImage = true;
-            this.BtnNormalizeText.SuperTip = "Replace diacritics within the selected range.";
+            this.BtnNormalizeText.SuperTip = "Normalize text/replace diacritics within the selected range.";
             this.BtnNormalizeText.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnNormalizeText_Click);
             // 
             // BtnRemoveNonASCII
