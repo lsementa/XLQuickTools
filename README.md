@@ -70,10 +70,10 @@ Restores the range back to its original state. Excels Undo button will not work 
 - **Remove Letters:** Removes letters from text in the selected range.
 - **Remove Numbers:** Removes numbers from text in the selected range.
 - **Remove Special:** Removes special characters !@#$%^&*()_+ etc. from text in the selected range.
-- **Replace Diacritics:** Normalizes text in the selected range. Déjà vu becomes Deja vu.
+- **Normalize Text:** Normalize text/replace diacritics within the selected range. Déjà vu becomes Deja vu.
 - **Replace Non-ASCII:** Replaces characters that fall outside the 128-character ASCII set with its HTML entity code.
-- **Subscript Chemical Formulas:** Sets numbers in text to subscript in the selected range. C6H12O6 becomes C₆H₁₂O₆.
 - **Add Leading or Trailing:** Adds leading or trailing characters/text.
+- **Subscript Chemical Formulas:** Sets numbers in text to subscript in the selected range. C6H12O6 becomes C₆H₁₂O₆.
 
 ### **Additional Formatting Tools**
 - **Fill Down:** Fills blank cells with the value above, based on the selected range.
