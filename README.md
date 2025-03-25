@@ -15,7 +15,7 @@ An Excel VSTO Add-in featuring a collection of different tools.
   - [Quick Format](#quick-format)
   - [Date/Text Converter](#datetext-converter)
   - [Text Tools](#text-tools)
-  - [Additional Formatting Tools](#additional-formatting-tools)
+  - [Additional Options](#additional-options)
   - [Find Missing Data](#find-missing-data)
   - [Check for Duplicates](#check-for-duplicates)
   - [Compare Worksheets](#compare-worksheets)
@@ -75,10 +75,11 @@ Restores the range back to its original state. Excels Undo button will not work 
 - **Add Leading or Trailing:** Adds leading or trailing characters/text.
 - **Subscript Chemical Formulas:** Sets numbers in text to subscript in the selected range. C6H12O6 becomes C₆H₁₂O₆.
 
-### **Additional Formatting Tools**
+### **Additional Options**
 - **Fill Down:** Fills blank cells with the value above, based on the selected range.
 - **Delete Empty Rows:** Deletes any empty rows on the active worksheet.
 - **Delete Empty Columns:** Deletes any empty columns on the active worksheet. This includes deleting columns with headings if the rest of the rows are empty.
+- **Display Length:** Displays the active cells length in the status bar. You can toggle this on or off.
 - **Reset column:** Ensures the column's formatting and data handling are reset. Numbers stored as text will be recognized as numbers.
 
 ### **Find Missing Data**
