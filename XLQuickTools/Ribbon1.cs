@@ -8,6 +8,9 @@ namespace XLQuickTools
 
     public partial class XLQuickTools
     {
+        // Tracking
+        private bool isTrackingEnabled = false;
+
         // Remove excess formatting
         private void BtnRemoveExcess_Click(object sender, RibbonControlEventArgs e)
         {
@@ -253,6 +256,51 @@ namespace XLQuickTools
             QTFunctions.UniqueSelect(true);
         }
 
+        // Turn on/off displaying of length
+        private void BtnDisplayLength_Click(object sender, RibbonControlEventArgs e)
+        {
+            // Toggle the tracking state
+            isTrackingEnabled = !isTrackingEnabled;
+
+            // Update the button label
+            BtnDisplayLength.Label = isTrackingEnabled ? "Display &Length [On]" : "Display &Length [Off]";
+
+            if (isTrackingEnabled)
+            {
+                // Subscribe to the SelectionChange event
+                Globals.ThisAddIn.Application.SheetSelectionChange += Application_SheetSelectionChange;
+            }
+            else
+            {
+                // Unsubscribe from the event and clear the status bar
+                Globals.ThisAddIn.Application.SheetSelectionChange -= Application_SheetSelectionChange;
+                Globals.ThisAddIn.Application.StatusBar = string.Empty;
+            }
+        }
+
+        // Selection change for displaying length
+        private void Application_SheetSelectionChange(object Sh, Excel.Range Target)
+        {
+            // Only update if tracking is enabled
+            if (isTrackingEnabled)
+            {
+                // Check if the active cell contains text
+                if (Target.Value2 != null)
+                {
+                    // Convert the cell value to string and calculate its length
+                    string cellValue = Target.Value2.ToString();
+                    int cellLength = cellValue.Length;
+
+                    // Display the length on the status bar
+                    Globals.ThisAddIn.Application.StatusBar = $"Length: {cellLength}";
+                }
+                else
+                {
+                    // If the cell is empty clear status
+                    Globals.ThisAddIn.Application.StatusBar = "";
+                }
+            }
+        }
 
     }
 }

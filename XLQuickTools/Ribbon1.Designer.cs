@@ -82,6 +82,7 @@
             this.BtnSplitToRows = this.Factory.CreateRibbonButton();
             this.BtnHyperlinkSettings = this.Factory.CreateRibbonButton();
             this.BtnHyperlinks = this.Factory.CreateRibbonButton();
+            this.BtnDisplayLength = this.Factory.CreateRibbonButton();
             this.XLQuickTools_Tab.SuspendLayout();
             this.Group_Formatting.SuspendLayout();
             this.Group_Data.SuspendLayout();
@@ -370,13 +371,14 @@
             this.AdditionalMenu.Items.Add(this.BtnFillDown);
             this.AdditionalMenu.Items.Add(this.BtnDeleteRows);
             this.AdditionalMenu.Items.Add(this.BtnDeleteColumns);
+            this.AdditionalMenu.Items.Add(this.BtnDisplayLength);
             this.AdditionalMenu.Items.Add(this.BtnResetColumn);
-            this.AdditionalMenu.Label = "Additional Formatting";
+            this.AdditionalMenu.Label = "Additional Options";
             this.AdditionalMenu.Name = "AdditionalMenu";
             this.AdditionalMenu.OfficeImageId = "ControlWizards";
             this.AdditionalMenu.ShowImage = true;
             this.AdditionalMenu.ShowLabel = false;
-            this.AdditionalMenu.SuperTip = "Additional Formatting Options";
+            this.AdditionalMenu.SuperTip = "Additional Options";
             // 
             // BtnFillDown
             // 
@@ -552,6 +554,15 @@
     "ctive parameterized URL.";
             this.BtnHyperlinks.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnHyperlinks_Click);
             // 
+            // BtnDisplayLength
+            // 
+            this.BtnDisplayLength.Label = "Display &Length [Off]";
+            this.BtnDisplayLength.Name = "BtnDisplayLength";
+            this.BtnDisplayLength.OfficeImageId = "PivotTableOlapPropertyFields";
+            this.BtnDisplayLength.ShowImage = true;
+            this.BtnDisplayLength.SuperTip = "Displays the cells length on the status bar at the bottom left. Toggle [On/Off].";
+            this.BtnDisplayLength.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnDisplayLength_Click);
+            // 
             // XLQuickTools
             // 
             this.Name = "XLQuickTools";
@@ -621,6 +632,7 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnUniqueCount;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnUniqueClipboard;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnRemoveNonASCII;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnDisplayLength;
     }
 
     partial class ThisRibbonCollection
