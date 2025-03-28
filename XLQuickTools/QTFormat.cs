@@ -32,7 +32,18 @@ namespace XLQuickTools
                 case 6: // Normalize Text/Remove diacritics
                     return NormalizeText(input);
                 case 7: // Trim and Clean
-                    return Clean(input.Trim());
+                    if (input != null)
+                    {
+                        // Trim
+                        input = input.Trim();
+
+                        // Check for string containing only spaces
+                        if (input.Length > 0 && input.All(c => c == ' '))
+                        {
+                            input = string.Empty;
+                        }
+                    }
+                    return Clean(input);
                 case 8: // Add leading or trailing
                     return (leading ?? "") + input + (trailing ?? "");
                 case 9: // Remove non-ASCII
@@ -95,8 +106,7 @@ namespace XLQuickTools
                     {
                         // Convert to string
                         string cellValue = values[row, col].ToString();
-
-                        if (!string.IsNullOrWhiteSpace(cellValue))
+                        if (cellValue.Length > 0)
                         {
                             values[row, col] = TransformText(cellValue, option, leading, trailing).Trim();
                             modified = true;
