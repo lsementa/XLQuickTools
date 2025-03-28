@@ -187,6 +187,11 @@ namespace XLQuickTools
         // Cancel button
         private void UniqueForm_Cancel_Click(object sender, EventArgs e)
         {
+            Excel.Application excelApp = Globals.ThisAddIn.Application;
+            Excel.Worksheet activeSheet = excelApp.ActiveSheet;
+            // Select cell A1 to clear selection
+            activeSheet.Range["A1"].Select();
+            // Close
             this.Close();
         }
 

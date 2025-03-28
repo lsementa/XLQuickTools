@@ -238,6 +238,8 @@ namespace XLQuickTools
         // Cancel button
         private void SplitterForm_Cancel_Click(object sender, EventArgs e)
         {
+            // Select cell A1 to clear selection
+            _activeSheet.Range["A1"].Select();
             this.Close();
         }
 
