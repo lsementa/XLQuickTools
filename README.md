@@ -68,6 +68,7 @@ Restores the range back to its original state. Excels Undo button will not work 
 - **Lower Case:** Sets the selected range to all lower case.
 - **Proper Case:** Sets the selected range to all Proper Case.
 - **Add Leading or Trailing:** Adds leading or trailing characters/text.
+- **Remove Extra Spaces:** Removes two or more consecutive whitespace characters.
 - **Remove Letters:** Removes letters from text in the selected range.
 - **Remove Numbers:** Removes numbers from text in the selected range.
 - **Remove Special:** Removes special characters !@#$%^&*()_+ etc. from text in the selected range.
@@ -79,6 +80,7 @@ Restores the range back to its original state. Excels Undo button will not work 
 - **Fill Down:** Fills blank cells with the value above, based on the selected range.
 - **Delete Empty Rows:** Deletes any empty rows on the active worksheet.
 - **Delete Empty Columns:** Deletes any empty columns on the active worksheet. This includes deleting columns with headings if the rest of the rows are empty.
+- **Copy Formatting to All Sheets:** Copies the formatting on the active worksheet to all worksheets.
 - **Display Length:** Displays the active cells length in the status bar. You can toggle this on or off.
 - **Reset column:** Ensures the column's formatting and data handling are reset. Numbers stored as text will be recognized as numbers.
 
