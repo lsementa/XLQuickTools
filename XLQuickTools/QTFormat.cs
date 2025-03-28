@@ -7,6 +7,7 @@ using System.Windows.Forms;
 using Excel = Microsoft.Office.Interop.Excel;
 using System.Globalization;
 using System.Text;
+using System.Collections.Generic;
 
 namespace XLQuickTools
 {
@@ -118,7 +119,7 @@ namespace XLQuickTools
         }
 
         // Method to remove excess formatting from entirie workbook
-        public static void RemoveExcess()
+        public static void RemoveExcess(bool processWorkbook = false)
         {
             Excel.Application excelApp = Globals.ThisAddIn.Application;
             Excel.Workbook activeWorkbook = excelApp.ActiveWorkbook;
@@ -130,7 +131,12 @@ namespace XLQuickTools
                     // Turn off screen updating
                     excelApp.ScreenUpdating = false;
 
-                    foreach (Excel.Worksheet ws in activeWorkbook.Worksheets)
+                    // Determine which worksheets to process
+                    IEnumerable<Excel.Worksheet> worksheetsToProcess = processWorkbook
+                        ? activeWorkbook.Worksheets.Cast<Excel.Worksheet>()
+                        : new[] { excelApp.ActiveSheet as Excel.Worksheet };
+
+                    foreach (Excel.Worksheet ws in worksheetsToProcess)
                     {
                         // Last row with actual data
                         int lastDataRow = ws.Cells.Find("*", System.Reflection.Missing.Value,
@@ -174,8 +180,16 @@ namespace XLQuickTools
                 {
                     // Turn screen updating back on
                     excelApp.ScreenUpdating = true;
-                    System.Windows.Forms.MessageBox.Show("Any excess formatting has been removed from the workbook.",
-                        "Remove Excess", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Information);
+
+                    // Update message based on whether workbook or worksheet
+                    string message = processWorkbook
+                        ? "Excess formatting removed from workbook."
+                        : "Excess formatting removed from active worksheet.";
+
+                    System.Windows.Forms.MessageBox.Show(message,
+                        "Remove Excess",
+                        System.Windows.Forms.MessageBoxButtons.OK,
+                        System.Windows.Forms.MessageBoxIcon.Information);
                 }
             }
         }

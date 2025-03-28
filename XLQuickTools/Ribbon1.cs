@@ -11,10 +11,22 @@ namespace XLQuickTools
         // Tracking
         private bool isTrackingEnabled = false;
 
-        // Remove excess formatting
+        // Remove Excess (Worksheet)
         private void BtnRemoveExcess_Click(object sender, RibbonControlEventArgs e)
         {
             QTFormat.RemoveExcess();
+        }
+
+        // Remove Excess (Worksheet Button)
+        private void BtnRemoveExcessWS_Click(object sender, RibbonControlEventArgs e)
+        {
+            QTFormat.RemoveExcess();
+        }
+
+        // Remove Excess (Workbook)
+        private void BtnRemoveExcessWB_Click(object sender, RibbonControlEventArgs e)
+        {
+            QTFormat.RemoveExcess(true);
         }
 
         // Remove formatting from active sheet
@@ -301,7 +313,6 @@ namespace XLQuickTools
                 }
             }
         }
-
     }
 }
 

@@ -36,13 +36,20 @@
         {
             this.XLQuickTools_Tab = this.Factory.CreateRibbonTab();
             this.Group_Formatting = this.Factory.CreateRibbonGroup();
-            this.BtnRemoveExcess = this.Factory.CreateRibbonButton();
+            this.Separator_Formatting = this.Factory.CreateRibbonSeparator();
+            this.Group_Data = this.Factory.CreateRibbonGroup();
+            this.Separator_Data = this.Factory.CreateRibbonSeparator();
+            this.Group_Delimiter = this.Factory.CreateRibbonGroup();
+            this.Separator_Delimiter = this.Factory.CreateRibbonSeparator();
+            this.Group_Hyperlinks = this.Factory.CreateRibbonGroup();
+            this.BtnRemoveExcess = this.Factory.CreateRibbonSplitButton();
+            this.BtnRemoveExcessWS = this.Factory.CreateRibbonButton();
+            this.BtnRemoveExcessWB = this.Factory.CreateRibbonButton();
             this.SBtnTrimClean = this.Factory.CreateRibbonSplitButton();
             this.BtnTrimClean = this.Factory.CreateRibbonButton();
             this.BtnTrimCleanWorksheet = this.Factory.CreateRibbonButton();
             this.BtnTrimCleanWorkbook = this.Factory.CreateRibbonButton();
             this.BtnQuickSettings = this.Factory.CreateRibbonButton();
-            this.Separator_Formatting = this.Factory.CreateRibbonSeparator();
             this.BtnQuickFormat = this.Factory.CreateRibbonButton();
             this.BtnRemoveFormatting = this.Factory.CreateRibbonButton();
             this.BtnDateText = this.Factory.CreateRibbonButton();
@@ -64,23 +71,18 @@
             this.BtnDeleteColumns = this.Factory.CreateRibbonButton();
             this.BtnDisplayLength = this.Factory.CreateRibbonButton();
             this.BtnResetColumn = this.Factory.CreateRibbonButton();
-            this.Group_Data = this.Factory.CreateRibbonGroup();
             this.BtnMissing = this.Factory.CreateRibbonButton();
             this.BtnDuplicates = this.Factory.CreateRibbonButton();
             this.BtnCompare = this.Factory.CreateRibbonButton();
-            this.Separator_Data = this.Factory.CreateRibbonSeparator();
             this.BtnFilter = this.Factory.CreateRibbonButton();
             this.UniqueMenu = this.Factory.CreateRibbonMenu();
             this.BtnUniqueCount = this.Factory.CreateRibbonButton();
             this.BtnUniqueClipboard = this.Factory.CreateRibbonButton();
             this.BtnCopyToSheets = this.Factory.CreateRibbonButton();
-            this.Group_Delimiter = this.Factory.CreateRibbonGroup();
             this.BtnCommaSelection = this.Factory.CreateRibbonButton();
             this.BtnDelimSelection = this.Factory.CreateRibbonButton();
             this.BtnSheetToFile = this.Factory.CreateRibbonButton();
-            this.Separator_Delimiter = this.Factory.CreateRibbonSeparator();
             this.BtnSplitToRows = this.Factory.CreateRibbonButton();
-            this.Group_Hyperlinks = this.Factory.CreateRibbonGroup();
             this.BtnHyperlinkSettings = this.Factory.CreateRibbonButton();
             this.BtnHyperlinks = this.Factory.CreateRibbonButton();
             this.XLQuickTools_Tab.SuspendLayout();
@@ -115,26 +117,85 @@
             this.Group_Formatting.Label = "Formatting";
             this.Group_Formatting.Name = "Group_Formatting";
             // 
+            // Separator_Formatting
+            // 
+            this.Separator_Formatting.Name = "Separator_Formatting";
+            // 
+            // Group_Data
+            // 
+            this.Group_Data.Items.Add(this.BtnMissing);
+            this.Group_Data.Items.Add(this.BtnDuplicates);
+            this.Group_Data.Items.Add(this.BtnCompare);
+            this.Group_Data.Items.Add(this.Separator_Data);
+            this.Group_Data.Items.Add(this.BtnFilter);
+            this.Group_Data.Items.Add(this.UniqueMenu);
+            this.Group_Data.Label = "Data";
+            this.Group_Data.Name = "Group_Data";
+            // 
+            // Separator_Data
+            // 
+            this.Separator_Data.Name = "Separator_Data";
+            // 
+            // Group_Delimiter
+            // 
+            this.Group_Delimiter.Items.Add(this.BtnCommaSelection);
+            this.Group_Delimiter.Items.Add(this.BtnDelimSelection);
+            this.Group_Delimiter.Items.Add(this.BtnSheetToFile);
+            this.Group_Delimiter.Items.Add(this.Separator_Delimiter);
+            this.Group_Delimiter.Items.Add(this.BtnSplitToRows);
+            this.Group_Delimiter.Label = "Delimiter";
+            this.Group_Delimiter.Name = "Group_Delimiter";
+            // 
+            // Separator_Delimiter
+            // 
+            this.Separator_Delimiter.Name = "Separator_Delimiter";
+            // 
+            // Group_Hyperlinks
+            // 
+            this.Group_Hyperlinks.Items.Add(this.BtnHyperlinkSettings);
+            this.Group_Hyperlinks.Items.Add(this.BtnHyperlinks);
+            this.Group_Hyperlinks.Label = "Hyperlinks";
+            this.Group_Hyperlinks.Name = "Group_Hyperlinks";
+            // 
             // BtnRemoveExcess
             // 
+            this.BtnRemoveExcess.Items.Add(this.BtnRemoveExcessWS);
+            this.BtnRemoveExcess.Items.Add(this.BtnRemoveExcessWB);
             this.BtnRemoveExcess.Label = "Remove Excess";
             this.BtnRemoveExcess.Name = "BtnRemoveExcess";
             this.BtnRemoveExcess.OfficeImageId = "TableEraser";
-            this.BtnRemoveExcess.ShowImage = true;
-            this.BtnRemoveExcess.SuperTip = "Remove Excess Formatting\n\nRemove any excess formatting on every worksheet in the " +
-    "active workbook.";
+            this.BtnRemoveExcess.SuperTip = "Remove Excess Formatting\n\nRemove any excess formatting from either the active wor" +
+    "ksheet or active workbook.";
             this.BtnRemoveExcess.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnRemoveExcess_Click);
+            // 
+            // BtnRemoveExcessWS
+            // 
+            this.BtnRemoveExcessWS.Label = "Active Work&sheet";
+            this.BtnRemoveExcessWS.Name = "BtnRemoveExcessWS";
+            this.BtnRemoveExcessWS.OfficeImageId = "SelectSheet";
+            this.BtnRemoveExcessWS.ShowImage = true;
+            this.BtnRemoveExcessWS.SuperTip = "Remove excess formatting on the active worksheet.";
+            this.BtnRemoveExcessWS.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnRemoveExcessWS_Click);
+            // 
+            // BtnRemoveExcessWB
+            // 
+            this.BtnRemoveExcessWB.Label = "Active Work&book";
+            this.BtnRemoveExcessWB.Name = "BtnRemoveExcessWB";
+            this.BtnRemoveExcessWB.OfficeImageId = "MicrosoftExcel";
+            this.BtnRemoveExcessWB.ShowImage = true;
+            this.BtnRemoveExcessWB.SuperTip = "Remove excess formatting on every worksheet in the active workbook.";
+            this.BtnRemoveExcessWB.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnRemoveExcessWB_Click);
             // 
             // SBtnTrimClean
             // 
             this.SBtnTrimClean.Items.Add(this.BtnTrimClean);
             this.SBtnTrimClean.Items.Add(this.BtnTrimCleanWorksheet);
             this.SBtnTrimClean.Items.Add(this.BtnTrimCleanWorkbook);
-            this.SBtnTrimClean.Label = "Trim && Clean";
+            this.SBtnTrimClean.Label = "Trim and Clean";
             this.SBtnTrimClean.Name = "SBtnTrimClean";
             this.SBtnTrimClean.OfficeImageId = "TableSelectCell";
-            this.SBtnTrimClean.SuperTip = "Trim & Clean\n\nRemove any trailing or leading spaces and non-printable characters " +
-    "from the selected range.";
+            this.SBtnTrimClean.SuperTip = "Trim and Clean\n\nRemove any trailing or leading spaces and non-printable character" +
+    "s from the selected range.";
             this.SBtnTrimClean.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnTrimClean_Click_1);
             // 
             // BtnTrimClean
@@ -148,7 +209,7 @@
             // 
             // BtnTrimCleanWorksheet
             // 
-            this.BtnTrimCleanWorksheet.Label = "Work&sheet";
+            this.BtnTrimCleanWorksheet.Label = "Active Work&sheet";
             this.BtnTrimCleanWorksheet.Name = "BtnTrimCleanWorksheet";
             this.BtnTrimCleanWorksheet.OfficeImageId = "SelectSheet";
             this.BtnTrimCleanWorksheet.ShowImage = true;
@@ -157,7 +218,7 @@
             // 
             // BtnTrimCleanWorkbook
             // 
-            this.BtnTrimCleanWorkbook.Label = "Work&book";
+            this.BtnTrimCleanWorkbook.Label = "Active Work&book";
             this.BtnTrimCleanWorkbook.Name = "BtnTrimCleanWorkbook";
             this.BtnTrimCleanWorkbook.OfficeImageId = "MicrosoftExcel";
             this.BtnTrimCleanWorkbook.ShowImage = true;
@@ -173,10 +234,6 @@
             this.BtnQuickSettings.SuperTip = "Quick Format Settings\n\nSettings you want applied when using the \"Quick Format\" bu" +
     "tton.";
             this.BtnQuickSettings.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnQuickSettings_Click);
-            // 
-            // Separator_Formatting
-            // 
-            this.Separator_Formatting.Name = "Separator_Formatting";
             // 
             // BtnQuickFormat
             // 
@@ -389,17 +446,6 @@
             this.BtnResetColumn.SuperTip = "Reset the selected column. Numbers stored as text will be converted to numbers.";
             this.BtnResetColumn.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnResetColumn_Click);
             // 
-            // Group_Data
-            // 
-            this.Group_Data.Items.Add(this.BtnMissing);
-            this.Group_Data.Items.Add(this.BtnDuplicates);
-            this.Group_Data.Items.Add(this.BtnCompare);
-            this.Group_Data.Items.Add(this.Separator_Data);
-            this.Group_Data.Items.Add(this.BtnFilter);
-            this.Group_Data.Items.Add(this.UniqueMenu);
-            this.Group_Data.Label = "Data";
-            this.Group_Data.Name = "Group_Data";
-            // 
             // BtnMissing
             // 
             this.BtnMissing.Label = "Find Missing";
@@ -428,10 +474,6 @@
             this.BtnCompare.ShowImage = true;
             this.BtnCompare.SuperTip = "Compare Worksheets\n\nToggle on/off the task pane to compare two worksheets.";
             this.BtnCompare.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnCompare_Click);
-            // 
-            // Separator_Data
-            // 
-            this.Separator_Data.Name = "Separator_Data";
             // 
             // BtnFilter
             // 
@@ -483,16 +525,6 @@
     "e.";
             this.BtnCopyToSheets.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnCopyToSheets_Click);
             // 
-            // Group_Delimiter
-            // 
-            this.Group_Delimiter.Items.Add(this.BtnCommaSelection);
-            this.Group_Delimiter.Items.Add(this.BtnDelimSelection);
-            this.Group_Delimiter.Items.Add(this.BtnSheetToFile);
-            this.Group_Delimiter.Items.Add(this.Separator_Delimiter);
-            this.Group_Delimiter.Items.Add(this.BtnSplitToRows);
-            this.Group_Delimiter.Label = "Delimiter";
-            this.Group_Delimiter.Name = "Group_Delimiter";
-            // 
             // BtnCommaSelection
             // 
             this.BtnCommaSelection.Label = "Selection";
@@ -521,10 +553,6 @@
             this.BtnSheetToFile.SuperTip = "Worksheet to File\n\nCreate a delimited file using the current active worksheet.";
             this.BtnSheetToFile.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnSheetToFile_Click);
             // 
-            // Separator_Delimiter
-            // 
-            this.Separator_Delimiter.Name = "Separator_Delimiter";
-            // 
             // BtnSplitToRows
             // 
             this.BtnSplitToRows.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
@@ -534,13 +562,6 @@
             this.BtnSplitToRows.ShowImage = true;
             this.BtnSplitToRows.SuperTip = "Split Columns to Rows\n\nSplit delimited column(s) to rows.";
             this.BtnSplitToRows.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnSplitToRows_Click);
-            // 
-            // Group_Hyperlinks
-            // 
-            this.Group_Hyperlinks.Items.Add(this.BtnHyperlinkSettings);
-            this.Group_Hyperlinks.Items.Add(this.BtnHyperlinks);
-            this.Group_Hyperlinks.Label = "Hyperlinks";
-            this.Group_Hyperlinks.Name = "Group_Hyperlinks";
             // 
             // BtnHyperlinkSettings
             // 
@@ -586,7 +607,6 @@
 
         internal Microsoft.Office.Tools.Ribbon.RibbonTab XLQuickTools_Tab;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup Group_Delimiter;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnRemoveExcess;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnCommaSelection;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnDelimSelection;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup Group_Formatting;
@@ -633,6 +653,9 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnUniqueClipboard;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnRemoveNonASCII;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnDisplayLength;
+        internal Microsoft.Office.Tools.Ribbon.RibbonSplitButton BtnRemoveExcess;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnRemoveExcessWS;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnRemoveExcessWB;
     }
 
     partial class ThisRibbonCollection
