@@ -200,7 +200,7 @@
             this.Name = "HyperlinkForm";
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Hyperlink Settings";
+            this.Text = "Custom Link Settings";
             this.Load += new System.EventHandler(this.HyperlinkForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
