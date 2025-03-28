@@ -371,10 +371,10 @@
             // 
             // TbColor
             // 
-            this.TbColor.Location = new System.Drawing.Point(51, 652);
+            this.TbColor.Location = new System.Drawing.Point(38, 652);
             this.TbColor.Margin = new System.Windows.Forms.Padding(6);
             this.TbColor.Name = "TbColor";
-            this.TbColor.Size = new System.Drawing.Size(302, 31);
+            this.TbColor.Size = new System.Drawing.Size(311, 31);
             this.TbColor.TabIndex = 37;
             this.TbColor.Visible = false;
             // 

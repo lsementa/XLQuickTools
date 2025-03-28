@@ -8,6 +8,7 @@ using Excel = Microsoft.Office.Interop.Excel;
 using System.Globalization;
 using System.Text;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace XLQuickTools
 {
@@ -49,6 +50,8 @@ namespace XLQuickTools
                     return (leading ?? "") + input + (trailing ?? "");
                 case 9: // Remove non-ASCII
                     return ReplaceNonAscii(input);
+                case 10: // Remove extra spaces
+                    return Regex.Replace(input, @"\s{2,}", " ").Trim();
                 default:
                     throw new ArgumentException("Invalid option.");
             }
@@ -284,15 +287,14 @@ namespace XLQuickTools
         }
 
         // Function to remove formatting
-        public static void RemoveFormatting()
+        public static void RemoveFormatting(Excel.Worksheet sheet)
         {
             Excel.Application excelApp = Globals.ThisAddIn.Application;
-            Excel.Worksheet ws = excelApp.ActiveSheet;
 
             try
             {
                 // Apply to the entire sheet
-                Excel.Range entireSheet = ws.Cells;
+                Excel.Range entireSheet = sheet.Cells;
 
                 // Clear all existing formatting in one call
                 entireSheet.ClearFormats();
@@ -315,9 +317,9 @@ namespace XLQuickTools
                 excelApp.ActiveWindow.SplitColumn = 0;
 
                 // Remove auto-filter if it exists
-                if (ws.AutoFilterMode)
+                if (sheet.AutoFilterMode)
                 {
-                    ws.AutoFilterMode = false;
+                    sheet.AutoFilterMode = false;
                 }
 
                 // Reset gridlines and zoom
@@ -325,8 +327,8 @@ namespace XLQuickTools
                 excelApp.ActiveWindow.Zoom = 100;
 
                 // Reset row height and column width
-                ws.Rows.RowHeight = ws.StandardHeight;
-                ws.Columns.ColumnWidth = ws.StandardWidth;
+                sheet.Rows.RowHeight = sheet.StandardHeight;
+                sheet.Columns.ColumnWidth = sheet.StandardWidth;
             }
             catch (Exception ex)
             {
@@ -335,13 +337,31 @@ namespace XLQuickTools
         }
 
         // Remove formatting with screen updating turned off
-        public static void RemoveFormattingNoUpdates()
+        public static void RemoveFormattingNoUpdates(Excel.Worksheet activeSheet, bool applyAll = false)
         {
             Excel.Application excelApp = Globals.ThisAddIn.Application;
             excelApp.ScreenUpdating = false;
-            RemoveFormatting();
+
+            if (applyAll)
+            {
+                foreach (Excel.Worksheet sheet in excelApp.Worksheets)
+                {
+                    // Activate sheet
+                    sheet.Activate();
+                    RemoveFormatting(sheet);
+                }
+
+                // Activate original active worksheet
+                activeSheet.Activate();
+            }
+            else
+            {
+                RemoveFormatting(activeSheet);
+            }
+
             excelApp.ScreenUpdating = true;
         }
+
 
         // Function to apply auto filter
         public static void ApplyFilter(Excel.Range usedRange)
@@ -367,12 +387,15 @@ namespace XLQuickTools
         }
 
         // Apply Quick Format
-        public static void QuickFormat()
+        public static void QuickFormat(bool applyAll = false)
         {
             // Get Excel application and active workbook
             var excelApp = Globals.ThisAddIn.Application;
             var activeWorkbook = excelApp.ActiveWorkbook;
             if (activeWorkbook == null) return;
+
+            // Active sheet
+            var activeSheet = excelApp.ActiveSheet;
 
             // Disable screen updating
             excelApp.ScreenUpdating = false;
@@ -383,21 +406,48 @@ namespace XLQuickTools
                 UserSettings settings = QTSettings.LoadUserSettingsFromXml();
                 if (settings == null) return;
 
-                // Get active sheet and used range
-                var activeSheet = excelApp.ActiveSheet;
-                var usedRange = QTUtils.GetEffectiveUsedRange(activeSheet);
-                if (usedRange == null) return;
+                // Check if this should be applied to all worksheets
+                if (applyAll)
+                {
+                    // Loop through all worksheets in the active workbook
+                    foreach (Excel.Worksheet sheet in activeWorkbook.Worksheets)
+                    {
+                        // Activate each sheet
+                        sheet.Activate();
 
-                // Remove existing formatting first
-                RemoveFormatting();
+                        // Get used range of the sheet
+                        var usedRange = QTUtils.GetEffectiveUsedRange(sheet);
+                        if (usedRange == null) continue;
 
-                // Perform formatting operations
-                ApplyRangeFormatting(usedRange, settings);
-                ApplyWindowSettings(excelApp, settings);
-                ApplyAlignmentSettings(usedRange, settings);
-                // Apply these last (First row, Fit)
-                ApplyFirstRowFormatting(usedRange, settings);
-                ApplyFitFormatting(usedRange, settings);
+                        // Remove existing formatting from the sheet
+                        RemoveFormatting(sheet);
+
+                        // Apply formatting operations to each sheet
+                        ApplyRangeFormatting(usedRange, settings);
+                        ApplyWindowSettings(excelApp, settings);
+                        ApplyAlignmentSettings(usedRange, settings);
+                        ApplyFirstRowFormatting(usedRange, settings);
+                        ApplyFitFormatting(usedRange, settings);
+                    }
+
+                    // Activate active sheet
+                    activeSheet.Activate();
+                }
+                else
+                {
+                    var usedRange = QTUtils.GetEffectiveUsedRange(activeSheet);
+                    if (usedRange == null) return;
+
+                    // Remove existing formatting first
+                    RemoveFormatting(activeSheet);
+
+                    // Apply formatting operations to active sheet
+                    ApplyRangeFormatting(usedRange, settings);
+                    ApplyWindowSettings(excelApp, settings);
+                    ApplyAlignmentSettings(usedRange, settings);
+                    ApplyFirstRowFormatting(usedRange, settings);
+                    ApplyFitFormatting(usedRange, settings);
+                }
             }
             catch (Exception ex)
             {
@@ -691,6 +741,53 @@ namespace XLQuickTools
             {
                 excelApp.ScreenUpdating = true;
                 QTUtils.CleanupResources(rangeToProcess);
+            }
+        }
+
+        // Method to copy active worksheet formatting to all worksheets
+        public static void CopyFormatToAllSheets()
+        {
+            Excel.Application excelApp = Globals.ThisAddIn.Application;
+            Excel.Workbook workbook = excelApp.ActiveWorkbook;
+            Excel.Worksheet activeSheet = excelApp.ActiveSheet;
+
+            try
+            {
+                if (workbook == null || activeSheet == null)
+                {
+                    return;
+                }
+
+                excelApp.ScreenUpdating = false;
+
+                // Copy the entire used range of the active sheet
+                Excel.Range sourceRange = activeSheet.UsedRange;
+
+                // Loop through all sheets in the workbook
+                foreach (Excel.Worksheet sheet in workbook.Worksheets)
+                {
+                    // Skip the active sheet
+                    if (sheet.Name != activeSheet.Name)
+                    {
+                        // Get the target range of the same size as source range
+                        Excel.Range targetRange = sheet.Range[sourceRange.Address];
+
+                        // Copy and apply the formatting
+                        sourceRange.Copy();
+                        targetRange.PasteSpecial(Excel.XlPasteType.xlPasteFormats);
+                    }
+                }
+
+                // Clear the clipboard
+                excelApp.CutCopyMode = 0;
+            }
+            catch (Exception ex)
+            {
+                QTUtils.ShowError(ex);
+            }
+            finally
+            {
+                excelApp.ScreenUpdating = true;
             }
         }
 

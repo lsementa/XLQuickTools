@@ -29,10 +29,28 @@ namespace XLQuickTools
             QTFormat.RemoveExcess(true);
         }
 
-        // Remove formatting from active sheet
+        // Remove formatting
         private void BtnRemoveFormatting_Click(object sender, RibbonControlEventArgs e)
         {
-            QTFormat.RemoveFormattingNoUpdates();
+            Excel.Application excelApp = Globals.ThisAddIn.Application;
+            Excel.Worksheet activeSheet = excelApp.ActiveSheet;
+            QTFormat.RemoveFormattingNoUpdates(activeSheet);
+        }
+
+        // Remove formatting (Menu)
+        private void BtnRemoveFormattingSub_Click(object sender, RibbonControlEventArgs e)
+        {
+            Excel.Application excelApp = Globals.ThisAddIn.Application;
+            Excel.Worksheet activeSheet = excelApp.ActiveSheet;
+            QTFormat.RemoveFormattingNoUpdates(activeSheet);
+        }
+
+        // Remove formatting (All)
+        private void BtnRemoveFormattingAll_Click(object sender, RibbonControlEventArgs e)
+        {
+            Excel.Application excelApp = Globals.ThisAddIn.Application;
+            Excel.Worksheet activeSheet = excelApp.ActiveSheet;
+            QTFormat.RemoveFormattingNoUpdates(activeSheet, true);
         }
 
         // Selection to clipboard
@@ -93,6 +111,18 @@ namespace XLQuickTools
         private void BtnQuickFormat_Click(object sender, RibbonControlEventArgs e)
         {
             QTFormat.QuickFormat();
+        }
+
+        // Apply Quick Format (Menu)
+        private void BtnQuickFormatSub_Click(object sender, RibbonControlEventArgs e)
+        {
+            QTFormat.QuickFormat();
+        }
+
+        // Apply Quick Format (All)
+        private void BtnQuickFormatAll_Click(object sender, RibbonControlEventArgs e)
+        {
+            QTFormat.QuickFormat(true);
         }
 
         // Add/Remove hyperlinks
@@ -220,6 +250,12 @@ namespace XLQuickTools
             QTFormat.FormatMenu(9);
         }
 
+        // Remove Extra Spaces
+        private void BtnRemoveSpaces_Click(object sender, RibbonControlEventArgs e)
+        {
+            QTFormat.FormatMenu(10);
+        }
+
         // Subscript chemical formulas
         private void BtnSubscript_Click(object sender, RibbonControlEventArgs e)
         {
@@ -313,6 +349,14 @@ namespace XLQuickTools
                 }
             }
         }
+
+        // Copy formatting to all worksheets
+        private void BtnCopyFormatting_Click(object sender, RibbonControlEventArgs e)
+        {
+            QTFormat.CopyFormatToAllSheets();
+        }
+
+
     }
 }
 

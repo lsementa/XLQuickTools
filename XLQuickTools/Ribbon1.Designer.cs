@@ -50,8 +50,12 @@
             this.BtnTrimCleanWorksheet = this.Factory.CreateRibbonButton();
             this.BtnTrimCleanWorkbook = this.Factory.CreateRibbonButton();
             this.BtnQuickSettings = this.Factory.CreateRibbonButton();
-            this.BtnQuickFormat = this.Factory.CreateRibbonButton();
-            this.BtnRemoveFormatting = this.Factory.CreateRibbonButton();
+            this.BtnQuickFormat = this.Factory.CreateRibbonSplitButton();
+            this.BtnQuickFormatSub = this.Factory.CreateRibbonButton();
+            this.BtnQuickFormatAll = this.Factory.CreateRibbonButton();
+            this.BtnRemoveFormatting = this.Factory.CreateRibbonSplitButton();
+            this.BtnRemoveFormattingSub = this.Factory.CreateRibbonButton();
+            this.BtnRemoveFormattingAll = this.Factory.CreateRibbonButton();
             this.BtnDateText = this.Factory.CreateRibbonButton();
             this.BtnUndo = this.Factory.CreateRibbonButton();
             this.CharacterMenu = this.Factory.CreateRibbonMenu();
@@ -59,6 +63,7 @@
             this.BtnLowercase = this.Factory.CreateRibbonButton();
             this.BtnPropercase = this.Factory.CreateRibbonButton();
             this.BtnAddLeadingTrailing = this.Factory.CreateRibbonButton();
+            this.BtnRemoveSpaces = this.Factory.CreateRibbonButton();
             this.BtnRemoveLetters = this.Factory.CreateRibbonButton();
             this.BtnRemoveNumbers = this.Factory.CreateRibbonButton();
             this.BtnRemoveSpecial = this.Factory.CreateRibbonButton();
@@ -69,6 +74,7 @@
             this.BtnFillDown = this.Factory.CreateRibbonButton();
             this.BtnDeleteRows = this.Factory.CreateRibbonButton();
             this.BtnDeleteColumns = this.Factory.CreateRibbonButton();
+            this.BtnCopyFormatting = this.Factory.CreateRibbonButton();
             this.BtnDisplayLength = this.Factory.CreateRibbonButton();
             this.BtnResetColumn = this.Factory.CreateRibbonButton();
             this.BtnMissing = this.Factory.CreateRibbonButton();
@@ -154,7 +160,7 @@
             // 
             this.Group_Hyperlinks.Items.Add(this.BtnHyperlinkSettings);
             this.Group_Hyperlinks.Items.Add(this.BtnHyperlinks);
-            this.Group_Hyperlinks.Label = "Hyperlinks";
+            this.Group_Hyperlinks.Label = "Custom Links";
             this.Group_Hyperlinks.Name = "Group_Hyperlinks";
             // 
             // BtnRemoveExcess
@@ -183,7 +189,7 @@
             this.BtnRemoveExcessWB.Name = "BtnRemoveExcessWB";
             this.BtnRemoveExcessWB.OfficeImageId = "MicrosoftExcel";
             this.BtnRemoveExcessWB.ShowImage = true;
-            this.BtnRemoveExcessWB.SuperTip = "Remove excess formatting on every worksheet in the active workbook.";
+            this.BtnRemoveExcessWB.SuperTip = "Remove excess formatting on all worksheets.";
             this.BtnRemoveExcessWB.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnRemoveExcessWB_Click);
             // 
             // SBtnTrimClean
@@ -222,7 +228,7 @@
             this.BtnTrimCleanWorkbook.Name = "BtnTrimCleanWorkbook";
             this.BtnTrimCleanWorkbook.OfficeImageId = "MicrosoftExcel";
             this.BtnTrimCleanWorkbook.ShowImage = true;
-            this.BtnTrimCleanWorkbook.SuperTip = "Apply Trim & Clean to every worksheet in the active workbook.";
+            this.BtnTrimCleanWorkbook.SuperTip = "Apply Trim & Clean to all worksheets.";
             this.BtnTrimCleanWorkbook.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnTrimCleanWorkbook_Click);
             // 
             // BtnQuickSettings
@@ -238,22 +244,60 @@
             // BtnQuickFormat
             // 
             this.BtnQuickFormat.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.BtnQuickFormat.Items.Add(this.BtnQuickFormatSub);
+            this.BtnQuickFormat.Items.Add(this.BtnQuickFormatAll);
             this.BtnQuickFormat.Label = "Quick Format";
             this.BtnQuickFormat.Name = "BtnQuickFormat";
             this.BtnQuickFormat.OfficeImageId = "AutoFormatChange";
-            this.BtnQuickFormat.ShowImage = true;
-            this.BtnQuickFormat.SuperTip = "Quick Format\n\nApply your saved formatting to the active worksheet.";
+            this.BtnQuickFormat.SuperTip = "Quick Format\n\nApply your saved formatting.";
             this.BtnQuickFormat.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnQuickFormat_Click);
+            // 
+            // BtnQuickFormatSub
+            // 
+            this.BtnQuickFormatSub.Label = "&Quick Format";
+            this.BtnQuickFormatSub.Name = "BtnQuickFormatSub";
+            this.BtnQuickFormatSub.OfficeImageId = "AutoFormatChange";
+            this.BtnQuickFormatSub.ShowImage = true;
+            this.BtnQuickFormatSub.SuperTip = "Apply Quick Format to active worksheet.";
+            this.BtnQuickFormatSub.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnQuickFormatSub_Click);
+            // 
+            // BtnQuickFormatAll
+            // 
+            this.BtnQuickFormatAll.Label = "&All Worksheets";
+            this.BtnQuickFormatAll.Name = "BtnQuickFormatAll";
+            this.BtnQuickFormatAll.OfficeImageId = "AutoFormatDialog";
+            this.BtnQuickFormatAll.ShowImage = true;
+            this.BtnQuickFormatAll.SuperTip = "Apply Quick Format to all worksheets.";
+            this.BtnQuickFormatAll.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnQuickFormatAll_Click);
             // 
             // BtnRemoveFormatting
             // 
             this.BtnRemoveFormatting.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.BtnRemoveFormatting.Label = "Remove Formatting";
+            this.BtnRemoveFormatting.Items.Add(this.BtnRemoveFormattingSub);
+            this.BtnRemoveFormatting.Items.Add(this.BtnRemoveFormattingAll);
+            this.BtnRemoveFormatting.Label = "Remove";
             this.BtnRemoveFormatting.Name = "BtnRemoveFormatting";
-            this.BtnRemoveFormatting.OfficeImageId = "TableStyleClear";
-            this.BtnRemoveFormatting.ShowImage = true;
+            this.BtnRemoveFormatting.OfficeImageId = "Clear";
             this.BtnRemoveFormatting.SuperTip = "Remove Formatting\n\nRemove formatting from the active worksheet.";
             this.BtnRemoveFormatting.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnRemoveFormatting_Click);
+            // 
+            // BtnRemoveFormattingSub
+            // 
+            this.BtnRemoveFormattingSub.Label = "&Remove Formatting";
+            this.BtnRemoveFormattingSub.Name = "BtnRemoveFormattingSub";
+            this.BtnRemoveFormattingSub.OfficeImageId = "Clear";
+            this.BtnRemoveFormattingSub.ShowImage = true;
+            this.BtnRemoveFormattingSub.SuperTip = "Remove formatting from the active worksheet.";
+            this.BtnRemoveFormattingSub.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnRemoveFormattingSub_Click);
+            // 
+            // BtnRemoveFormattingAll
+            // 
+            this.BtnRemoveFormattingAll.Label = "&All Worksheets";
+            this.BtnRemoveFormattingAll.Name = "BtnRemoveFormattingAll";
+            this.BtnRemoveFormattingAll.OfficeImageId = "TableStyleClear";
+            this.BtnRemoveFormattingAll.ShowImage = true;
+            this.BtnRemoveFormattingAll.SuperTip = "Remove formatting from all worksheets.";
+            this.BtnRemoveFormattingAll.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnRemoveFormattingAll_Click);
             // 
             // BtnDateText
             // 
@@ -283,6 +327,7 @@
             this.CharacterMenu.Items.Add(this.BtnLowercase);
             this.CharacterMenu.Items.Add(this.BtnPropercase);
             this.CharacterMenu.Items.Add(this.BtnAddLeadingTrailing);
+            this.CharacterMenu.Items.Add(this.BtnRemoveSpaces);
             this.CharacterMenu.Items.Add(this.BtnRemoveLetters);
             this.CharacterMenu.Items.Add(this.BtnRemoveNumbers);
             this.CharacterMenu.Items.Add(this.BtnRemoveSpecial);
@@ -331,6 +376,15 @@
             this.BtnAddLeadingTrailing.ShowImage = true;
             this.BtnAddLeadingTrailing.SuperTip = "Add leading or trailing characters/text.";
             this.BtnAddLeadingTrailing.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnAddLeadingTrailing_Click);
+            // 
+            // BtnRemoveSpaces
+            // 
+            this.BtnRemoveSpaces.Label = "Remove E&xtra Spaces";
+            this.BtnRemoveSpaces.Name = "BtnRemoveSpaces";
+            this.BtnRemoveSpaces.OfficeImageId = "EndOfLine";
+            this.BtnRemoveSpaces.ShowImage = true;
+            this.BtnRemoveSpaces.SuperTip = "Remove two or more consecutive whitespace characters.";
+            this.BtnRemoveSpaces.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnRemoveSpaces_Click);
             // 
             // BtnRemoveLetters
             // 
@@ -392,6 +446,7 @@
             this.AdditionalMenu.Items.Add(this.BtnFillDown);
             this.AdditionalMenu.Items.Add(this.BtnDeleteRows);
             this.AdditionalMenu.Items.Add(this.BtnDeleteColumns);
+            this.AdditionalMenu.Items.Add(this.BtnCopyFormatting);
             this.AdditionalMenu.Items.Add(this.BtnDisplayLength);
             this.AdditionalMenu.Items.Add(this.BtnResetColumn);
             this.AdditionalMenu.Label = "Additional Options";
@@ -403,7 +458,7 @@
             // 
             // BtnFillDown
             // 
-            this.BtnFillDown.Label = "&Fill Down";
+            this.BtnFillDown.Label = "Fill &Down";
             this.BtnFillDown.Name = "BtnFillDown";
             this.BtnFillDown.OfficeImageId = "InsertRowBelow";
             this.BtnFillDown.ShowImage = true;
@@ -428,13 +483,22 @@
             this.BtnDeleteColumns.SuperTip = "Delete any empty columns on the active worksheet.";
             this.BtnDeleteColumns.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnDeleteColumns_Click);
             // 
+            // BtnCopyFormatting
+            // 
+            this.BtnCopyFormatting.Label = "Copy &Formatting to All Sheets";
+            this.BtnCopyFormatting.Name = "BtnCopyFormatting";
+            this.BtnCopyFormatting.OfficeImageId = "PasteFormatting";
+            this.BtnCopyFormatting.ShowImage = true;
+            this.BtnCopyFormatting.SuperTip = "Copy the active worksheets formatting to all worksheets.";
+            this.BtnCopyFormatting.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnCopyFormatting_Click);
+            // 
             // BtnDisplayLength
             // 
-            this.BtnDisplayLength.Label = "Display &Length [Off]";
+            this.BtnDisplayLength.Label = "Display Cell &Length [Off]";
             this.BtnDisplayLength.Name = "BtnDisplayLength";
             this.BtnDisplayLength.OfficeImageId = "WordCount";
             this.BtnDisplayLength.ShowImage = true;
-            this.BtnDisplayLength.SuperTip = "Displays the cells length on the status bar at the bottom left. Toggle [On/Off].";
+            this.BtnDisplayLength.SuperTip = "Displays the cell length in the status bar at the bottom left. Toggle [On/Off].";
             this.BtnDisplayLength.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnDisplayLength_Click);
             // 
             // BtnResetColumn
@@ -570,7 +634,7 @@
             this.BtnHyperlinkSettings.Name = "BtnHyperlinkSettings";
             this.BtnHyperlinkSettings.OfficeImageId = "GetPowerQueryDataSourceSettings";
             this.BtnHyperlinkSettings.ShowImage = true;
-            this.BtnHyperlinkSettings.SuperTip = "URL Settings\n\nView and edit your parameterized URLs.";
+            this.BtnHyperlinkSettings.SuperTip = "Custom Link Settings\n\nView and edit your parameterized URLs.";
             this.BtnHyperlinkSettings.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnHyperlinkSettings_Click);
             // 
             // BtnHyperlinks
@@ -580,8 +644,8 @@
             this.BtnHyperlinks.Name = "BtnHyperlinks";
             this.BtnHyperlinks.OfficeImageId = "HyperlinkInsert";
             this.BtnHyperlinks.ShowImage = true;
-            this.BtnHyperlinks.SuperTip = "Add/Remove Hyperlinks\n\nToggle hyperlinks on/off on a selected column using your a" +
-    "ctive parameterized URL.";
+            this.BtnHyperlinks.SuperTip = "Add/Remove Custom Links\n\nToggle custom hyperlinks on/off on a selected column usi" +
+    "ng your active parameterized URL.";
             this.BtnHyperlinks.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnHyperlinks_Click);
             // 
             // XLQuickTools
@@ -615,14 +679,12 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnSheetToFile;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup Group_Data;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnQuickSettings;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnQuickFormat;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup Group_Hyperlinks;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnMissing;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnDuplicates;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnCompare;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnHyperlinks;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnHyperlinkSettings;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnRemoveFormatting;
         internal Microsoft.Office.Tools.Ribbon.RibbonSeparator Separator_Delimiter;
         internal Microsoft.Office.Tools.Ribbon.RibbonSeparator Separator_Formatting;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnCopyToSheets;
@@ -656,6 +718,14 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonSplitButton BtnRemoveExcess;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnRemoveExcessWS;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnRemoveExcessWB;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnRemoveSpaces;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnCopyFormatting;
+        internal Microsoft.Office.Tools.Ribbon.RibbonSplitButton BtnQuickFormat;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnQuickFormatSub;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnQuickFormatAll;
+        internal Microsoft.Office.Tools.Ribbon.RibbonSplitButton BtnRemoveFormatting;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnRemoveFormattingSub;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnRemoveFormattingAll;
     }
 
     partial class ThisRibbonCollection
