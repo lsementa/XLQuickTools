@@ -182,7 +182,7 @@
             this.Name = "UniqueDataForm";
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Unique";
+            this.Text = "Selection to Clipboard";
             this.Load += new System.EventHandler(this.UniqueDataForm_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();

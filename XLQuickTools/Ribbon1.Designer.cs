@@ -81,8 +81,6 @@
             this.BtnDuplicates = this.Factory.CreateRibbonButton();
             this.BtnCompare = this.Factory.CreateRibbonButton();
             this.BtnFilter = this.Factory.CreateRibbonButton();
-            this.UniqueMenu = this.Factory.CreateRibbonMenu();
-            this.BtnUniqueCount = this.Factory.CreateRibbonButton();
             this.BtnUniqueClipboard = this.Factory.CreateRibbonButton();
             this.BtnCopyToSheets = this.Factory.CreateRibbonButton();
             this.BtnCommaSelection = this.Factory.CreateRibbonButton();
@@ -91,6 +89,7 @@
             this.BtnSplitToRows = this.Factory.CreateRibbonButton();
             this.BtnHyperlinkSettings = this.Factory.CreateRibbonButton();
             this.BtnHyperlinks = this.Factory.CreateRibbonButton();
+            this.SBtnUniqueClipboard = this.Factory.CreateRibbonSplitButton();
             this.XLQuickTools_Tab.SuspendLayout();
             this.Group_Formatting.SuspendLayout();
             this.Group_Data.SuspendLayout();
@@ -134,7 +133,7 @@
             this.Group_Data.Items.Add(this.BtnCompare);
             this.Group_Data.Items.Add(this.Separator_Data);
             this.Group_Data.Items.Add(this.BtnFilter);
-            this.Group_Data.Items.Add(this.UniqueMenu);
+            this.Group_Data.Items.Add(this.SBtnUniqueClipboard);
             this.Group_Data.Label = "Data";
             this.Group_Data.Name = "Group_Data";
             // 
@@ -494,11 +493,12 @@
             // 
             // BtnDisplayLength
             // 
-            this.BtnDisplayLength.Label = "Display Cell &Length [Off]";
+            this.BtnDisplayLength.Label = "Display &Length [Off]";
             this.BtnDisplayLength.Name = "BtnDisplayLength";
             this.BtnDisplayLength.OfficeImageId = "WordCount";
             this.BtnDisplayLength.ShowImage = true;
-            this.BtnDisplayLength.SuperTip = "Displays the cell length in the status bar at the bottom left. Toggle [On/Off].";
+            this.BtnDisplayLength.SuperTip = "Displays the length of the cell in the status bar at the bottom left. Toggle [On/" +
+    "Off].";
             this.BtnDisplayLength.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnDisplayLength_Click);
             // 
             // BtnResetColumn
@@ -548,27 +548,6 @@
             this.BtnFilter.ShowImage = true;
             this.BtnFilter.SuperTip = "Filter\n\nToggle filtering on/off";
             this.BtnFilter.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnFilter_Click);
-            // 
-            // UniqueMenu
-            // 
-            this.UniqueMenu.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.UniqueMenu.Items.Add(this.BtnUniqueCount);
-            this.UniqueMenu.Items.Add(this.BtnUniqueClipboard);
-            this.UniqueMenu.Items.Add(this.BtnCopyToSheets);
-            this.UniqueMenu.Label = "Unique";
-            this.UniqueMenu.Name = "UniqueMenu";
-            this.UniqueMenu.OfficeImageId = "ReviewCombineRevisions";
-            this.UniqueMenu.ShowImage = true;
-            this.UniqueMenu.SuperTip = "Unique Data Options";
-            // 
-            // BtnUniqueCount
-            // 
-            this.BtnUniqueCount.Label = "&Selection Count";
-            this.BtnUniqueCount.Name = "BtnUniqueCount";
-            this.BtnUniqueCount.OfficeImageId = "InformationDialog";
-            this.BtnUniqueCount.ShowImage = true;
-            this.BtnUniqueCount.SuperTip = "Get the count of unique values and unique rows.";
-            this.BtnUniqueCount.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnUniqueCount_Click);
             // 
             // BtnUniqueClipboard
             // 
@@ -648,6 +627,17 @@
     "ng your active parameterized URL.";
             this.BtnHyperlinks.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnHyperlinks_Click);
             // 
+            // SBtnUniqueClipboard
+            // 
+            this.SBtnUniqueClipboard.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.SBtnUniqueClipboard.Items.Add(this.BtnUniqueClipboard);
+            this.SBtnUniqueClipboard.Items.Add(this.BtnCopyToSheets);
+            this.SBtnUniqueClipboard.Label = "Unique";
+            this.SBtnUniqueClipboard.Name = "SBtnUniqueClipboard";
+            this.SBtnUniqueClipboard.OfficeImageId = "TableColumnSelect";
+            this.SBtnUniqueClipboard.SuperTip = "Unique Data Options";
+            this.SBtnUniqueClipboard.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.SBtnUniqueClipboard_Click);
+            // 
             // XLQuickTools
             // 
             this.Name = "XLQuickTools";
@@ -710,8 +700,6 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnTrimCleanWorksheet;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnTrimClean;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnAddLeadingTrailing;
-        internal Microsoft.Office.Tools.Ribbon.RibbonMenu UniqueMenu;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnUniqueCount;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnUniqueClipboard;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnRemoveNonASCII;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnDisplayLength;
@@ -726,6 +714,7 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonSplitButton BtnRemoveFormatting;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnRemoveFormattingSub;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnRemoveFormattingAll;
+        internal Microsoft.Office.Tools.Ribbon.RibbonSplitButton SBtnUniqueClipboard;
     }
 
     partial class ThisRibbonCollection

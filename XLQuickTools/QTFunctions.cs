@@ -780,7 +780,7 @@ namespace XLQuickTools
         }
 
         // Unique select options for count or copying to clipboard
-        public static void UniqueSelect(bool copyToClipboard)
+        public static void UniqueSelect()
         {
             Excel.Application excelApp = Globals.ThisAddIn.Application;
             Excel.Worksheet activeSheet = excelApp.ActiveSheet;
@@ -808,7 +808,7 @@ namespace XLQuickTools
                 }
 
                 // Show form without selecting the range first
-                using (UniqueDataForm form1 = new UniqueDataForm(rangeToProcess, copyToClipboard))
+                using (UniqueDataForm form1 = new UniqueDataForm(rangeToProcess))
                 {
                     form1.ShowDialog();
                 }

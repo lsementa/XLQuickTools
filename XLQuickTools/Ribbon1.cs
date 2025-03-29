@@ -292,16 +292,16 @@ namespace XLQuickTools
             QTFormat.TrimClean("workbook");
         }
 
-        // Count of unique values
-        private void BtnUniqueCount_Click(object sender, RibbonControlEventArgs e)
+        // Copy unique to clipboard (Split button)
+        private void SBtnUniqueClipboard_Click(object sender, RibbonControlEventArgs e)
         {
-            QTFunctions.UniqueSelect(false);
+            QTFunctions.UniqueSelect();
         }
 
         // Copy unique to clipboard
         private void BtnUniqueClipboard_Click(object sender, RibbonControlEventArgs e)
         {
-            QTFunctions.UniqueSelect(true);
+            QTFunctions.UniqueSelect();
         }
 
         // Turn on/off displaying of length
@@ -332,19 +332,27 @@ namespace XLQuickTools
             // Only update if tracking is enabled
             if (isTrackingEnabled)
             {
-                // Check if the active cell contains text
-                if (Target.Value2 != null)
+                // Check if only a single cell is selected
+                if (Target.Count == 1)
                 {
-                    // Convert the cell value to string and calculate its length
-                    string cellValue = Target.Value2.ToString();
-                    int cellLength = cellValue.Length;
-
-                    // Display the length on the status bar
-                    Globals.ThisAddIn.Application.StatusBar = $"Length: {cellLength}";
+                    // Check if the active cell contains text
+                    if (Target.Value2 != null)
+                    {
+                        // Convert the cell value to string and calculate its length
+                        string cellValue = Target.Value2.ToString();
+                        int cellLength = cellValue.Length;
+                        // Display the length on the status bar
+                        Globals.ThisAddIn.Application.StatusBar = $"Length: {cellLength}";
+                    }
+                    else
+                    {
+                        // If the cell is empty clear status
+                        Globals.ThisAddIn.Application.StatusBar = "";
+                    }
                 }
                 else
                 {
-                    // If the cell is empty clear status
+                    // If multiple cells are selected, clear the status bar
                     Globals.ThisAddIn.Application.StatusBar = "";
                 }
             }

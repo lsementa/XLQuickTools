@@ -8,13 +8,11 @@ namespace XLQuickTools
     public partial class UniqueDataForm : Form
     {
         private Excel.Range rangeToProcess;
-        private bool copyToClipboard;
 
-        public UniqueDataForm(Excel.Range rangeToProcess, bool copyToClipboard)
+        public UniqueDataForm(Excel.Range rangeToProcess)
         {
             InitializeComponent();
             this.rangeToProcess = rangeToProcess;
-            this.copyToClipboard = copyToClipboard;
         }
 
         // On Load
@@ -22,9 +20,6 @@ namespace XLQuickTools
         {
             // Process pending Windows messages to clear the spinning cursor
             Application.DoEvents();
-
-            // Change title
-            this.Text = copyToClipboard ? "Selection to Clipboard" : "Selection Count";
 
             // Check if the range has more than 2 rows and starts at row 1
             if (rangeToProcess.Rows.Count > 2 && rangeToProcess.Row == 1)
@@ -59,7 +54,7 @@ namespace XLQuickTools
 
             if (CbHeaders.Checked)
             {
-                // Exclude the first row (shift down)
+                // Exclude the first row (shift down) from select
                 if (rangeToProcess.Rows.Count > 1)
                 {
                     rangeToProcess = rangeToProcess.Offset[1, 0].Resize[rangeToProcess.Rows.Count - 1, rangeToProcess.Columns.Count];
@@ -175,12 +170,16 @@ namespace XLQuickTools
         // OK button
         private void UniqueForm_Ok_Click(object sender, EventArgs e)
         {
-            if (copyToClipboard)
-            {
-                // Copy unique data to clipboard
-                _ = QTFunctions.GetUniqueRows(rangeToProcess, ClbColumns, true);
-            }
-
+             // Include the headers when copying
+             if (CbHeaders.Checked)
+             {
+                rangeToProcess = rangeToProcess.Offset[-1, 0].Resize[rangeToProcess.Rows.Count + 1, rangeToProcess.Columns.Count];
+             }
+                
+             // Copy unique data to clipboard
+             _ = QTFunctions.GetUniqueRows(rangeToProcess, ClbColumns, true);
+            
+            // Close
             this.Close();
         }
 
