@@ -452,7 +452,7 @@
             this.BtnCopyFormatting.Name = "BtnCopyFormatting";
             this.BtnCopyFormatting.OfficeImageId = "PasteFormatting";
             this.BtnCopyFormatting.ShowImage = true;
-            this.BtnCopyFormatting.SuperTip = "Copy the active worksheets formatting to all worksheets.";
+            this.BtnCopyFormatting.SuperTip = "Copy the formatting on the active worksheet to all worksheets.";
             this.BtnCopyFormatting.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnCopyFormatting_Click);
             // 
             // BtnDisplayLength
