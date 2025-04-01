@@ -170,7 +170,7 @@ Adds or removes hyperlinks on an entire column using a saved parameterized URL. 
 ## How to Install
 
 1. **Download the XLQuickTools ZIP File**  
-   Click [here](https://github.com/lsementa/XLQuickTools/releases/tag/v1.0.0.2) to download the XLQuickTools installation package.
+   Click [here](https://github.com/lsementa/XLQuickTools/releases) and select the latest release of the XLQuickTools installation package.
 
 2. **Extract the Contents**  
    Locate the downloaded ZIP file, extract its contents, and open the folder.
@@ -180,7 +180,7 @@ Adds or removes hyperlinks on an entire column using a saved parameterized URL. 
    > **Note**: If Microsoft Defender SmartScreen appears, click **More Info** and then **Run Anyway** to proceed.
 
 4. **Verification**  
-   This add-in is code-signed with an official certificate, and verified.
+   Verify the publisher has been verified and click install.
 
 <div align="center">
   <img src="images/Install.png" alt="Screenshot of installation process" width="500">
