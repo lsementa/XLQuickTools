@@ -20,7 +20,6 @@ An Excel VSTO Add-in featuring a collection of different tools.
   - [Check for Duplicates](#check-for-duplicates)
   - [Compare Worksheets](#compare-worksheets)
   - [Unique Data Options](#unique-data-options)
-  - [Copy Data to New Worksheets](#copy-data-to-new-worksheets)
   - [Selection/Selection+ to Clipboard](#selection)
   - [Create Delimited File](#worksheet-to-file)
   - [Split Columns to Rows](#split-columns-to-rows)
@@ -88,7 +87,7 @@ Restores the range back to its original state. Excels Undo button will not work 
 Displays missing data between two selected ranges. This can be extended across multiple columns, worksheets or open workbooks. If you prefer to have the results on a new worksheet you can adjust the threshold.
 
 <div align="center">
-<img src="images/FindMissing.gif" alt="Video">
+<img src="images/FindMissing.png" alt="Screenshot">
 </div>
 
 ### **Check for Duplicates**
@@ -98,14 +97,14 @@ Checks for duplicates in a selected column:
 - Toggle the count column On/Off with the column selected.
 
 <div align="center">
-<img src="images/Duplicates.gif" alt="Video">
+<img src="images/Duplicates.png" alt="Screenshot">
 </div>
 
 ### **Compare Worksheets**
 Compares two worksheets, even if they belong to different workbooks, provided both are open. Highlights any differences between the selected worksheets and provides a link to each difference. The refresh button clears the form and updates the dropdown lists if a new workbook has been opened. If you prefer to view the results on a new worksheet, you can adjust the threshold.
 
 <div align="center">
-<img src="images/CompareSheets.gif" alt="Video">
+<img src="images/CompareSheets.png" alt="Screenshot">
 </div>
 
 ### **Filter**
@@ -114,14 +113,7 @@ The built-in Excel Filter button, placed on the Quick Tools tab for easier acces
 ### **Unique Data Options**
 - **Selection Count:** Get the count of unique values and unique rows.
 - **Selection to Clipboard:** Copy the selections unique data to clipboard.
-- **Copy Data to New Worksheets:**
-
-### **Copy Data to New Worksheets**
-Copies data to new worksheets based on the unique values from a selected column.
-
-<div align="center">
-<img src="images/CopySheets.gif" alt="Video">
-</div>
+- **Copy Data to New Worksheets:** Copies data to new worksheets based on the unique values from a selected column.
 
 ### **Selection**
 Comma-separates a selected range and stores the result in your clipboard.
@@ -145,10 +137,6 @@ Generates a delimited file from the active worksheet.
 ### **Split Columns to Rows**
 Splits delimited columns into rows. It can handle columns with varying delimited lengths.
 
-<div align="center">
-<img src="images/SplitRows.gif" alt="Video">
-</div>
-
 ### **URL Settings**
 Create and save parameterized URLs. Check "Active" to specify which URL will be applied when using the **Add/Remove** feature.
 
@@ -160,7 +148,7 @@ Create and save parameterized URLs. Check "Active" to specify which URL will be 
 Adds or removes hyperlinks on an entire column using a saved parameterized URL. Toggle this On/Off with the column selected.
 
 <div align="center">
-<img src="images/AddHyperlinks.gif" alt="Video">
+<img src="images/AddHyperlinks.png" alt="Screenshot">
 </div>
 
 <p>&nbsp;</p>
