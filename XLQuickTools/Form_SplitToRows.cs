@@ -223,16 +223,9 @@ namespace XLQuickTools
             string delimiter = CbDelimiter.Text;
             string customValue = TbCustom.Text;
 
-            if (delimiter == "--Custom--" && customValue.Length > 0)
-            {
-                SplitToRows(_activeSheet, delimiter, customValue);
-                this.Close();
-            }
-            else if (delimiter != "--Custom--")
-            {
-                SplitToRows(_activeSheet, delimiter, customValue);
-                this.Close();
-            }
+            // Split to rows
+            SplitToRows(_activeSheet, delimiter, customValue);
+            this.Close();        
         }
 
         // Cancel button

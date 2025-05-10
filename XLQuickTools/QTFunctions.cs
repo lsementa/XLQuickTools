@@ -14,7 +14,7 @@ namespace XLQuickTools
     {
 
         // Selection and Selection+ function
-        public static void SelectionPlus(string leading = "", string trailing = "", int newLine = 0)
+        public static void SelectionPlus(string leading = "", string trailing = "", string delimiter = ",", int newLine = 0)
         {
             Excel.Application excelApp = Globals.ThisAddIn.Application;
             Excel.Range rangeToProcess = QTUtils.GetRangeToProcess(excelApp);
@@ -46,7 +46,7 @@ namespace XLQuickTools
                             // Append comma only if this is not the first value and no newline flag
                             if (!firstValue && newLine == 0)
                             {
-                                sb.Append(", ");
+                                sb.Append(delimiter + " ");
                             }
 
                             // Append leading and trailing character
@@ -55,7 +55,7 @@ namespace XLQuickTools
                             // Add a newline if the `newLine` flag is set
                             if (newLine == 1)
                             {
-                                sb.Append(",\n");
+                                sb.Append(delimiter + "\n");
                             }
                             else if (newLine == 2)
                             {

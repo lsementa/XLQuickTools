@@ -19,7 +19,12 @@ namespace XLQuickTools
             // Get the input from the TextBox
             string leading = TbLeading.Text;
             string trailing = TbTrailing.Text;
+            string delimText = CbDelimiter.Text;
+            string customValue = TbCustom.Text;
             int newLine = 0;
+
+            // Get the delimiter
+            string delimiter = QTUtils.GetDelimiter(delimText, customValue);
 
             if (RbNewLine1.Checked)
             {
@@ -35,7 +40,7 @@ namespace XLQuickTools
             }
 
             // Call the method and pass the user input
-            QTFunctions.SelectionPlus(leading, trailing, newLine);
+            QTFunctions.SelectionPlus(leading, trailing, delimiter, newLine);
 
             // Close after running
             this.Close();
@@ -50,9 +55,47 @@ namespace XLQuickTools
         // On load
         private void CSVForm_Load(object sender, EventArgs e)
         {
+            // Leading/Trailing and new line defaults
             this.TbLeading.Text = "'";
             this.TbTrailing.Text = "'";
             this.RbNewLine3.Checked = true;
+
+            // Populate the delimiter combobox with options
+            this.CbDelimiter.Items.AddRange(new object[]
+            {
+                "Tab",
+                "Space",
+                "Carriage Return",
+                "Line Feed (Newline)",
+                "Vertical Tab",
+                "Form Feed",
+                "Carriage Return and Line Feed",
+                "Non-breaking Space",
+                "--Custom--"
+            });
+
+            // Set the dropdown to custom
+            this.CbDelimiter.SelectedItem = "--Custom--";
+
+            // Put the cursor in the custom textbox
+            this.TbCustom.Text = ",";
+            this.TbCustom.Select();
+        }
+
+        // Delimiter Combobox change
+        private void CbDelimiter_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (this.CbDelimiter.Text != "--Custom--")
+            {
+                // Clear and disable
+                this.TbCustom.Text = "";
+                this.TbCustom.Enabled = false;
+            }
+            else
+            {
+                // Enable
+                this.TbCustom.Enabled = true;
+            }
         }
     }
 }
