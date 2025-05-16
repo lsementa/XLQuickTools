@@ -822,5 +822,29 @@ namespace XLQuickTools
                 QTUtils.CleanupResources(rangeToProcess);
             }
         }
+
+        // Sheet names to clipboard
+        public static void CopyWorksheetNamesToClipboard()
+        {
+            Excel.Application excelApp = Globals.ThisAddIn.Application;
+            Excel.Workbook activeWorkbook = excelApp.ActiveWorkbook;
+            if (activeWorkbook == null) return;
+
+            StringBuilder worksheetNames = new StringBuilder();
+
+            // Iterate through each sheet and create the list
+            foreach (Excel.Worksheet sheet in activeWorkbook.Worksheets)
+            {
+                worksheetNames.AppendLine(sheet.Name);
+            }
+
+            // Copy to clipboard
+            if (worksheetNames.Length > 0)
+            {
+                Clipboard.SetText(worksheetNames.ToString());
+            }
+
+        }
+
     }
 }

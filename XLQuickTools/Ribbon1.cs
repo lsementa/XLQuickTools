@@ -364,7 +364,11 @@ namespace XLQuickTools
             QTFormat.CopyFormatToAllSheets();
         }
 
-
+        // Create a list of sheet names
+        private void BtnSheetNames_Click(object sender, RibbonControlEventArgs e)
+        {
+            QTFunctions.CopyWorksheetNamesToClipboard();
+        }
     }
 }
 
