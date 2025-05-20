@@ -97,5 +97,10 @@ namespace XLQuickTools
                 this.TbCustom.Enabled = true;
             }
         }
+
+        private void RbNewLine2_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

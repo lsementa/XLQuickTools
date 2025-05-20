@@ -49,7 +49,7 @@
             // 
             this.TbLeading.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.TbLeading.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TbLeading.Location = new System.Drawing.Point(33, 55);
+            this.TbLeading.Location = new System.Drawing.Point(33, 60);
             this.TbLeading.Margin = new System.Windows.Forms.Padding(4);
             this.TbLeading.Name = "TbLeading";
             this.TbLeading.Size = new System.Drawing.Size(384, 35);
@@ -59,7 +59,7 @@
             // CSVForm_Ok
             // 
             this.CSVForm_Ok.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.CSVForm_Ok.Location = new System.Drawing.Point(51, 546);
+            this.CSVForm_Ok.Location = new System.Drawing.Point(483, 299);
             this.CSVForm_Ok.Margin = new System.Windows.Forms.Padding(4);
             this.CSVForm_Ok.Name = "CSVForm_Ok";
             this.CSVForm_Ok.Size = new System.Drawing.Size(164, 56);
@@ -72,17 +72,17 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(28, 22);
+            this.label1.Location = new System.Drawing.Point(28, 27);
             this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(282, 29);
+            this.label1.Size = new System.Drawing.Size(106, 29);
             this.label1.TabIndex = 0;
-            this.label1.Text = "&Leading character or text:";
+            this.label1.Text = "&Leading:";
             // 
             // CSVForm_Cancel
             // 
             this.CSVForm_Cancel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.CSVForm_Cancel.Location = new System.Drawing.Point(234, 546);
+            this.CSVForm_Cancel.Location = new System.Drawing.Point(666, 299);
             this.CSVForm_Cancel.Margin = new System.Windows.Forms.Padding(4);
             this.CSVForm_Cancel.Name = "CSVForm_Cancel";
             this.CSVForm_Cancel.Size = new System.Drawing.Size(164, 56);
@@ -95,18 +95,18 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(28, 104);
+            this.label2.Location = new System.Drawing.Point(29, 111);
             this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(277, 29);
+            this.label2.Size = new System.Drawing.Size(101, 29);
             this.label2.TabIndex = 2;
-            this.label2.Text = "&Trailing character or text:";
+            this.label2.Text = "&Trailing:";
             // 
             // TbTrailing
             // 
             this.TbTrailing.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.TbTrailing.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TbTrailing.Location = new System.Drawing.Point(33, 137);
+            this.TbTrailing.Location = new System.Drawing.Point(34, 144);
             this.TbTrailing.Margin = new System.Windows.Forms.Padding(4);
             this.TbTrailing.Name = "TbTrailing";
             this.TbTrailing.Size = new System.Drawing.Size(384, 35);
@@ -117,7 +117,7 @@
             // 
             this.RbNewLine1.AutoSize = true;
             this.RbNewLine1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.RbNewLine1.Location = new System.Drawing.Point(52, 35);
+            this.RbNewLine1.Location = new System.Drawing.Point(48, 35);
             this.RbNewLine1.Margin = new System.Windows.Forms.Padding(4);
             this.RbNewLine1.Name = "RbNewLine1";
             this.RbNewLine1.Size = new System.Drawing.Size(287, 33);
@@ -130,7 +130,7 @@
             // 
             this.RbNewLine2.AutoSize = true;
             this.RbNewLine2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.RbNewLine2.Location = new System.Drawing.Point(52, 73);
+            this.RbNewLine2.Location = new System.Drawing.Point(48, 70);
             this.RbNewLine2.Margin = new System.Windows.Forms.Padding(4);
             this.RbNewLine2.Name = "RbNewLine2";
             this.RbNewLine2.Size = new System.Drawing.Size(271, 33);
@@ -143,7 +143,7 @@
             // 
             this.RbNewLine3.AutoSize = true;
             this.RbNewLine3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.RbNewLine3.Location = new System.Drawing.Point(52, 111);
+            this.RbNewLine3.Location = new System.Drawing.Point(48, 109);
             this.RbNewLine3.Margin = new System.Windows.Forms.Padding(4);
             this.RbNewLine3.Name = "RbNewLine3";
             this.RbNewLine3.Size = new System.Drawing.Size(198, 33);
@@ -158,9 +158,9 @@
             this.groupBox1.Controls.Add(this.RbNewLine3);
             this.groupBox1.Controls.Add(this.RbNewLine2);
             this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox1.Location = new System.Drawing.Point(33, 365);
+            this.groupBox1.Location = new System.Drawing.Point(446, 111);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(384, 158);
+            this.groupBox1.Size = new System.Drawing.Size(384, 166);
             this.groupBox1.TabIndex = 8;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "New Lines";
@@ -170,7 +170,7 @@
             this.CbDelimiter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.CbDelimiter.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.CbDelimiter.FormattingEnabled = true;
-            this.CbDelimiter.Location = new System.Drawing.Point(34, 220);
+            this.CbDelimiter.Location = new System.Drawing.Point(33, 235);
             this.CbDelimiter.Margin = new System.Windows.Forms.Padding(4);
             this.CbDelimiter.Name = "CbDelimiter";
             this.CbDelimiter.Size = new System.Drawing.Size(383, 37);
@@ -181,10 +181,10 @@
             // 
             this.TbCustom.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.TbCustom.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TbCustom.Location = new System.Drawing.Point(34, 306);
+            this.TbCustom.Location = new System.Drawing.Point(446, 60);
             this.TbCustom.Margin = new System.Windows.Forms.Padding(4);
             this.TbCustom.Name = "TbCustom";
-            this.TbCustom.Size = new System.Drawing.Size(383, 35);
+            this.TbCustom.Size = new System.Drawing.Size(384, 35);
             this.TbCustom.TabIndex = 7;
             this.TbCustom.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
@@ -192,7 +192,7 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(29, 187);
+            this.label3.Location = new System.Drawing.Point(28, 202);
             this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(116, 29);
@@ -203,7 +203,7 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(29, 273);
+            this.label4.Location = new System.Drawing.Point(441, 27);
             this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(101, 29);
@@ -214,7 +214,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(447, 628);
+            this.ClientSize = new System.Drawing.Size(864, 382);
             this.Controls.Add(this.CbDelimiter);
             this.Controls.Add(this.TbCustom);
             this.Controls.Add(this.groupBox1);
