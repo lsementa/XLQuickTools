@@ -125,7 +125,7 @@ Windows form version of **Selection** that:
 - Allows new lines or removes the comma delimiter with new lines, which can be used for creating XML, HTML tags etc.
 
 <div align="center">
-<img src="images/SelectionPlus.png" alt="Screenshot" width="250">
+<img src="images/SelectionPlus.png" alt="Screenshot" width="450">
 </div>
 
 ### **Worksheet to File**
