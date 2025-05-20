@@ -170,7 +170,7 @@
             this.CbDelimiter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.CbDelimiter.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.CbDelimiter.FormattingEnabled = true;
-            this.CbDelimiter.Location = new System.Drawing.Point(33, 235);
+            this.CbDelimiter.Location = new System.Drawing.Point(33, 227);
             this.CbDelimiter.Margin = new System.Windows.Forms.Padding(4);
             this.CbDelimiter.Name = "CbDelimiter";
             this.CbDelimiter.Size = new System.Drawing.Size(383, 37);
@@ -192,7 +192,7 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(28, 202);
+            this.label3.Location = new System.Drawing.Point(28, 194);
             this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(116, 29);
