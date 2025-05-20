@@ -121,7 +121,8 @@ Comma-separates a selected range and stores the result in your clipboard.
 
 ### **Selection+**
 Windows form version of **Selection** that:
-- Allows leading and trailing characters.
+- Set leading and trailing characters or text.
+- Set a custom delimiter.
 - Allows new lines or removes the comma delimiter with new lines, which can be used for creating XML, HTML tags etc.
 
 <div align="center">
