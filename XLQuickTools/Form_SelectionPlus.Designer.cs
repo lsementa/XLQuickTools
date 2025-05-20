@@ -75,9 +75,9 @@
             this.label1.Location = new System.Drawing.Point(28, 27);
             this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(106, 29);
+            this.label1.Size = new System.Drawing.Size(297, 29);
             this.label1.TabIndex = 0;
-            this.label1.Text = "&Leading:";
+            this.label1.Text = "&Leading Character or Text:";
             // 
             // CSVForm_Cancel
             // 
@@ -98,9 +98,9 @@
             this.label2.Location = new System.Drawing.Point(29, 111);
             this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(101, 29);
+            this.label2.Size = new System.Drawing.Size(292, 29);
             this.label2.TabIndex = 2;
-            this.label2.Text = "&Trailing:";
+            this.label2.Text = "&Trailing Character or Text:";
             // 
             // TbTrailing
             // 
@@ -163,7 +163,7 @@
             this.groupBox1.Size = new System.Drawing.Size(384, 166);
             this.groupBox1.TabIndex = 8;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "New Lines";
+            this.groupBox1.Text = "New Lines:";
             // 
             // CbDelimiter
             // 
@@ -206,9 +206,9 @@
             this.label4.Location = new System.Drawing.Point(441, 27);
             this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(101, 29);
+            this.label4.Size = new System.Drawing.Size(204, 29);
             this.label4.TabIndex = 6;
-            this.label4.Text = "&Custom:";
+            this.label4.Text = "&Custom Delimiter:";
             // 
             // CSVForm
             // 
