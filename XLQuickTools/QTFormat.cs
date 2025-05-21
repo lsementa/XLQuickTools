@@ -775,8 +775,17 @@ namespace XLQuickTools
                         // Copy and apply the formatting
                         sourceRange.Copy();
                         targetRange.PasteSpecial(Excel.XlPasteType.xlPasteFormats);
+
+                        // Move the cursor to cell A1
+                        sheet.Activate();
+                        sheet.Range["A1"].Select();
+
                     }
                 }
+
+                // Go back to main sheet
+                activeSheet.Activate();
+                activeSheet.Range["A1"].Select();
 
                 // Clear the clipboard
                 excelApp.CutCopyMode = 0;
