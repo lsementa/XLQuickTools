@@ -76,13 +76,14 @@ Restores the range back to its original state. Excels Undo button will not work 
 - **Subscript Chemical Formulas:** Sets numbers in text to subscript in the selected range. C6H12O6 becomes C₆H₁₂O₆.
 
 ### **Additional Options**
-- **Fill Down:** Fills blank cells with the value above, based on the selected range.
 - **Delete Empty Rows:** Deletes any empty rows on the active worksheet.
 - **Delete Empty Columns:** Deletes any empty columns on the active worksheet. This includes deleting columns with headings if the rest of the rows are empty.
+- **Fill Down:** Fills blank cells with the value above, based on the selected range.
+- **Reset column:** Ensures the column's formatting and data handling are reset. Numbers stored as text will be recognized as numbers.
 - **Sheet Names to Clipboard:** Create a list of sheet names using the active workbook.
 - **Copy Formatting to All Sheets:** Copies the formatting on the active worksheet to all worksheets.
+- **Create File List:** Create a list of files for a selected folder.
 - **Display Length:** Displays the active cells length in the status bar. You can toggle this on or off.
-- **Reset column:** Ensures the column's formatting and data handling are reset. Numbers stored as text will be recognized as numbers.
 
 ### **Find Missing Data**
 Displays missing data between two selected ranges. This can be extended across multiple columns, worksheets or open workbooks. If you prefer to have the results on a new worksheet you can adjust the threshold.
