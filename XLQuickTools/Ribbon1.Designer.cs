@@ -74,8 +74,9 @@
             this.BtnFillDown = this.Factory.CreateRibbonButton();
             this.BtnDeleteRows = this.Factory.CreateRibbonButton();
             this.BtnDeleteColumns = this.Factory.CreateRibbonButton();
-            this.BtnSheetNames = this.Factory.CreateRibbonButton();
             this.BtnCopyFormatting = this.Factory.CreateRibbonButton();
+            this.BtnSheetNames = this.Factory.CreateRibbonButton();
+            this.BtnFileList = this.Factory.CreateRibbonButton();
             this.BtnDisplayLength = this.Factory.CreateRibbonButton();
             this.BtnResetColumn = this.Factory.CreateRibbonButton();
             this.BtnMissing = this.Factory.CreateRibbonButton();
@@ -446,8 +447,9 @@
             this.AdditionalMenu.Items.Add(this.BtnFillDown);
             this.AdditionalMenu.Items.Add(this.BtnDeleteRows);
             this.AdditionalMenu.Items.Add(this.BtnDeleteColumns);
-            this.AdditionalMenu.Items.Add(this.BtnSheetNames);
             this.AdditionalMenu.Items.Add(this.BtnCopyFormatting);
+            this.AdditionalMenu.Items.Add(this.BtnSheetNames);
+            this.AdditionalMenu.Items.Add(this.BtnFileList);
             this.AdditionalMenu.Items.Add(this.BtnDisplayLength);
             this.AdditionalMenu.Items.Add(this.BtnResetColumn);
             this.AdditionalMenu.Label = "Additional Options";
@@ -484,6 +486,15 @@
             this.BtnDeleteColumns.SuperTip = "Delete any empty columns on the active worksheet.";
             this.BtnDeleteColumns.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnDeleteColumns_Click);
             // 
+            // BtnCopyFormatting
+            // 
+            this.BtnCopyFormatting.Label = "Copy &Formatting to All Sheets";
+            this.BtnCopyFormatting.Name = "BtnCopyFormatting";
+            this.BtnCopyFormatting.OfficeImageId = "PasteFormatting";
+            this.BtnCopyFormatting.ShowImage = true;
+            this.BtnCopyFormatting.SuperTip = "Copy the formatting on the active worksheet to all worksheets.";
+            this.BtnCopyFormatting.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnCopyFormatting_Click);
+            // 
             // BtnSheetNames
             // 
             this.BtnSheetNames.Label = "Sheet &Names to Clipboard";
@@ -493,14 +504,14 @@
             this.BtnSheetNames.SuperTip = "Create a list of sheet names using the active workbook.";
             this.BtnSheetNames.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnSheetNames_Click);
             // 
-            // BtnCopyFormatting
+            // BtnFileList
             // 
-            this.BtnCopyFormatting.Label = "Copy &Formatting to All Sheets";
-            this.BtnCopyFormatting.Name = "BtnCopyFormatting";
-            this.BtnCopyFormatting.OfficeImageId = "PasteFormatting";
-            this.BtnCopyFormatting.ShowImage = true;
-            this.BtnCopyFormatting.SuperTip = "Copy the formatting on the active worksheet to all worksheets.";
-            this.BtnCopyFormatting.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnCopyFormatting_Click);
+            this.BtnFileList.Label = "Create F&ile List";
+            this.BtnFileList.Name = "BtnFileList";
+            this.BtnFileList.OfficeImageId = "CopyToFolder";
+            this.BtnFileList.ShowImage = true;
+            this.BtnFileList.SuperTip = "Create a list of files using a selected folder.";
+            this.BtnFileList.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnFileList_Click);
             // 
             // BtnDisplayLength
             // 
@@ -727,6 +738,7 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnRemoveFormattingAll;
         internal Microsoft.Office.Tools.Ribbon.RibbonSplitButton SBtnUniqueClipboard;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnSheetNames;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnFileList;
     }
 
     partial class ThisRibbonCollection

@@ -87,18 +87,6 @@ namespace XLQuickTools
 
         }
 
-        // Check if worksheet exists method
-        private bool WorksheetExists(Excel.Workbook workbook, string sheetName)
-        {
-            foreach (Excel.Worksheet sheet in workbook.Sheets)
-            {
-                if (sheet.Name == sheetName)
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
         private void FindMissing(object sender, EventArgs e)
         {
             Excel.Workbook workbook = _excelApp.ActiveWorkbook;
@@ -163,7 +151,7 @@ namespace XLQuickTools
                     string baseName = "Missing";
                     string uniqueName = baseName;
                     int counter = 1;
-                    while (WorksheetExists(workbook, uniqueName))
+                    while (QTUtils.WorksheetExists(workbook, uniqueName))
                     {
                         uniqueName = baseName + counter.ToString();
                         counter++;

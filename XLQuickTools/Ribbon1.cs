@@ -369,6 +369,13 @@ namespace XLQuickTools
         {
             QTFunctions.CopyWorksheetNamesToClipboard();
         }
+
+        // Create a list of files
+        private void BtnFileList_Click(object sender, RibbonControlEventArgs e)
+        {
+            FileListForm form1 = new FileListForm();
+            form1.ShowDialog();
+        }
     }
 }
 

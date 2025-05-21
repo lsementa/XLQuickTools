@@ -134,6 +134,19 @@ namespace XLQuickTools
             return colsDeleted;
         }
 
+        // Check if worksheet exists method
+        public static bool WorksheetExists(Excel.Workbook workbook, string sheetName)
+        {
+            foreach (Excel.Worksheet sheet in workbook.Sheets)
+            {
+                if (sheet.Name == sheetName)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         // Show error message
         public static void ShowError(Exception ex)
         {
