@@ -192,10 +192,10 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.CbFileLocation);
+            this.groupBox1.Controls.Add(this.CbFileSize);
             this.groupBox1.Controls.Add(this.CbFileType);
             this.groupBox1.Controls.Add(this.CbDateModified);
-            this.groupBox1.Controls.Add(this.CbFileSize);
+            this.groupBox1.Controls.Add(this.CbFileLocation);
             this.groupBox1.Location = new System.Drawing.Point(29, 112);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(218, 208);
@@ -205,10 +205,10 @@
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.CbChildFolders);
+            this.groupBox2.Controls.Add(this.TbSheetName);
             this.groupBox2.Controls.Add(this.label1);
             this.groupBox2.Controls.Add(this.CbActiveSheet);
-            this.groupBox2.Controls.Add(this.TbSheetName);
+            this.groupBox2.Controls.Add(this.CbChildFolders);
             this.groupBox2.Location = new System.Drawing.Point(272, 112);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(461, 208);
