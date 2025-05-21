@@ -55,7 +55,7 @@
             this.TbFolder.Margin = new System.Windows.Forms.Padding(6);
             this.TbFolder.Name = "TbFolder";
             this.TbFolder.Size = new System.Drawing.Size(596, 35);
-            this.TbFolder.TabIndex = 3;
+            this.TbFolder.TabIndex = 1;
             // 
             // label4
             // 
@@ -65,7 +65,7 @@
             this.label4.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(187, 29);
-            this.label4.TabIndex = 2;
+            this.label4.TabIndex = 0;
             this.label4.Text = "&Folder Location:";
             // 
             // FileListForm_Cancel
@@ -75,7 +75,7 @@
             this.FileListForm_Cancel.Margin = new System.Windows.Forms.Padding(4);
             this.FileListForm_Cancel.Name = "FileListForm_Cancel";
             this.FileListForm_Cancel.Size = new System.Drawing.Size(164, 56);
-            this.FileListForm_Cancel.TabIndex = 12;
+            this.FileListForm_Cancel.TabIndex = 14;
             this.FileListForm_Cancel.Text = "Cancel";
             this.FileListForm_Cancel.UseVisualStyleBackColor = true;
             this.FileListForm_Cancel.Click += new System.EventHandler(this.FileListForm_Cancel_Click);
@@ -87,7 +87,7 @@
             this.FileListForm_Ok.Margin = new System.Windows.Forms.Padding(4);
             this.FileListForm_Ok.Name = "FileListForm_Ok";
             this.FileListForm_Ok.Size = new System.Drawing.Size(164, 56);
-            this.FileListForm_Ok.TabIndex = 11;
+            this.FileListForm_Ok.TabIndex = 13;
             this.FileListForm_Ok.Text = "Ok";
             this.FileListForm_Ok.UseVisualStyleBackColor = true;
             this.FileListForm_Ok.Click += new System.EventHandler(this.FileListForm_Ok_Click);
@@ -97,7 +97,7 @@
             this.FileListForm_Browse.Location = new System.Drawing.Point(634, 51);
             this.FileListForm_Browse.Name = "FileListForm_Browse";
             this.FileListForm_Browse.Size = new System.Drawing.Size(99, 43);
-            this.FileListForm_Browse.TabIndex = 13;
+            this.FileListForm_Browse.TabIndex = 2;
             this.FileListForm_Browse.Text = "Browse";
             this.FileListForm_Browse.UseVisualStyleBackColor = true;
             this.FileListForm_Browse.Click += new System.EventHandler(this.FileListForm_Browse_Click);
@@ -110,7 +110,7 @@
             this.TbSheetName.Margin = new System.Windows.Forms.Padding(6);
             this.TbSheetName.Name = "TbSheetName";
             this.TbSheetName.Size = new System.Drawing.Size(412, 35);
-            this.TbSheetName.TabIndex = 15;
+            this.TbSheetName.TabIndex = 12;
             // 
             // label1
             // 
@@ -119,9 +119,9 @@
             this.label1.Location = new System.Drawing.Point(20, 114);
             this.label1.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(205, 29);
-            this.label1.TabIndex = 14;
-            this.label1.Text = "&Worksheet Name:";
+            this.label1.Size = new System.Drawing.Size(190, 29);
+            this.label1.TabIndex = 11;
+            this.label1.Text = "&New Worksheet:";
             // 
             // CbChildFolders
             // 
@@ -129,9 +129,9 @@
             this.CbChildFolders.Location = new System.Drawing.Point(25, 42);
             this.CbChildFolders.Margin = new System.Windows.Forms.Padding(4);
             this.CbChildFolders.Name = "CbChildFolders";
-            this.CbChildFolders.Size = new System.Drawing.Size(246, 29);
-            this.CbChildFolders.TabIndex = 16;
-            this.CbChildFolders.Text = "Include &Child Folders";
+            this.CbChildFolders.Size = new System.Drawing.Size(257, 29);
+            this.CbChildFolders.TabIndex = 9;
+            this.CbChildFolders.Text = "&Include Subdirectories";
             this.CbChildFolders.UseVisualStyleBackColor = true;
             // 
             // CbActiveSheet
@@ -141,7 +141,7 @@
             this.CbActiveSheet.Margin = new System.Windows.Forms.Padding(4);
             this.CbActiveSheet.Name = "CbActiveSheet";
             this.CbActiveSheet.Size = new System.Drawing.Size(256, 29);
-            this.CbActiveSheet.TabIndex = 17;
+            this.CbActiveSheet.TabIndex = 10;
             this.CbActiveSheet.Text = "Use &Active Worksheet";
             this.CbActiveSheet.UseVisualStyleBackColor = true;
             this.CbActiveSheet.CheckedChanged += new System.EventHandler(this.CbActiveSheet_CheckedChanged);
@@ -153,7 +153,7 @@
             this.CbDateModified.Margin = new System.Windows.Forms.Padding(4);
             this.CbDateModified.Name = "CbDateModified";
             this.CbDateModified.Size = new System.Drawing.Size(177, 29);
-            this.CbDateModified.TabIndex = 18;
+            this.CbDateModified.TabIndex = 5;
             this.CbDateModified.Text = "&Date Modified";
             this.CbDateModified.UseVisualStyleBackColor = true;
             // 
@@ -164,7 +164,7 @@
             this.CbFileSize.Margin = new System.Windows.Forms.Padding(4);
             this.CbFileSize.Name = "CbFileSize";
             this.CbFileSize.Size = new System.Drawing.Size(127, 29);
-            this.CbFileSize.TabIndex = 19;
+            this.CbFileSize.TabIndex = 7;
             this.CbFileSize.Text = "File &Size";
             this.CbFileSize.UseVisualStyleBackColor = true;
             // 
@@ -175,7 +175,7 @@
             this.CbFileLocation.Margin = new System.Windows.Forms.Padding(4);
             this.CbFileLocation.Name = "CbFileLocation";
             this.CbFileLocation.Size = new System.Drawing.Size(167, 29);
-            this.CbFileLocation.TabIndex = 20;
+            this.CbFileLocation.TabIndex = 4;
             this.CbFileLocation.Text = "File &Location";
             this.CbFileLocation.UseVisualStyleBackColor = true;
             // 
@@ -186,7 +186,7 @@
             this.CbFileType.Margin = new System.Windows.Forms.Padding(4);
             this.CbFileType.Name = "CbFileType";
             this.CbFileType.Size = new System.Drawing.Size(133, 29);
-            this.CbFileType.TabIndex = 22;
+            this.CbFileType.TabIndex = 6;
             this.CbFileType.Text = "File &Type";
             this.CbFileType.UseVisualStyleBackColor = true;
             // 
@@ -196,10 +196,10 @@
             this.groupBox1.Controls.Add(this.CbFileType);
             this.groupBox1.Controls.Add(this.CbDateModified);
             this.groupBox1.Controls.Add(this.CbFileSize);
-            this.groupBox1.Location = new System.Drawing.Point(515, 112);
+            this.groupBox1.Location = new System.Drawing.Point(29, 112);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(218, 208);
-            this.groupBox1.TabIndex = 23;
+            this.groupBox1.TabIndex = 3;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Display";
             // 
@@ -209,10 +209,10 @@
             this.groupBox2.Controls.Add(this.label1);
             this.groupBox2.Controls.Add(this.CbActiveSheet);
             this.groupBox2.Controls.Add(this.TbSheetName);
-            this.groupBox2.Location = new System.Drawing.Point(29, 112);
+            this.groupBox2.Location = new System.Drawing.Point(272, 112);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(461, 208);
-            this.groupBox2.TabIndex = 24;
+            this.groupBox2.TabIndex = 8;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Options";
             // 
@@ -220,7 +220,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(762, 418);
+            this.ClientSize = new System.Drawing.Size(763, 422);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.FileListForm_Browse);

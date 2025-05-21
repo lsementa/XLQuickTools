@@ -33,6 +33,8 @@ namespace XLQuickTools
             if (!CbActiveSheet.Checked)
             {
                 TbSheetName.Enabled = true;
+                TbSheetName.Text = "File List";
+                TbSheetName.Select();
             }
             else
             {
