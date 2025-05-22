@@ -390,6 +390,12 @@ namespace XLQuickTools
             form1.ShowDialog();
         }
 
+        // Remove objects
+        private void BtnRemoveObjects_Click(object sender, RibbonControlEventArgs e)
+        {
+            RemoveObjectsForm form1 = new RemoveObjectsForm();
+            form1.ShowDialog();
+        }
     }
 }
 
