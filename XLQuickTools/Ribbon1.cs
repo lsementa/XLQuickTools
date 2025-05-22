@@ -45,6 +45,19 @@ namespace XLQuickTools
             QTFormat.RemoveFormattingNoUpdates(activeSheet);
         }
 
+        // Convert tables to ranges and remove all formatting
+        private void BtnConvertTableRemove_Click(object sender, RibbonControlEventArgs e)
+        {
+            Excel.Application excelApp = Globals.ThisAddIn.Application;
+            Excel.Worksheet activeSheet = excelApp.ActiveSheet;
+
+            // Convert tables
+            QTUtils.ConvertTablesToRanges();
+            // Remove formatting
+            QTFormat.RemoveFormattingNoUpdates(activeSheet);
+
+        }
+
         // Remove formatting (All)
         private void BtnRemoveFormattingAll_Click(object sender, RibbonControlEventArgs e)
         {
@@ -376,6 +389,7 @@ namespace XLQuickTools
             FileListForm form1 = new FileListForm();
             form1.ShowDialog();
         }
+
     }
 }
 

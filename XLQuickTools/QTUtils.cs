@@ -373,6 +373,25 @@ namespace XLQuickTools
             }
         }
 
+        // Convert tables to ranges
+        public static void ConvertTablesToRanges()
+        {
+            Excel.Worksheet activeSheet = Globals.ThisAddIn.Application.ActiveSheet;
+
+            // List of tables
+            var tables = new List<Excel.ListObject>();
+            foreach (Excel.ListObject table in activeSheet.ListObjects)
+            {
+                tables.Add(table);
+            }
+
+            // Unlist/Convert to range each table
+            foreach (Excel.ListObject table in tables)
+            {
+                table.Unlist();
+            }
+        }
+
         // Dictionary to store special character replacements
         public static Dictionary<char, string> specialReplacements = new Dictionary<char, string>
         {
