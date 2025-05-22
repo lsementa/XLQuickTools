@@ -49,8 +49,10 @@ Applies all formatting settings defined in **Quick Settings** to the active work
 <img src="images/QuickFormat.gif" alt="Video">
 </div>
 
-### **Remove Formatting**
-Clears all formatting from the active worksheet, returning it to its default state.
+### **Remove**
+- **Remove Formatting:** Clears all formatting from the active worksheet or entire workbook, returning it to its default state.
+- **Remove Table Formatting:** Converts tables to ranges and then clears all formatting.
+- **Remove Objects:** Removes all objects from the active worksheet. This includes shapes, pictures, icons, charts, activeX etc.
 
 ### **Date/Text Converter**
 Converts a selected range to a desired text or Excel format, allowing seamless switching between text-based dates, Excel dates, or other text and Excel formats. It can also convert between US Month, Day, Year and Day, Month, Year formats.
