@@ -58,7 +58,7 @@ Applies all formatting settings defined in **Quick Settings** to the active work
 Converts a selected range to a desired text or Excel format, allowing seamless switching between text-based dates, Excel dates, or other text and Excel formats. It can also convert between US Month, Day, Year and Day, Month, Year formats.
 
 <div align="center">
-<img src="images/DateTextConverter.png" alt="Screenshot" width="300">
+<img src="images/DateTextConverter.png" alt="Screenshot" width="400">
 </div>
 
 ### **Undo**
