@@ -110,7 +110,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
-            this.ClientSize = new System.Drawing.Size(449, 305);
+            this.ClientSize = new System.Drawing.Size(449, 301);
             this.Controls.Add(this.CbDelimiter);
             this.Controls.Add(this.TbCustom);
             this.Controls.Add(this.SplitterForm_Cancel);

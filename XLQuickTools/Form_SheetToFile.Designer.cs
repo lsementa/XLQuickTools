@@ -41,6 +41,8 @@
             this.CbOpenFolder = new System.Windows.Forms.CheckBox();
             this.CbQuoteText = new System.Windows.Forms.CheckBox();
             this.CbContainsHeaders = new System.Windows.Forms.CheckBox();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // TbCustom
@@ -51,7 +53,7 @@
             this.TbCustom.Location = new System.Drawing.Point(32, 138);
             this.TbCustom.Margin = new System.Windows.Forms.Padding(4);
             this.TbCustom.Name = "TbCustom";
-            this.TbCustom.Size = new System.Drawing.Size(447, 35);
+            this.TbCustom.Size = new System.Drawing.Size(234, 35);
             this.TbCustom.TabIndex = 3;
             this.TbCustom.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
@@ -64,7 +66,7 @@
             this.TbFilename.Margin = new System.Windows.Forms.Padding(4);
             this.TbFilename.Name = "TbFilename";
             this.TbFilename.Size = new System.Drawing.Size(447, 35);
-            this.TbFilename.TabIndex = 5;
+            this.TbFilename.TabIndex = 7;
             // 
             // CbExtension
             // 
@@ -72,11 +74,11 @@
             this.CbExtension.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.CbExtension.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.CbExtension.FormattingEnabled = true;
-            this.CbExtension.Location = new System.Drawing.Point(32, 315);
+            this.CbExtension.Location = new System.Drawing.Point(289, 137);
             this.CbExtension.Margin = new System.Windows.Forms.Padding(4);
             this.CbExtension.Name = "CbExtension";
-            this.CbExtension.Size = new System.Drawing.Size(234, 37);
-            this.CbExtension.TabIndex = 7;
+            this.CbExtension.Size = new System.Drawing.Size(190, 37);
+            this.CbExtension.TabIndex = 5;
             // 
             // FileForm_Cancel
             // 
@@ -85,7 +87,7 @@
             this.FileForm_Cancel.Margin = new System.Windows.Forms.Padding(4);
             this.FileForm_Cancel.Name = "FileForm_Cancel";
             this.FileForm_Cancel.Size = new System.Drawing.Size(164, 56);
-            this.FileForm_Cancel.TabIndex = 10;
+            this.FileForm_Cancel.TabIndex = 13;
             this.FileForm_Cancel.Text = "Cancel";
             this.FileForm_Cancel.UseVisualStyleBackColor = true;
             this.FileForm_Cancel.Click += new System.EventHandler(this.FileForm_Cancel_Click);
@@ -97,7 +99,7 @@
             this.FileForm_Ok.Margin = new System.Windows.Forms.Padding(4);
             this.FileForm_Ok.Name = "FileForm_Ok";
             this.FileForm_Ok.Size = new System.Drawing.Size(164, 56);
-            this.FileForm_Ok.TabIndex = 9;
+            this.FileForm_Ok.TabIndex = 12;
             this.FileForm_Ok.Text = "Ok";
             this.FileForm_Ok.UseVisualStyleBackColor = true;
             this.FileForm_Ok.Click += new System.EventHandler(this.FileForm_Ok_Click);
@@ -121,18 +123,18 @@
             this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(131, 29);
-            this.label2.TabIndex = 4;
+            this.label2.TabIndex = 6;
             this.label2.Text = "File &Name:";
             // 
             // label3
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(27, 282);
+            this.label3.Location = new System.Drawing.Point(284, 104);
             this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(121, 29);
-            this.label3.TabIndex = 6;
+            this.label3.TabIndex = 4;
             this.label3.Text = "File &Type:";
             // 
             // CbDelimiter
@@ -163,10 +165,10 @@
             this.CbOpenFolder.AutoSize = true;
             this.CbOpenFolder.BackColor = System.Drawing.SystemColors.Control;
             this.CbOpenFolder.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.CbOpenFolder.Location = new System.Drawing.Point(32, 471);
+            this.CbOpenFolder.Location = new System.Drawing.Point(32, 142);
             this.CbOpenFolder.Name = "CbOpenFolder";
             this.CbOpenFolder.Size = new System.Drawing.Size(343, 33);
-            this.CbOpenFolder.TabIndex = 8;
+            this.CbOpenFolder.TabIndex = 11;
             this.CbOpenFolder.Text = "&Open folder when complete";
             this.CbOpenFolder.UseVisualStyleBackColor = false;
             // 
@@ -175,11 +177,11 @@
             this.CbQuoteText.AutoSize = true;
             this.CbQuoteText.BackColor = System.Drawing.SystemColors.Control;
             this.CbQuoteText.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.CbQuoteText.Location = new System.Drawing.Point(32, 423);
+            this.CbQuoteText.Location = new System.Drawing.Point(32, 94);
             this.CbQuoteText.Name = "CbQuoteText";
-            this.CbQuoteText.Size = new System.Drawing.Size(455, 33);
-            this.CbQuoteText.TabIndex = 11;
-            this.CbQuoteText.Text = "&Automatically add text qualifiers (\"text\")";
+            this.CbQuoteText.Size = new System.Drawing.Size(380, 33);
+            this.CbQuoteText.TabIndex = 10;
+            this.CbQuoteText.Text = "&Automatically add text qualifiers";
             this.CbQuoteText.UseVisualStyleBackColor = false;
             // 
             // CbContainsHeaders
@@ -187,21 +189,31 @@
             this.CbContainsHeaders.AutoSize = true;
             this.CbContainsHeaders.BackColor = System.Drawing.SystemColors.Control;
             this.CbContainsHeaders.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.CbContainsHeaders.Location = new System.Drawing.Point(32, 374);
+            this.CbContainsHeaders.Location = new System.Drawing.Point(32, 45);
             this.CbContainsHeaders.Name = "CbContainsHeaders";
             this.CbContainsHeaders.Size = new System.Drawing.Size(327, 33);
-            this.CbContainsHeaders.TabIndex = 12;
+            this.CbContainsHeaders.TabIndex = 9;
             this.CbContainsHeaders.Text = "&First row contains headers";
             this.CbContainsHeaders.UseVisualStyleBackColor = false;
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.CbContainsHeaders);
+            this.groupBox1.Controls.Add(this.CbQuoteText);
+            this.groupBox1.Controls.Add(this.CbOpenFolder);
+            this.groupBox1.Location = new System.Drawing.Point(32, 279);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(447, 219);
+            this.groupBox1.TabIndex = 8;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Options";
             // 
             // SheetFileForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(515, 607);
-            this.Controls.Add(this.CbContainsHeaders);
-            this.Controls.Add(this.CbQuoteText);
-            this.Controls.Add(this.CbOpenFolder);
+            this.ClientSize = new System.Drawing.Size(513, 602);
+            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.CbDelimiter);
             this.Controls.Add(this.FileForm_Cancel);
             this.Controls.Add(this.FileForm_Ok);
@@ -210,8 +222,8 @@
             this.Controls.Add(this.TbCustom);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.label4);
-            this.Controls.Add(this.label2);
             this.Controls.Add(this.label3);
+            this.Controls.Add(this.label2);
             this.KeyPreview = true;
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "SheetFileForm";
@@ -219,6 +231,8 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Worksheet to File";
             this.Load += new System.EventHandler(this.SheetFileForm_Load);
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -239,5 +253,6 @@
         private System.Windows.Forms.CheckBox CbOpenFolder;
         private System.Windows.Forms.CheckBox CbQuoteText;
         private System.Windows.Forms.CheckBox CbContainsHeaders;
+        private System.Windows.Forms.GroupBox groupBox1;
     }
 }

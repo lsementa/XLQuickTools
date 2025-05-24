@@ -251,6 +251,5 @@ namespace XLQuickTools
                 this.TbCustom.Enabled = true;
             }
         }
-
     }
 }
