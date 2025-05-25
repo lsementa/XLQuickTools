@@ -9,6 +9,8 @@ namespace XLQuickTools
     public partial class SplitterForm : Form
     {
         private readonly Excel.Worksheet _activeSheet;
+        private Excel.Range usedRange;
+        private Excel.Range originalRange;
 
         public SplitterForm(Excel.Worksheet activeSheet)
         {
@@ -19,10 +21,27 @@ namespace XLQuickTools
         // On Load
         private void SplitterForm_Load(object sender, EventArgs e)
         {
+            // Process pending Windows messages to clear the spinning cursor
+            Application.DoEvents();
 
-            // Show the user what the used range is
-            Excel.Range usedRange = _activeSheet.UsedRange;
+            // Get the used range and show the user
+            usedRange = _activeSheet.UsedRange;
             usedRange.Select();
+
+            // Check if the range has more than one row and starts at row 1
+            if (usedRange.Rows.Count >= 2 && usedRange.Row == 1)
+            {
+                // Automatically check there are headers
+                CbHeaders.Checked = true;
+            }
+            else
+            {
+                // Disable checkbox for headers if row count only one
+                if (usedRange.Rows.Count == 1)
+                {
+                    CbHeaders.Enabled = false;
+                }
+            }
 
             // Populate the delimiter combobox with options
             this.CbDelimiter.Items.AddRange(new object[]
@@ -48,140 +67,112 @@ namespace XLQuickTools
         // Main method to split delimted column cells to new rows
         public void SplitToRows(Excel.Worksheet activeSheet, string delimText, string customValue)
         {
-            // Excel application reference
             var excelApp = Globals.ThisAddIn.Application;
-            Excel.Range usedRange = activeSheet.UsedRange;
             if (usedRange == null) return;
 
             try
             {
-                // Turn screen updating off
                 excelApp.ScreenUpdating = false;
 
-                // Get last row and last column
-                int lastRow = usedRange.Rows.Count;
-                int lastCol = usedRange.Columns.Count;
-                // Change count
-                int changeCnt = 0;
+                // Determine actual bounds of usedRange
+                int startRow = usedRange.Row;
+                int endRow = startRow + usedRange.Rows.Count - 1;
+                int startCol = usedRange.Column;
+                int endCol = startCol + usedRange.Columns.Count - 1;
 
-                // Get the delimiter
+                int changeCnt = 0;
                 string delimiter = QTUtils.GetDelimiter(delimText, customValue);
 
-                for (int iLoop = lastRow; iLoop >= 2; iLoop--)
+                for (int iLoop = endRow; iLoop >= startRow; iLoop--)
                 {
                     int maxCnt = 0;
 
-                    for (int i = 1; i <= lastCol; i++)
+                    for (int i = startCol; i <= endCol; i++)
                     {
                         var cell = activeSheet.Cells[iLoop, i] as Excel.Range;
                         string cellValue = null;
 
-                        // Check if the cell is not null and convert its value to a string
                         if (cell != null && cell.Value2 != null)
                         {
                             if (cell.Value2 is double || cell.Value2 is int)
                             {
-                                // Convert numeric values to string
                                 cellValue = cell.Value2.ToString();
                             }
                             else if (cell.Value2 is string)
                             {
-                                // Directly use string values
                                 cellValue = (string)cell.Value2;
                             }
                         }
 
-                        // If cellValue is not null or empty
                         if (!string.IsNullOrEmpty(cellValue))
                         {
-                            // Split the cell value by the delimiter
                             string[] temp = cellValue.Split(new[] { delimiter }, StringSplitOptions.None);
-
-                            // Calculate the count of delimiters
                             int cntDelim = temp.Length - 1;
 
-                            // Check if the current delimiter count exceeds the max count
                             if (cntDelim > maxCnt)
                             {
-                                // Set the max
                                 maxCnt = cntDelim;
                                 changeCnt++;
                             }
                         }
                     }
 
-                    // Insert number of rows based on max count
                     if (maxCnt > 0)
                     {
                         Excel.Range insertRange = activeSheet.Rows[iLoop + 1 + ":" + (iLoop + maxCnt)];
                         insertRange.Insert(Excel.XlInsertShiftDirection.xlShiftDown, Type.Missing);
-
                     }
 
-                    // Split and add values
-                    for (int i = 1; i <= lastCol; i++)
+                    for (int i = startCol; i <= endCol; i++)
                     {
                         var cell = activeSheet.Cells[iLoop, i] as Excel.Range;
                         string cellValue = null;
 
-                        // Check if the cell is not null and its Value2 property has a value
                         if (cell != null && cell.Value2 != null)
                         {
-                            // Handle different possible types (double, string, etc.)
                             if (cell.Value2 is double || cell.Value2 is int)
                             {
-                                // Convert numeric values to string
                                 cellValue = cell.Value2.ToString();
                             }
                             else if (cell.Value2 is string)
                             {
-                                // If already a string, just assign it
                                 cellValue = (string)cell.Value2;
                             }
                             else
                             {
-                                // Handle other types if necessary (e.g., DateTime)
                                 cellValue = cell.Value2.ToString();
                             }
 
-                            // If the cellValue is not null or empty
                             if (!string.IsNullOrEmpty(cellValue))
                             {
-                                // Split the value based on the delimiter
                                 string[] temp = cellValue.Split(new[] { delimiter }, StringSplitOptions.None);
 
-                                // Iterate through the split values
                                 for (int jLoop = 0; jLoop < temp.Length; jLoop++)
                                 {
-                                    // Clean and trim the value
-                                    string cleanedValue = temp[jLoop].Trim();
-
-                                    // Clean
-                                    cleanedValue = Clean(cleanedValue);
-
-                                    // Assign the cleaned value back to the corresponding cell
+                                    string cleanedValue = Clean(temp[jLoop].Trim());
                                     activeSheet.Cells[iLoop + jLoop, i].Value2 = cleanedValue;
                                 }
                             }
                         }
                     }
 
-                    // Fill blanks
                     if (maxCnt > 0)
                     {
                         Excel.Range fillRange = activeSheet.Rows[iLoop + 1 + ":" + (iLoop + maxCnt)];
                         QTFunctions.FillBlanks(fillRange);
                     }
-
                 }
 
-                // Clean up
                 if (changeCnt > 0)
                 {
-                    // Turn text wrapping off
+                    // Check original range
+                    if (originalRange == null)
+                    {
+                        originalRange = usedRange;
+                    }
                     usedRange.WrapText = false;
-                    // Select the first row
-                    activeSheet.Cells[1, 1].Select();
+                    Excel.Range firstCell = activeSheet.Cells[originalRange.Row, originalRange.Column];
+                    firstCell.Select();
                 }
             }
             catch (Exception ex)
@@ -194,7 +185,6 @@ namespace XLQuickTools
             }
             finally
             {
-                // Clean up COM objects
                 if (usedRange != null && Marshal.IsComObject(usedRange))
                 {
                     Marshal.ReleaseComObject(usedRange);
@@ -204,10 +194,10 @@ namespace XLQuickTools
                     Marshal.ReleaseComObject(activeSheet);
                 }
 
-                // Turn screenupdating back on
                 excelApp.ScreenUpdating = true;
             }
         }
+
 
         // Custom method to mimic Excel's CLEAN function
         private string Clean(string input)
@@ -251,5 +241,37 @@ namespace XLQuickTools
                 this.TbCustom.Enabled = true;
             }
         }
+
+        // My data has headers checkbox
+        private void CbHeaders_CheckedChanged(object sender, EventArgs e)
+        {
+            if (usedRange == null) return;
+
+            // Cache the original range the first time
+            if (originalRange == null)
+            {
+                originalRange = usedRange;
+            }
+
+            if (CbHeaders.Checked)
+            {
+                // Only adjust if more than 1 row
+                if (originalRange.Rows.Count > 1)
+                {
+                    usedRange = originalRange.Offset[1, 0].Resize[originalRange.Rows.Count - 1, originalRange.Columns.Count];
+                }
+                else
+                {
+                    usedRange = originalRange;
+                }
+            }
+            else
+            {
+                usedRange = originalRange;
+            }
+
+            usedRange.Select();
+        }
+
     }
 }
