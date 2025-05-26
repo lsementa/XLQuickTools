@@ -198,7 +198,6 @@ namespace XLQuickTools
             }
         }
 
-
         // Custom method to mimic Excel's CLEAN function
         private string Clean(string input)
         {

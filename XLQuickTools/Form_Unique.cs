@@ -7,11 +7,15 @@ namespace XLQuickTools
 {
     public partial class UniqueDataForm : Form
     {
+        private readonly Excel.Worksheet activeSheet;
         private Excel.Range rangeToProcess;
+        private Excel.Range originalRange;
 
         public UniqueDataForm(Excel.Range rangeToProcess)
         {
             InitializeComponent();
+            Excel.Application excelApp = Globals.ThisAddIn.Application;
+            this.activeSheet = excelApp.ActiveSheet;
             this.rangeToProcess = rangeToProcess;
         }
 
@@ -50,23 +54,27 @@ namespace XLQuickTools
         {
             if (rangeToProcess == null) return;
 
-            Excel.Application excelApp = Globals.ThisAddIn.Application;
+            // Cache the original range the first time
+            if (originalRange == null)
+            {
+                originalRange = rangeToProcess;
+            }
 
             if (CbHeaders.Checked)
             {
-                // Exclude the first row (shift down) from select
-                if (rangeToProcess.Rows.Count > 1)
+                // Only adjust if more than 1 row
+                if (originalRange.Rows.Count > 1)
                 {
-                    rangeToProcess = rangeToProcess.Offset[1, 0].Resize[rangeToProcess.Rows.Count - 1, rangeToProcess.Columns.Count];
+                    rangeToProcess = originalRange.Offset[1, 0].Resize[originalRange.Rows.Count - 1, originalRange.Columns.Count];
+                }
+                else
+                {
+                    rangeToProcess = originalRange;
                 }
             }
             else
             {
-                // Include the first row
-                if (rangeToProcess.Rows.Count != 1)
-                {
-                    rangeToProcess = rangeToProcess.Offset[-1, 0].Resize[rangeToProcess.Rows.Count + 1, rangeToProcess.Columns.Count];
-                }
+                rangeToProcess = originalRange;
             }
 
             // Select the adjusted range
@@ -186,8 +194,6 @@ namespace XLQuickTools
         // Cancel button
         private void UniqueForm_Cancel_Click(object sender, EventArgs e)
         {
-            Excel.Application excelApp = Globals.ThisAddIn.Application;
-            Excel.Worksheet activeSheet = excelApp.ActiveSheet;
             // Select cell A1 to clear selection
             activeSheet.Range["A1"].Select();
             // Close
