@@ -834,7 +834,7 @@ namespace XLQuickTools
             {
                 Excel.Worksheet activeSheet = excelApp.ActiveSheet;
                 Excel.Range selectedRange = excelApp.Selection;
-                Excel.Range dataRange = null;
+                Excel.Range columnRange = null;
 
                 try
                 {
@@ -849,17 +849,14 @@ namespace XLQuickTools
                         }
                     }
 
-                    // Limit the operation to the actual rows with data
-                    dataRange = selectedRange.SpecialCells(Excel.XlCellType.xlCellTypeConstants, Type.Missing)
-                        ?? selectedRange.SpecialCells(Excel.XlCellType.xlCellTypeFormulas, Type.Missing)
-                        ?? selectedRange;
+                    columnRange = selectedRange.EntireColumn;
 
-                    // Set column to general format
-                    selectedRange.NumberFormat = "General";
+                    // Set to General format
+                    columnRange.NumberFormat = "General";
 
-                    // Perform TextToColumns to reset it
-                    dataRange.TextToColumns(
-                        Destination: dataRange.Cells[1, 1],  // Start destination
+                    // Apply TextToColumns to the whole column
+                    columnRange.TextToColumns(
+                        Destination: columnRange.Cells[1, 1],
                         DataType: Excel.XlTextParsingType.xlDelimited,
                         TextQualifier: Excel.XlTextQualifier.xlTextQualifierDoubleQuote,
                         ConsecutiveDelimiter: false,
@@ -871,7 +868,6 @@ namespace XLQuickTools
                         FieldInfo: new object[,] { { 1, 1 } },
                         TrailingMinusNumbers: true
                     );
-
                 }
                 catch (Exception ex)
                 {
@@ -879,11 +875,11 @@ namespace XLQuickTools
                 }
                 finally
                 {
+                    QTUtils.CleanupResources(columnRange);
                     QTUtils.CleanupResources(selectedRange);
-                    QTUtils.CleanupResources(dataRange);
                 }
-
             }
         }
     }
 }
+
