@@ -344,6 +344,16 @@ namespace XLQuickTools
                                 val2?.ToString() ?? "Empty",    // Value from Sheet 2
                                 cellRef2                       // A1 Reference for Sheet 2
                             ));
+
+                            // Highlight differences
+                            if (CbHighlight.Checked)
+                            {
+                                Excel.Range cell1 = sheet1.Cells[row, col];
+                                Excel.Range cell2 = sheet2.Cells[row, col];
+
+                                cell1.Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Yellow);
+                                cell2.Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Yellow);
+                            }
                         }
                     }
                 }
@@ -386,20 +396,6 @@ namespace XLQuickTools
                         compareSheet.Cells[compareRow, 2].Value = diff.Item2;
                         compareSheet.Cells[compareRow, 3].Value = diff.Item3;
                         compareSheet.Cells[compareRow, 4].Value = diff.Item4;
-
-/*                        // Add hyperlinks to the original sheets
-                        compareSheet.Hyperlinks.Add(
-                            compareSheet.Cells[compareRow, 1],
-                            "",
-                            $"'{sheet1.Name}'!{diff.Item2}",
-                            TextToDisplay: diff.Item1
-                        );
-                        compareSheet.Hyperlinks.Add(
-                            compareSheet.Cells[compareRow, 2],
-                            "",
-                            $"'{sheet2.Name}'!{diff.Item4}",
-                            TextToDisplay: diff.Item3
-                        );*/
 
                         compareRow++;
                     }
@@ -489,6 +485,7 @@ namespace XLQuickTools
             CbWorksheets1.Text = string.Empty;
             CbWorksheets2.Text = string.Empty;
             CbWorkbooks2.Text = string.Empty;
+            CbHighlight.Checked = true;
 
             // Clear any DataGridView
             if (DgCompare != null)

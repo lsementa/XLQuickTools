@@ -42,12 +42,13 @@
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.BtnClear = new System.Windows.Forms.Button();
+            this.CbHighlight = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.DgCompare)).BeginInit();
             this.SuspendLayout();
             // 
             // TbMaxRows
             // 
-            this.TbMaxRows.Location = new System.Drawing.Point(508, 225);
+            this.TbMaxRows.Location = new System.Drawing.Point(508, 259);
             this.TbMaxRows.Margin = new System.Windows.Forms.Padding(6);
             this.TbMaxRows.Name = "TbMaxRows";
             this.TbMaxRows.Size = new System.Drawing.Size(86, 31);
@@ -59,7 +60,7 @@
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(20, 229);
+            this.label1.Location = new System.Drawing.Point(20, 263);
             this.label1.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(479, 25);
@@ -104,7 +105,7 @@
             // 
             // BtnClose
             // 
-            this.BtnClose.Location = new System.Drawing.Point(414, 715);
+            this.BtnClose.Location = new System.Drawing.Point(414, 749);
             this.BtnClose.Margin = new System.Windows.Forms.Padding(6);
             this.BtnClose.Name = "BtnClose";
             this.BtnClose.Size = new System.Drawing.Size(164, 56);
@@ -126,7 +127,7 @@
             this.DgCompare.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.DgCompare.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.DgCompare.EnableHeadersVisualStyles = false;
-            this.DgCompare.Location = new System.Drawing.Point(26, 275);
+            this.DgCompare.Location = new System.Drawing.Point(26, 309);
             this.DgCompare.Margin = new System.Windows.Forms.Padding(6);
             this.DgCompare.Name = "DgCompare";
             this.DgCompare.ReadOnly = true;
@@ -141,7 +142,7 @@
             // 
             // BtnRun
             // 
-            this.BtnRun.Location = new System.Drawing.Point(26, 715);
+            this.BtnRun.Location = new System.Drawing.Point(26, 749);
             this.BtnRun.Margin = new System.Windows.Forms.Padding(6);
             this.BtnRun.Name = "BtnRun";
             this.BtnRun.Size = new System.Drawing.Size(164, 56);
@@ -200,7 +201,7 @@
             // 
             // BtnClear
             // 
-            this.BtnClear.Location = new System.Drawing.Point(221, 715);
+            this.BtnClear.Location = new System.Drawing.Point(221, 749);
             this.BtnClear.Margin = new System.Windows.Forms.Padding(6);
             this.BtnClear.Name = "BtnClear";
             this.BtnClear.Size = new System.Drawing.Size(164, 56);
@@ -209,11 +210,22 @@
             this.BtnClear.UseVisualStyleBackColor = true;
             this.BtnClear.Click += new System.EventHandler(this.BtnClear_Click);
             // 
+            // CbHighlight
+            // 
+            this.CbHighlight.AutoSize = true;
+            this.CbHighlight.Location = new System.Drawing.Point(26, 214);
+            this.CbHighlight.Name = "CbHighlight";
+            this.CbHighlight.Size = new System.Drawing.Size(374, 29);
+            this.CbHighlight.TabIndex = 27;
+            this.CbHighlight.Text = "Highlight differences on worksheet";
+            this.CbHighlight.UseVisualStyleBackColor = true;
+            // 
             // UserControl_Compare
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this.Controls.Add(this.CbHighlight);
             this.Controls.Add(this.BtnClear);
             this.Controls.Add(this.BtnRun);
             this.Controls.Add(this.DgCompare);
@@ -230,7 +242,7 @@
             this.Controls.Add(this.label4);
             this.Margin = new System.Windows.Forms.Padding(6);
             this.Name = "UserControl_Compare";
-            this.Size = new System.Drawing.Size(892, 792);
+            this.Size = new System.Drawing.Size(892, 825);
             this.Load += new System.EventHandler(this.UserControl_Compare_Load);
             ((System.ComponentModel.ISupportInitialize)(this.DgCompare)).EndInit();
             this.ResumeLayout(false);
@@ -253,5 +265,6 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Button BtnClear;
+        private System.Windows.Forms.CheckBox CbHighlight;
     }
 }
