@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
+using Microsoft.Office.Interop.Excel;
 using Excel = Microsoft.Office.Interop.Excel;
 
 namespace XLQuickTools
@@ -90,6 +91,10 @@ namespace XLQuickTools
                         newRowIndex++;
                     }
                 }
+
+                // Auto-fit all used columns
+                usedRange = newSheet.UsedRange;
+                usedRange.Columns.AutoFit();
             }
             catch (Exception ex)
             {
