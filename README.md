@@ -81,6 +81,7 @@ Restores the range back to its original state. Excels Undo button will not work 
 - **Delete Empty Rows:** Deletes any empty rows on the active worksheet.
 - **Delete Empty Columns:** Deletes any empty columns on the active worksheet. This includes deleting columns with headings if the rest of the rows are empty.
 - **Fill Down:** Fills blank cells with the value above, based on the selected range.
+- **Copy Highlighted Rows:** Copy any row that has at least one cell with a background color to a new worksheet.
 - **Reset column:** Ensures the column's formatting and data handling are reset. Numbers stored as text will be recognized as numbers.
 - **Sheet Names to Clipboard:** Create a list of sheet names using the active workbook.
 - **Copy Formatting to All Sheets:** Copies the formatting on the active worksheet to all worksheets.
