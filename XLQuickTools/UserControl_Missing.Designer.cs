@@ -86,7 +86,7 @@
             this.DgMissing.ShowEditingIcon = false;
             this.DgMissing.ShowRowErrors = false;
             this.DgMissing.Size = new System.Drawing.Size(830, 429);
-            this.DgMissing.TabIndex = 5;
+            this.DgMissing.TabIndex = 6;
             // 
             // UcMissingClose
             // 
@@ -94,7 +94,7 @@
             this.UcMissingClose.Margin = new System.Windows.Forms.Padding(4);
             this.UcMissingClose.Name = "UcMissingClose";
             this.UcMissingClose.Size = new System.Drawing.Size(164, 56);
-            this.UcMissingClose.TabIndex = 8;
+            this.UcMissingClose.TabIndex = 9;
             this.UcMissingClose.Text = "Close";
             this.UcMissingClose.UseVisualStyleBackColor = true;
             this.UcMissingClose.Click += new System.EventHandler(this.UcMissingClose_Click);
@@ -105,7 +105,7 @@
             this.BtnCheck.Margin = new System.Windows.Forms.Padding(4);
             this.BtnCheck.Name = "BtnCheck";
             this.BtnCheck.Size = new System.Drawing.Size(164, 56);
-            this.BtnCheck.TabIndex = 6;
+            this.BtnCheck.TabIndex = 7;
             this.BtnCheck.Text = "Run";
             this.BtnCheck.UseVisualStyleBackColor = true;
             this.BtnCheck.Click += new System.EventHandler(this.BtnCheck_Click);
@@ -116,7 +116,7 @@
             this.TbMaxRows.Margin = new System.Windows.Forms.Padding(6);
             this.TbMaxRows.Name = "TbMaxRows";
             this.TbMaxRows.Size = new System.Drawing.Size(86, 31);
-            this.TbMaxRows.TabIndex = 4;
+            this.TbMaxRows.TabIndex = 5;
             this.TbMaxRows.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // label1
@@ -126,7 +126,7 @@
             this.label1.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(479, 25);
-            this.label1.TabIndex = 11;
+            this.label1.TabIndex = 4;
             this.label1.Text = "Place results on a new worksheet if they exceed:";
             // 
             // label2
@@ -159,7 +159,7 @@
             this.BtnClear.Margin = new System.Windows.Forms.Padding(4);
             this.BtnClear.Name = "BtnClear";
             this.BtnClear.Size = new System.Drawing.Size(164, 56);
-            this.BtnClear.TabIndex = 7;
+            this.BtnClear.TabIndex = 8;
             this.BtnClear.Text = "Refresh";
             this.BtnClear.UseVisualStyleBackColor = true;
             this.BtnClear.Click += new System.EventHandler(this.BtnClear_Click);

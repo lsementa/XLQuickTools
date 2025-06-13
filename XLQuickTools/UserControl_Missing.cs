@@ -312,5 +312,9 @@ namespace XLQuickTools
             ResetFields();
         }
 
+        private void TbRange1_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

@@ -476,7 +476,6 @@ namespace XLQuickTools
             CbWorksheets1.Text = string.Empty;
             CbWorksheets2.Text = string.Empty;
             CbWorkbooks2.Text = string.Empty;
-            CbHighlight.Checked = true;
 
             // Clear any DataGridView
             if (DgCompare != null)

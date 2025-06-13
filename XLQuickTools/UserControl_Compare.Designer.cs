@@ -52,7 +52,7 @@
             this.TbMaxRows.Margin = new System.Windows.Forms.Padding(6);
             this.TbMaxRows.Name = "TbMaxRows";
             this.TbMaxRows.Size = new System.Drawing.Size(86, 31);
-            this.TbMaxRows.TabIndex = 4;
+            this.TbMaxRows.TabIndex = 10;
             this.TbMaxRows.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // label1
@@ -64,7 +64,7 @@
             this.label1.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(479, 25);
-            this.label1.TabIndex = 13;
+            this.label1.TabIndex = 9;
             this.label1.Text = "Place results on a new worksheet if they exceed:";
             // 
             // CbWorkbooks1
@@ -74,7 +74,7 @@
             this.CbWorkbooks1.Margin = new System.Windows.Forms.Padding(6);
             this.CbWorkbooks1.Name = "CbWorkbooks1";
             this.CbWorkbooks1.Size = new System.Drawing.Size(243, 33);
-            this.CbWorkbooks1.TabIndex = 0;
+            this.CbWorkbooks1.TabIndex = 1;
             // 
             // CbWorksheets1
             // 
@@ -83,7 +83,7 @@
             this.CbWorksheets1.Margin = new System.Windows.Forms.Padding(6);
             this.CbWorksheets1.Name = "CbWorksheets1";
             this.CbWorksheets1.Size = new System.Drawing.Size(243, 33);
-            this.CbWorksheets1.TabIndex = 1;
+            this.CbWorksheets1.TabIndex = 3;
             // 
             // CbWorkbooks2
             // 
@@ -92,7 +92,7 @@
             this.CbWorkbooks2.Margin = new System.Windows.Forms.Padding(6);
             this.CbWorkbooks2.Name = "CbWorkbooks2";
             this.CbWorkbooks2.Size = new System.Drawing.Size(246, 33);
-            this.CbWorkbooks2.TabIndex = 2;
+            this.CbWorkbooks2.TabIndex = 5;
             // 
             // CbWorksheets2
             // 
@@ -101,7 +101,7 @@
             this.CbWorksheets2.Margin = new System.Windows.Forms.Padding(6);
             this.CbWorksheets2.Name = "CbWorksheets2";
             this.CbWorksheets2.Size = new System.Drawing.Size(246, 33);
-            this.CbWorksheets2.TabIndex = 3;
+            this.CbWorksheets2.TabIndex = 7;
             // 
             // BtnClose
             // 
@@ -109,7 +109,7 @@
             this.BtnClose.Margin = new System.Windows.Forms.Padding(6);
             this.BtnClose.Name = "BtnClose";
             this.BtnClose.Size = new System.Drawing.Size(164, 56);
-            this.BtnClose.TabIndex = 8;
+            this.BtnClose.TabIndex = 14;
             this.BtnClose.Text = "Close";
             this.BtnClose.UseVisualStyleBackColor = true;
             this.BtnClose.Click += new System.EventHandler(this.BtnClose_Click);
@@ -138,7 +138,7 @@
             this.DgCompare.ShowEditingIcon = false;
             this.DgCompare.ShowRowErrors = false;
             this.DgCompare.Size = new System.Drawing.Size(828, 429);
-            this.DgCompare.TabIndex = 5;
+            this.DgCompare.TabIndex = 11;
             // 
             // BtnRun
             // 
@@ -146,7 +146,7 @@
             this.BtnRun.Margin = new System.Windows.Forms.Padding(6);
             this.BtnRun.Name = "BtnRun";
             this.BtnRun.Size = new System.Drawing.Size(164, 56);
-            this.BtnRun.TabIndex = 6;
+            this.BtnRun.TabIndex = 12;
             this.BtnRun.Text = "Run";
             this.BtnRun.UseVisualStyleBackColor = true;
             this.BtnRun.Click += new System.EventHandler(this.BtnRun_Click);
@@ -160,7 +160,7 @@
             this.label2.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(148, 29);
-            this.label2.TabIndex = 23;
+            this.label2.TabIndex = 0;
             this.label2.Text = "Workbook 1:";
             // 
             // label3
@@ -172,7 +172,7 @@
             this.label3.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(148, 29);
-            this.label3.TabIndex = 24;
+            this.label3.TabIndex = 4;
             this.label3.Text = "Workbook 2:";
             // 
             // label4
@@ -184,7 +184,7 @@
             this.label4.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(153, 29);
-            this.label4.TabIndex = 25;
+            this.label4.TabIndex = 2;
             this.label4.Text = "Worksheet 1:";
             // 
             // label5
@@ -196,7 +196,7 @@
             this.label5.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(153, 29);
-            this.label5.TabIndex = 26;
+            this.label5.TabIndex = 6;
             this.label5.Text = "Worksheet 2:";
             // 
             // BtnClear
@@ -205,7 +205,7 @@
             this.BtnClear.Margin = new System.Windows.Forms.Padding(6);
             this.BtnClear.Name = "BtnClear";
             this.BtnClear.Size = new System.Drawing.Size(164, 56);
-            this.BtnClear.TabIndex = 7;
+            this.BtnClear.TabIndex = 13;
             this.BtnClear.Text = "Refresh";
             this.BtnClear.UseVisualStyleBackColor = true;
             this.BtnClear.Click += new System.EventHandler(this.BtnClear_Click);
@@ -216,7 +216,7 @@
             this.CbHighlight.Location = new System.Drawing.Point(26, 214);
             this.CbHighlight.Name = "CbHighlight";
             this.CbHighlight.Size = new System.Drawing.Size(374, 29);
-            this.CbHighlight.TabIndex = 27;
+            this.CbHighlight.TabIndex = 8;
             this.CbHighlight.Text = "Highlight differences on worksheet";
             this.CbHighlight.UseVisualStyleBackColor = true;
             // 
