@@ -148,17 +148,7 @@ namespace XLQuickTools
                 if (rowCount > maxRows || rowCount > 50)
                 {
                     // Create MissingReport worksheet only if differences are found
-                    string baseName = "Missing";
-                    string uniqueName = baseName;
-                    int counter = 1;
-                    while (QTUtils.WorksheetExists(workbook, uniqueName))
-                    {
-                        uniqueName = baseName + counter.ToString();
-                        counter++;
-                    }
-
-                    Excel.Worksheet missingReportSheet = workbook.Sheets.Add(After: activeSheet);
-                    missingReportSheet.Name = uniqueName;
+                    Excel.Worksheet missingReportSheet = QTUtils.AddUniqueNamedWorksheet(workbook, activeSheet, "Missing");
 
                     // Add headers
                     missingReportSheet.Cells[1, 1].Value = $"Missing in {TbRange1.Text.Replace("$", "")}";

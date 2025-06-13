@@ -386,7 +386,8 @@ namespace XLQuickTools
         // Create a list of files
         private void BtnFileList_Click(object sender, RibbonControlEventArgs e)
         {
-            FileListForm form1 = new FileListForm();
+            Excel.Application excelApp = Globals.ThisAddIn.Application;
+            FileListForm form1 = new FileListForm(excelApp);
             form1.ShowDialog();
         }
 
@@ -394,6 +395,14 @@ namespace XLQuickTools
         private void BtnRemoveObjects_Click(object sender, RibbonControlEventArgs e)
         {
             RemoveObjectsForm form1 = new RemoveObjectsForm();
+            form1.ShowDialog();
+        }
+
+        // Copy highlighted rows to new worksheet
+        private void BtnCopyHighlightedRows_Click(object sender, RibbonControlEventArgs e)
+        {
+            Excel.Application excelApp = Globals.ThisAddIn.Application;
+            HighlightForm form1 = new HighlightForm(excelApp);
             form1.ShowDialog();
         }
     }

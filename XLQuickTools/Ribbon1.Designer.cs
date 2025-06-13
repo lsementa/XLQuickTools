@@ -77,6 +77,7 @@
             this.BtnDeleteColumns = this.Factory.CreateRibbonButton();
             this.separator5 = this.Factory.CreateRibbonSeparator();
             this.BtnFillDown = this.Factory.CreateRibbonButton();
+            this.BtnCopyHighlightedRows = this.Factory.CreateRibbonButton();
             this.BtnResetColumn = this.Factory.CreateRibbonButton();
             this.separator7 = this.Factory.CreateRibbonSeparator();
             this.BtnCopyFormatting = this.Factory.CreateRibbonButton();
@@ -467,6 +468,7 @@
             this.AdditionalMenu.Items.Add(this.BtnDeleteColumns);
             this.AdditionalMenu.Items.Add(this.separator5);
             this.AdditionalMenu.Items.Add(this.BtnFillDown);
+            this.AdditionalMenu.Items.Add(this.BtnCopyHighlightedRows);
             this.AdditionalMenu.Items.Add(this.BtnResetColumn);
             this.AdditionalMenu.Items.Add(this.separator7);
             this.AdditionalMenu.Items.Add(this.BtnCopyFormatting);
@@ -511,6 +513,16 @@
             this.BtnFillDown.ShowImage = true;
             this.BtnFillDown.SuperTip = "Fill any blank cells with the value above in the selected range.";
             this.BtnFillDown.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnFillDown_Click);
+            // 
+            // BtnCopyHighlightedRows
+            // 
+            this.BtnCopyHighlightedRows.Label = "Copy &Highlighted Rows";
+            this.BtnCopyHighlightedRows.Name = "BtnCopyHighlightedRows";
+            this.BtnCopyHighlightedRows.OfficeImageId = "ConditionalFormattingColorScalesGallery";
+            this.BtnCopyHighlightedRows.ShowImage = true;
+            this.BtnCopyHighlightedRows.SuperTip = "Copy any row that has at least one cell with a background color to a new workshee" +
+    "t.";
+            this.BtnCopyHighlightedRows.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnCopyHighlightedRows_Click);
             // 
             // BtnResetColumn
             // 
@@ -819,6 +831,7 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnConvertTableRemove;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnRemoveObjects;
         internal Microsoft.Office.Tools.Ribbon.RibbonSeparator separator8;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnCopyHighlightedRows;
     }
 
     partial class ThisRibbonCollection

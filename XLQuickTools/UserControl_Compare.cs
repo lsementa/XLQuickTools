@@ -371,18 +371,9 @@ namespace XLQuickTools
                 else
                 {
                     DgCompare.Columns.Clear();
-                    // Create CompareReport worksheet if there are more than maxRows differences
-                    string baseName = "Compare Report";
-                    string uniqueName = baseName;
-                    int counter = 1;
-                    while (QTUtils.WorksheetExists(workbook, uniqueName))
-                    {
-                        uniqueName = baseName + counter.ToString();
-                        counter++;
-                    }
 
-                    Excel.Worksheet compareSheet = workbook.Sheets.Add(After: activeSheet);
-                    compareSheet.Name = uniqueName;
+                    // Create CompareReport worksheet if there are more than maxRows differences
+                    Excel.Worksheet compareSheet = QTUtils.AddUniqueNamedWorksheet(workbook, activeSheet, "Compare Report");
                     compareSheet.Cells[1, 1].Value = sheet1.Name + " Cell Contains";
                     compareSheet.Cells[1, 2].Value = "Reference";
                     compareSheet.Cells[1, 3].Value = sheet2.Name + " Cell Contains";

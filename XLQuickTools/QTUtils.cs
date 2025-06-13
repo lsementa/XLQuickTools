@@ -147,6 +147,29 @@ namespace XLQuickTools
             return false;
         }
 
+        // Get unique name
+        public static string GetUniqueName(string baseName, Excel.Workbook workbook)
+        {
+            string uniqueName = baseName;
+            int counter = 1;
+
+            while (WorksheetExists(workbook, uniqueName))
+            {
+                uniqueName = $"{baseName}{counter}";
+                counter++;
+            }
+
+            return uniqueName;
+        }
+
+        // Create unique worksheet
+        public static Excel.Worksheet AddUniqueNamedWorksheet(Excel.Workbook workbook, Excel.Worksheet worksheet, string baseName)
+        {
+            Excel.Worksheet newSheet = (Excel.Worksheet)workbook.Sheets.Add(After: worksheet);
+            newSheet.Name = GetUniqueName(baseName, workbook);
+            return newSheet;
+        }
+
         // Show error message
         public static void ShowError(Exception ex)
         {

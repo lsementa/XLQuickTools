@@ -209,6 +209,12 @@
     can be found.
   -->
   <ItemGroup>
+    <Compile Include="Form_CopyHighlighted.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form_CopyHighlighted.Designer.cs">
+      <DependentUpon>Form_CopyHighlighted.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form_RemoveObjects.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -289,6 +295,9 @@
     <Compile Include="UserControl_Compare.Designer.cs">
       <DependentUpon>UserControl_Compare.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Form_CopyHighlighted.resx">
+      <DependentUpon>Form_CopyHighlighted.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form_RemoveObjects.resx">
       <DependentUpon>Form_RemoveObjects.cs</DependentUpon>
     </EmbeddedResource>

@@ -7,9 +7,12 @@ namespace XLQuickTools
 {
     public partial class FileListForm : Form
     {
-        public FileListForm()
+        private readonly Excel.Application _excelApp;
+
+        public FileListForm(Excel.Application excelApp)
         {
             InitializeComponent();
+            _excelApp = excelApp;
         }
 
         // On Load
@@ -30,10 +33,12 @@ namespace XLQuickTools
         // Use Active Worksheet
         private void CbActiveSheet_CheckedChanged(object sender, EventArgs e)
         {
+            Excel.Workbook workbook = _excelApp.ActiveWorkbook;
+
             if (!CbActiveSheet.Checked)
             {
                 TbSheetName.Enabled = true;
-                TbSheetName.Text = "File List";
+                TbSheetName.Text = QTUtils.GetUniqueName("File List", workbook);
                 TbSheetName.Select();
             }
             else
@@ -63,15 +68,14 @@ namespace XLQuickTools
         // Ok Button
         private void FileListForm_Ok_Click(object sender, EventArgs e)
         {
-            Excel.Application excelApp = Globals.ThisAddIn.Application;
-            Excel.Workbook workbook = excelApp.ActiveWorkbook;
-            Excel.Worksheet activeSheet = excelApp.ActiveSheet;
+            Excel.Workbook workbook = _excelApp.ActiveWorkbook;
+            Excel.Worksheet activeSheet = _excelApp.ActiveSheet;
             Excel.Worksheet sheet;
 
             try
             {
                 // Turn off screen updating
-                excelApp.ScreenUpdating = false;
+                _excelApp.ScreenUpdating = false;
 
                 // Get and check folder path
                 string folderPath = TbFolder.Text;
@@ -100,16 +104,6 @@ namespace XLQuickTools
                     }
                 }
 
-                // Make sure sheet name is unique
-                string uniqueName = sheetName;
-                int counter = 1;
-
-                while (QTUtils.WorksheetExists(workbook, uniqueName))
-                {
-                    uniqueName = sheetName + counter.ToString();
-                    counter++;
-                }
-
                 // Collect files
                 SearchOption searchOption = includeSubDirs ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
                 string[] files = Directory.GetFiles(folderPath, "*.*", searchOption);
@@ -123,9 +117,8 @@ namespace XLQuickTools
                 }
                 else
                 {
-                    sheet = (Excel.Worksheet)workbook.Sheets.Add();
-                    // Use unique name
-                    sheet.Name = uniqueName;
+                    // Create new sheet
+                    sheet = QTUtils.AddUniqueNamedWorksheet(workbook, activeSheet, sheetName);
                 }
 
                 // Header row
@@ -168,7 +161,7 @@ namespace XLQuickTools
             finally
             {
                 // Turn screen updating back on
-                excelApp.ScreenUpdating = true;
+                _excelApp.ScreenUpdating = true;
             }
         }
 
@@ -177,7 +170,6 @@ namespace XLQuickTools
         {
             this.Close();
         }
-
 
     }
 }
