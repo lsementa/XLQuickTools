@@ -398,6 +398,12 @@ namespace XLQuickTools
             form1.ShowDialog();
         }
 
+        // Copy highlighted cells to clipboard
+        private void BtnCopyHighlightedValues_Click(object sender, RibbonControlEventArgs e)
+        {
+            QTFunctions.CopyHighlightedCellsToClipboard();
+        }
+
         // Copy highlighted rows to new worksheet
         private void BtnCopyHighlightedRows_Click(object sender, RibbonControlEventArgs e)
         {
@@ -405,6 +411,7 @@ namespace XLQuickTools
             HighlightForm form1 = new HighlightForm(excelApp);
             form1.ShowDialog();
         }
+
     }
 }
 

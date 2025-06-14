@@ -846,5 +846,55 @@ namespace XLQuickTools
 
         }
 
+        // Copy highlighted cells to clipboard
+        public static void CopyHighlightedCellsToClipboard()
+        {
+            Excel.Application excelApp = Globals.ThisAddIn.Application;
+            Excel.Worksheet activeSheet = excelApp.ActiveSheet;
+            Excel.Range rangeToProcess = null;
+
+            try
+            {
+                rangeToProcess = QTUtils.GetRangeToProcess(excelApp);
+                if (rangeToProcess == null) return;
+
+                StringBuilder clipboardText = new StringBuilder();
+
+                int rowCount = rangeToProcess.Rows.Count;
+                int colCount = rangeToProcess.Columns.Count;
+
+                for (int i = 1; i <= rowCount; i++)
+                {
+                    for (int j = 1; j <= colCount; j++)
+                    {
+                        Excel.Range cell = rangeToProcess.Cells[i, j];
+
+                        // Check if the cell's interior color is not the default 'no fill' color.
+                        if (cell.Interior.ColorIndex != (int)Excel.XlColorIndex.xlColorIndexNone)
+                        {
+                            object value = cell.Value2;
+                            if (value != null && !string.IsNullOrWhiteSpace(value.ToString()))
+                            {
+                                clipboardText.AppendLine(value.ToString());
+                            }
+                        }
+                    }
+                }
+
+                if (clipboardText.Length > 0)
+                {
+                    Clipboard.SetText(clipboardText.ToString());
+                }
+            }
+            catch (Exception ex)
+            {
+                QTUtils.ShowError(ex);
+            }
+            finally
+            {
+                QTUtils.CleanupResources(rangeToProcess);
+            }
+        }
+
     }
 }
