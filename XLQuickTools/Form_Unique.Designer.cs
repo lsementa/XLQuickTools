@@ -38,8 +38,6 @@
             this.BtnUnselectAll = new System.Windows.Forms.Button();
             this.UniqueForm_Ok = new System.Windows.Forms.Button();
             this.UniqueForm_Cancel = new System.Windows.Forms.Button();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // ClbColumns
@@ -47,7 +45,7 @@
             this.ClbColumns.CheckOnClick = true;
             this.ClbColumns.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ClbColumns.FormattingEnabled = true;
-            this.ClbColumns.Location = new System.Drawing.Point(29, 230);
+            this.ClbColumns.Location = new System.Drawing.Point(29, 219);
             this.ClbColumns.Name = "ClbColumns";
             this.ClbColumns.Size = new System.Drawing.Size(617, 228);
             this.ClbColumns.TabIndex = 8;
@@ -57,7 +55,7 @@
             // 
             this.CbHeaders.AutoSize = true;
             this.CbHeaders.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.CbHeaders.Location = new System.Drawing.Point(34, 182);
+            this.CbHeaders.Location = new System.Drawing.Point(34, 171);
             this.CbHeaders.Name = "CbHeaders";
             this.CbHeaders.Size = new System.Drawing.Size(266, 33);
             this.CbHeaders.TabIndex = 5;
@@ -71,9 +69,9 @@
             this.TbUniqueValues.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.TbUniqueValues.Enabled = false;
             this.TbUniqueValues.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TbUniqueValues.Location = new System.Drawing.Point(62, 74);
+            this.TbUniqueValues.Location = new System.Drawing.Point(228, 32);
             this.TbUniqueValues.Name = "TbUniqueValues";
-            this.TbUniqueValues.Size = new System.Drawing.Size(216, 35);
+            this.TbUniqueValues.Size = new System.Drawing.Size(266, 35);
             this.TbUniqueValues.TabIndex = 3;
             this.TbUniqueValues.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
@@ -81,21 +79,21 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(57, 42);
+            this.label1.Location = new System.Drawing.Point(29, 32);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(92, 29);
+            this.label1.Size = new System.Drawing.Size(175, 29);
             this.label1.TabIndex = 1;
-            this.label1.Text = "Values:";
+            this.label1.Text = "Unique Values:";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(331, 42);
+            this.label2.Location = new System.Drawing.Point(29, 92);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(80, 29);
+            this.label2.Size = new System.Drawing.Size(163, 29);
             this.label2.TabIndex = 2;
-            this.label2.Text = "Rows:";
+            this.label2.Text = "Unique Rows:";
             // 
             // TbUniqueRows
             // 
@@ -103,15 +101,15 @@
             this.TbUniqueRows.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.TbUniqueRows.Enabled = false;
             this.TbUniqueRows.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TbUniqueRows.Location = new System.Drawing.Point(336, 74);
+            this.TbUniqueRows.Location = new System.Drawing.Point(228, 92);
             this.TbUniqueRows.Name = "TbUniqueRows";
-            this.TbUniqueRows.Size = new System.Drawing.Size(216, 35);
+            this.TbUniqueRows.Size = new System.Drawing.Size(266, 35);
             this.TbUniqueRows.TabIndex = 4;
             this.TbUniqueRows.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // BtnSelectAll
             // 
-            this.BtnSelectAll.Location = new System.Drawing.Point(348, 181);
+            this.BtnSelectAll.Location = new System.Drawing.Point(348, 170);
             this.BtnSelectAll.Name = "BtnSelectAll";
             this.BtnSelectAll.Size = new System.Drawing.Size(146, 43);
             this.BtnSelectAll.TabIndex = 6;
@@ -121,7 +119,7 @@
             // 
             // BtnUnselectAll
             // 
-            this.BtnUnselectAll.Location = new System.Drawing.Point(500, 181);
+            this.BtnUnselectAll.Location = new System.Drawing.Point(500, 170);
             this.BtnUnselectAll.Name = "BtnUnselectAll";
             this.BtnUnselectAll.Size = new System.Drawing.Size(146, 43);
             this.BtnUnselectAll.TabIndex = 7;
@@ -132,7 +130,7 @@
             // UniqueForm_Ok
             // 
             this.UniqueForm_Ok.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.UniqueForm_Ok.Location = new System.Drawing.Point(296, 469);
+            this.UniqueForm_Ok.Location = new System.Drawing.Point(296, 458);
             this.UniqueForm_Ok.Margin = new System.Windows.Forms.Padding(4);
             this.UniqueForm_Ok.Name = "UniqueForm_Ok";
             this.UniqueForm_Ok.Size = new System.Drawing.Size(164, 56);
@@ -144,7 +142,7 @@
             // UniqueForm_Cancel
             // 
             this.UniqueForm_Cancel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.UniqueForm_Cancel.Location = new System.Drawing.Point(482, 469);
+            this.UniqueForm_Cancel.Location = new System.Drawing.Point(482, 458);
             this.UniqueForm_Cancel.Margin = new System.Windows.Forms.Padding(4);
             this.UniqueForm_Cancel.Name = "UniqueForm_Cancel";
             this.UniqueForm_Cancel.Size = new System.Drawing.Size(164, 56);
@@ -153,39 +151,26 @@
             this.UniqueForm_Cancel.UseVisualStyleBackColor = true;
             this.UniqueForm_Cancel.Click += new System.EventHandler(this.UniqueForm_Cancel_Click);
             // 
-            // groupBox1
-            // 
-            this.groupBox1.Controls.Add(this.TbUniqueValues);
-            this.groupBox1.Controls.Add(this.TbUniqueRows);
-            this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Controls.Add(this.label2);
-            this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox1.Location = new System.Drawing.Point(29, 16);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(617, 151);
-            this.groupBox1.TabIndex = 0;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Unique";
-            // 
             // UniqueDataForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(675, 546);
-            this.Controls.Add(this.groupBox1);
+            this.ClientSize = new System.Drawing.Size(678, 540);
+            this.Controls.Add(this.TbUniqueValues);
+            this.Controls.Add(this.TbUniqueRows);
             this.Controls.Add(this.UniqueForm_Cancel);
             this.Controls.Add(this.UniqueForm_Ok);
             this.Controls.Add(this.BtnUnselectAll);
             this.Controls.Add(this.BtnSelectAll);
-            this.Controls.Add(this.CbHeaders);
             this.Controls.Add(this.ClbColumns);
+            this.Controls.Add(this.CbHeaders);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.label1);
             this.Name = "UniqueDataForm";
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Selection to Clipboard";
             this.Load += new System.EventHandler(this.UniqueDataForm_Load);
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -203,6 +188,5 @@
         private System.Windows.Forms.Button BtnUnselectAll;
         private System.Windows.Forms.Button UniqueForm_Ok;
         private System.Windows.Forms.Button UniqueForm_Cancel;
-        private System.Windows.Forms.GroupBox groupBox1;
     }
 }
