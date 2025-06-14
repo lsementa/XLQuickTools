@@ -744,12 +744,44 @@ namespace XLQuickTools
             }
         }
 
+        // Method to copy column widths from source to destination
+        public static void CopyColumnWidths(Excel.Range sourceRange, Excel.Range targetRange)
+        {
+            if (sourceRange == null) return;
+            if (targetRange == null) return;
+
+            try
+            {
+                // Get the number of columns in each range
+                int sourceColumnCount = sourceRange.Columns.Count;
+                //int targetColumnCount = targetRange.Columns.Count;
+
+                // Iterate through each column in the source range
+                for (int i = 1; i <= sourceColumnCount; i++)
+                {
+                    // Get the width of the current column from the source range
+                    double columnWidth = (double)((Excel.Range)sourceRange.Columns[i]).ColumnWidth;
+                    // Apply the width to the corresponding column in the target range
+                   ((Excel.Range)targetRange.Columns[i]).ColumnWidth = columnWidth;
+
+                }
+            }
+            catch (Exception ex)
+            {
+                QTUtils.ShowError(ex);
+            }
+
+        }
+
         // Method to copy active worksheet formatting to all worksheets
         public static void CopyFormatToAllSheets()
         {
             Excel.Application excelApp = Globals.ThisAddIn.Application;
             Excel.Workbook workbook = excelApp.ActiveWorkbook;
             Excel.Worksheet activeSheet = excelApp.ActiveSheet;
+
+            // Copy the used range of the active sheet
+            Excel.Range sourceRange = activeSheet.UsedRange;
 
             try
             {
@@ -759,9 +791,6 @@ namespace XLQuickTools
                 }
 
                 excelApp.ScreenUpdating = false;
-
-                // Copy the entire used range of the active sheet
-                Excel.Range sourceRange = activeSheet.UsedRange;
 
                 // Loop through all sheets in the workbook
                 foreach (Excel.Worksheet sheet in workbook.Worksheets)
@@ -775,6 +804,9 @@ namespace XLQuickTools
                         // Copy and apply the formatting
                         sourceRange.Copy();
                         targetRange.PasteSpecial(Excel.XlPasteType.xlPasteFormats);
+
+                        // Copy column widths
+                        CopyColumnWidths(sourceRange, targetRange);
 
                         // Move the cursor to cell A1
                         sheet.Activate();
@@ -797,6 +829,7 @@ namespace XLQuickTools
             finally
             {
                 excelApp.ScreenUpdating = true;
+                QTUtils.CleanupResources(sourceRange);
             }
         }
 

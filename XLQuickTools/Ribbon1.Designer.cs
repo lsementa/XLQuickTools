@@ -84,10 +84,9 @@
             this.BtnFillDown = this.Factory.CreateRibbonButton();
             this.BtnCopyHighlightedValues = this.Factory.CreateRibbonButton();
             this.BtnCopyHighlightedRows = this.Factory.CreateRibbonButton();
-            this.BtnResetColumn = this.Factory.CreateRibbonButton();
-            this.separator7 = this.Factory.CreateRibbonSeparator();
             this.BtnCopyFormatting = this.Factory.CreateRibbonButton();
             this.BtnSheetNames = this.Factory.CreateRibbonButton();
+            this.BtnResetColumn = this.Factory.CreateRibbonButton();
             this.separator6 = this.Factory.CreateRibbonSeparator();
             this.BtnFileList = this.Factory.CreateRibbonButton();
             this.BtnDisplayLength = this.Factory.CreateRibbonButton();
@@ -507,10 +506,9 @@
             this.AdditionalMenu.Items.Add(this.BtnFillDown);
             this.AdditionalMenu.Items.Add(this.BtnCopyHighlightedValues);
             this.AdditionalMenu.Items.Add(this.BtnCopyHighlightedRows);
-            this.AdditionalMenu.Items.Add(this.BtnResetColumn);
-            this.AdditionalMenu.Items.Add(this.separator7);
             this.AdditionalMenu.Items.Add(this.BtnCopyFormatting);
             this.AdditionalMenu.Items.Add(this.BtnSheetNames);
+            this.AdditionalMenu.Items.Add(this.BtnResetColumn);
             this.AdditionalMenu.Items.Add(this.separator6);
             this.AdditionalMenu.Items.Add(this.BtnFileList);
             this.AdditionalMenu.Items.Add(this.BtnDisplayLength);
@@ -556,9 +554,10 @@
             // 
             this.BtnCopyHighlightedValues.Label = "Copy &Highlighted to Clipboard";
             this.BtnCopyHighlightedValues.Name = "BtnCopyHighlightedValues";
-            this.BtnCopyHighlightedValues.OfficeImageId = "HighlightPredecessors";
+            this.BtnCopyHighlightedValues.OfficeImageId = "HighlighterMode";
             this.BtnCopyHighlightedValues.ShowImage = true;
-            this.BtnCopyHighlightedValues.SuperTip = "Copy any cell from a selection that contains a background color to clipboard.";
+            this.BtnCopyHighlightedValues.SuperTip = "Copies all highlighted (colored) non-empty cells from your selection to the clipb" +
+    "oard.";
             this.BtnCopyHighlightedValues.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnCopyHighlightedValues_Click);
             // 
             // BtnCopyHighlightedRows
@@ -567,9 +566,27 @@
             this.BtnCopyHighlightedRows.Name = "BtnCopyHighlightedRows";
             this.BtnCopyHighlightedRows.OfficeImageId = "ConditionalFormattingColorScalesGallery";
             this.BtnCopyHighlightedRows.ShowImage = true;
-            this.BtnCopyHighlightedRows.SuperTip = "Copy any row on the active worksheet that has at least one cell with a background" +
-    " color to a new worksheet.";
+            this.BtnCopyHighlightedRows.SuperTip = "Creates a new worksheet with all highlighted rows from your active worksheet. Any" +
+    " row that contains at least one highlighted cell.";
             this.BtnCopyHighlightedRows.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnCopyHighlightedRows_Click);
+            // 
+            // BtnCopyFormatting
+            // 
+            this.BtnCopyFormatting.Label = "Copy &Formatting to All Sheets";
+            this.BtnCopyFormatting.Name = "BtnCopyFormatting";
+            this.BtnCopyFormatting.OfficeImageId = "PasteFormatting";
+            this.BtnCopyFormatting.ShowImage = true;
+            this.BtnCopyFormatting.SuperTip = "Copy all formatting from the active worksheet to all worksheets.";
+            this.BtnCopyFormatting.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnCopyFormatting_Click);
+            // 
+            // BtnSheetNames
+            // 
+            this.BtnSheetNames.Label = "Sheet &Names to Clipboard";
+            this.BtnSheetNames.Name = "BtnSheetNames";
+            this.BtnSheetNames.OfficeImageId = "PasteMergeList";
+            this.BtnSheetNames.ShowImage = true;
+            this.BtnSheetNames.SuperTip = "Create a list of worksheet names using the active workbook.";
+            this.BtnSheetNames.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnSheetNames_Click);
             // 
             // BtnResetColumn
             // 
@@ -579,28 +596,6 @@
             this.BtnResetColumn.ShowImage = true;
             this.BtnResetColumn.SuperTip = "Reset the selected column. Numbers stored as text will be converted to numbers.";
             this.BtnResetColumn.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnResetColumn_Click);
-            // 
-            // separator7
-            // 
-            this.separator7.Name = "separator7";
-            // 
-            // BtnCopyFormatting
-            // 
-            this.BtnCopyFormatting.Label = "Copy &Formatting to All Sheets";
-            this.BtnCopyFormatting.Name = "BtnCopyFormatting";
-            this.BtnCopyFormatting.OfficeImageId = "PasteFormatting";
-            this.BtnCopyFormatting.ShowImage = true;
-            this.BtnCopyFormatting.SuperTip = "Copy the formatting on the active worksheet to all worksheets.";
-            this.BtnCopyFormatting.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnCopyFormatting_Click);
-            // 
-            // BtnSheetNames
-            // 
-            this.BtnSheetNames.Label = "Sheet &Names to Clipboard";
-            this.BtnSheetNames.Name = "BtnSheetNames";
-            this.BtnSheetNames.OfficeImageId = "PasteMergeList";
-            this.BtnSheetNames.ShowImage = true;
-            this.BtnSheetNames.SuperTip = "Create a list of sheet names using the active workbook.";
-            this.BtnSheetNames.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnSheetNames_Click);
             // 
             // separator6
             // 
@@ -838,7 +833,6 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonSeparator separator4;
         internal Microsoft.Office.Tools.Ribbon.RibbonSeparator separator5;
         internal Microsoft.Office.Tools.Ribbon.RibbonSeparator separator6;
-        internal Microsoft.Office.Tools.Ribbon.RibbonSeparator separator7;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnConvertTableRemove;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnRemoveObjects;
         internal Microsoft.Office.Tools.Ribbon.RibbonSeparator separator8;

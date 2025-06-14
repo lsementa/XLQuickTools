@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using Microsoft.Office.Interop.Excel;
 using static XLQuickTools.QTSettings;
 using static XLQuickTools.QTUtils;
 using Excel = Microsoft.Office.Interop.Excel;
@@ -157,6 +158,7 @@ namespace XLQuickTools
             if (activeWorkbook != null)
             {
                 Excel.Worksheet activeSheet = excelApp.ActiveSheet;
+                Excel.Range usedRange = activeSheet.UsedRange;
                 Excel.Range selectedRange = excelApp.Selection;
 
                 try
@@ -264,8 +266,9 @@ namespace XLQuickTools
                         // Copy visible data (filtered) to the new sheet
                         dataRange.SpecialCells(Excel.XlCellType.xlCellTypeVisible).Copy(newSheet.Cells[1, 1]);
 
-                        // AutoFit columns
-                        newSheet.Columns.AutoFit();
+                        // Copy column widths
+                        Excel.Range newUsedRange = newSheet.UsedRange;
+                        QTFormat.CopyColumnWidths(usedRange, newUsedRange);
 
                         // Update lastSheet to the newly created sheet
                         lastSheet = newSheet;
@@ -278,6 +281,7 @@ namespace XLQuickTools
                 {
                     // Turn screen updating back on
                     excelApp.ScreenUpdating = true;
+                    QTUtils.CleanupResources(usedRange);
                 }
             }
         }
@@ -872,10 +876,11 @@ namespace XLQuickTools
                         // Check if the cell's interior color is not the default 'no fill' color.
                         if (cell.Interior.ColorIndex != (int)Excel.XlColorIndex.xlColorIndexNone)
                         {
-                            object value = cell.Value2;
-                            if (value != null && !string.IsNullOrWhiteSpace(value.ToString()))
+                            // Text instead of cell.value2
+                            string displayText = cell.Text?.ToString();
+                            if (!string.IsNullOrWhiteSpace(displayText))
                             {
-                                clipboardText.AppendLine(value.ToString());
+                                clipboardText.AppendLine(displayText);
                             }
                         }
                     }

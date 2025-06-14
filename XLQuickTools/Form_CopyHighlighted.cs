@@ -92,9 +92,10 @@ namespace XLQuickTools
                     }
                 }
 
-                // Auto-fit all used columns
-                usedRange = newSheet.UsedRange;
-                usedRange.Columns.AutoFit();
+                // Copy column widths
+                Excel.Range newUsedRange = newSheet.UsedRange;
+                QTFormat.CopyColumnWidths(usedRange, newUsedRange);
+
             }
             catch (Exception ex)
             {
