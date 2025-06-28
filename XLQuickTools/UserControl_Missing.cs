@@ -87,6 +87,27 @@ namespace XLQuickTools
 
         }
 
+        // Method to highlight missing cells
+        private void HighlightMissingCells(Excel.Range range, List<object> missingValues)
+        {
+            object[,] values = range.Value2 as object[,];
+            int rowCount = values.GetLength(0);
+            int colCount = values.GetLength(1);
+
+            for (int row = 1; row <= rowCount; row++)
+            {
+                for (int col = 1; col <= colCount; col++)
+                {
+                    object cellValue = values[row, col];
+                    if (cellValue != null && missingValues.Contains(cellValue))
+                    {
+                        Excel.Range cell = range.Cells[row, col];
+                        cell.Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Yellow);
+                    }
+                }
+            }
+        }
+
         private void FindMissing(object sender, EventArgs e)
         {
             Excel.Workbook workbook = _excelApp.ActiveWorkbook;
@@ -139,6 +160,13 @@ namespace XLQuickTools
                     // Show the message only once
                     MessageBox.Show("No missing data found between ranges.", "No Missing Data", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     return;
+                }
+
+                // Highlight missing cells
+                if (CbHighlight.Checked)
+                {
+                    HighlightMissingCells(myRange1, missingInRange2);
+                    HighlightMissingCells(myRange2, missingInRange1);
                 }
 
                 // Populate the DataGridView with missing items
@@ -312,9 +340,5 @@ namespace XLQuickTools
             ResetFields();
         }
 
-        private void TbRange1_TextChanged(object sender, EventArgs e)
-        {
-
-        }
     }
 }

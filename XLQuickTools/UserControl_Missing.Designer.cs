@@ -38,6 +38,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.BtnClear = new System.Windows.Forms.Button();
+            this.CbHighlight = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.DgMissing)).BeginInit();
             this.SuspendLayout();
             // 
@@ -75,7 +76,7 @@
             this.DgMissing.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.DgMissing.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.DgMissing.EnableHeadersVisualStyles = false;
-            this.DgMissing.Location = new System.Drawing.Point(32, 277);
+            this.DgMissing.Location = new System.Drawing.Point(32, 304);
             this.DgMissing.Margin = new System.Windows.Forms.Padding(6);
             this.DgMissing.Name = "DgMissing";
             this.DgMissing.ReadOnly = true;
@@ -86,47 +87,47 @@
             this.DgMissing.ShowEditingIcon = false;
             this.DgMissing.ShowRowErrors = false;
             this.DgMissing.Size = new System.Drawing.Size(830, 429);
-            this.DgMissing.TabIndex = 6;
+            this.DgMissing.TabIndex = 7;
             // 
             // UcMissingClose
             // 
-            this.UcMissingClose.Location = new System.Drawing.Point(409, 715);
+            this.UcMissingClose.Location = new System.Drawing.Point(409, 742);
             this.UcMissingClose.Margin = new System.Windows.Forms.Padding(4);
             this.UcMissingClose.Name = "UcMissingClose";
             this.UcMissingClose.Size = new System.Drawing.Size(164, 56);
-            this.UcMissingClose.TabIndex = 9;
+            this.UcMissingClose.TabIndex = 10;
             this.UcMissingClose.Text = "Close";
             this.UcMissingClose.UseVisualStyleBackColor = true;
             this.UcMissingClose.Click += new System.EventHandler(this.UcMissingClose_Click);
             // 
             // BtnCheck
             // 
-            this.BtnCheck.Location = new System.Drawing.Point(32, 715);
+            this.BtnCheck.Location = new System.Drawing.Point(32, 742);
             this.BtnCheck.Margin = new System.Windows.Forms.Padding(4);
             this.BtnCheck.Name = "BtnCheck";
             this.BtnCheck.Size = new System.Drawing.Size(164, 56);
-            this.BtnCheck.TabIndex = 7;
+            this.BtnCheck.TabIndex = 8;
             this.BtnCheck.Text = "Run";
             this.BtnCheck.UseVisualStyleBackColor = true;
             this.BtnCheck.Click += new System.EventHandler(this.BtnCheck_Click);
             // 
             // TbMaxRows
             // 
-            this.TbMaxRows.Location = new System.Drawing.Point(514, 227);
+            this.TbMaxRows.Location = new System.Drawing.Point(514, 254);
             this.TbMaxRows.Margin = new System.Windows.Forms.Padding(6);
             this.TbMaxRows.Name = "TbMaxRows";
             this.TbMaxRows.Size = new System.Drawing.Size(86, 31);
-            this.TbMaxRows.TabIndex = 5;
+            this.TbMaxRows.TabIndex = 6;
             this.TbMaxRows.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(26, 233);
+            this.label1.Location = new System.Drawing.Point(26, 260);
             this.label1.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(479, 25);
-            this.label1.TabIndex = 4;
+            this.label1.TabIndex = 5;
             this.label1.Text = "Place results on a new worksheet if they exceed:";
             // 
             // label2
@@ -155,14 +156,24 @@
             // 
             // BtnClear
             // 
-            this.BtnClear.Location = new System.Drawing.Point(221, 715);
+            this.BtnClear.Location = new System.Drawing.Point(221, 742);
             this.BtnClear.Margin = new System.Windows.Forms.Padding(4);
             this.BtnClear.Name = "BtnClear";
             this.BtnClear.Size = new System.Drawing.Size(164, 56);
-            this.BtnClear.TabIndex = 8;
+            this.BtnClear.TabIndex = 9;
             this.BtnClear.Text = "Refresh";
             this.BtnClear.UseVisualStyleBackColor = true;
             this.BtnClear.Click += new System.EventHandler(this.BtnClear_Click);
+            // 
+            // CbHighlight
+            // 
+            this.CbHighlight.AutoSize = true;
+            this.CbHighlight.Location = new System.Drawing.Point(32, 210);
+            this.CbHighlight.Name = "CbHighlight";
+            this.CbHighlight.Size = new System.Drawing.Size(341, 29);
+            this.CbHighlight.TabIndex = 4;
+            this.CbHighlight.Text = "Highlight missing on worksheet";
+            this.CbHighlight.UseVisualStyleBackColor = true;
             // 
             // UserControl_Missing
             // 
@@ -170,6 +181,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoValidate = System.Windows.Forms.AutoValidate.EnablePreventFocusChange;
             this.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this.Controls.Add(this.CbHighlight);
             this.Controls.Add(this.BtnClear);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.TbMaxRows);
@@ -182,7 +194,7 @@
             this.Controls.Add(this.label2);
             this.Margin = new System.Windows.Forms.Padding(6);
             this.Name = "UserControl_Missing";
-            this.Size = new System.Drawing.Size(894, 792);
+            this.Size = new System.Drawing.Size(894, 827);
             this.Load += new System.EventHandler(this.UserControl_Missing_Load);
             ((System.ComponentModel.ISupportInitialize)(this.DgMissing)).EndInit();
             this.ResumeLayout(false);
@@ -202,5 +214,6 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button BtnClear;
+        private System.Windows.Forms.CheckBox CbHighlight;
     }
 }
