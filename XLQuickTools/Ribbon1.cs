@@ -1,6 +1,7 @@
 ﻿using System.Windows.Forms;
 using Microsoft.Office.Tools.Ribbon;
 using static XLQuickTools.QTUtils;
+using static XLQuickTools.QTConstants;
 using Excel = Microsoft.Office.Interop.Excel;
 
 namespace XLQuickTools
@@ -84,7 +85,7 @@ namespace XLQuickTools
         // Clean and trim active sheet
         private void BtnTrimClean_Click(object sender, RibbonControlEventArgs e)
         {
-            QTFormat.FormatMenu(7);
+            QTFormat.FormatMenu(TRIMCLEAN);
         }
 
         // Split columns to rows (Form)
@@ -199,58 +200,58 @@ namespace XLQuickTools
         // Set selection to uppercase
         private void BtnUppercase_Click(object sender, RibbonControlEventArgs e)
         {
-            QTFormat.FormatMenu(0);
+            QTFormat.FormatMenu(UPPERCASE);
         }
 
         // Set selection to lowercase
         private void BtnLowercase_Click(object sender, RibbonControlEventArgs e)
         {
-            QTFormat.FormatMenu(1);
+            QTFormat.FormatMenu(LOWERCASE);
         }
 
         // Set selection to proper case
         private void BtnPropercase_Click(object sender, RibbonControlEventArgs e)
         {
-            QTFormat.FormatMenu(2);
+            QTFormat.FormatMenu(PROPERCASE);
         }
 
         // Remove letters from the selection
         private void BtnRemoveLetters_Click(object sender, RibbonControlEventArgs e)
         {
-            QTFormat.FormatMenu(3);
+            QTFormat.FormatMenu(REMOVE_LETTERS);
         }
 
         // Remove numbers from the selection
         private void BtnRemoveNumbers_Click(object sender, RibbonControlEventArgs e)
         {
-            QTFormat.FormatMenu(4);
+            QTFormat.FormatMenu(REMOVE_NUMBERS);
         }
 
         // Remove special characters from the selection
         private void BtnRemoveSpecial_Click(object sender, RibbonControlEventArgs e)
         {
-            QTFormat.FormatMenu(5);
+            QTFormat.FormatMenu(REMOVE_SPECIAL);
         }
 
         // Normalize text
         private void BtnNormalizeText_Click(object sender, RibbonControlEventArgs e)
         {
-            QTFormat.FormatMenu(6);
+            QTFormat.FormatMenu(NORMALIZE_TEXT);
         }
 
         // Trim & Clean a selected range (Main button)
         private void BtnTrimClean_Click_1(object sender, RibbonControlEventArgs e)
         {
-            QTFormat.FormatMenu(7);
+            QTFormat.FormatMenu(TRIMCLEAN);
         }
 
         // Trim & Clean a selected range (Dropdown button)
         private void BtnTrimClean_Click_2(object sender, RibbonControlEventArgs e)
         {
-            QTFormat.FormatMenu(7);
+            QTFormat.FormatMenu(TRIMCLEAN);
         }
 
-        // Add leading or trailing characters FormatMenu(8)
+        // Add leading or trailing characters
         private void BtnAddLeadingTrailing_Click(object sender, RibbonControlEventArgs e)
         {
             LeadTrailForm form1 = new LeadTrailForm();
@@ -260,13 +261,13 @@ namespace XLQuickTools
         // Remove Non-ASCII characters
         private void BtnRemoveNonASCII_Click(object sender, RibbonControlEventArgs e)
         {
-            QTFormat.FormatMenu(9);
+            QTFormat.FormatMenu(REPLACE_NON_ASCII);
         }
 
         // Remove Extra Spaces
         private void BtnRemoveSpaces_Click(object sender, RibbonControlEventArgs e)
         {
-            QTFormat.FormatMenu(10);
+            QTFormat.FormatMenu(REMOVE_SPACES);
         }
 
         // Subscript chemical formulas

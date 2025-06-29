@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Excel = Microsoft.Office.Interop.Excel;
 using System.Windows.Forms;
 using Microsoft.Office.Tools;
+using static XLQuickTools.QTConstants;
 
 namespace XLQuickTools
 {
@@ -70,7 +71,7 @@ namespace XLQuickTools
         private void CreateTaskPanesForWorkbook(Excel.Workbook workbook)
         {
             int screenWidth = Screen.PrimaryScreen.Bounds.Width;
-            int paneWidth = Math.Max((int)(screenWidth * 0.25), 500);
+            int paneWidth = Math.Max((int)(screenWidth * 0.25), MAX_PANE_WIDTH);
 
             // Create Missing Task Pane
             var missingUserControl = new UserControl_Missing(this.Application);

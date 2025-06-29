@@ -53,6 +53,7 @@
             this.BtnRemoveFormattingAll = this.Factory.CreateRibbonButton();
             this.separator8 = this.Factory.CreateRibbonSeparator();
             this.BtnConvertTableRemove = this.Factory.CreateRibbonButton();
+            this.separator7 = this.Factory.CreateRibbonSeparator();
             this.BtnRemoveObjects = this.Factory.CreateRibbonButton();
             this.BtnDateText = this.Factory.CreateRibbonButton();
             this.BtnUndo = this.Factory.CreateRibbonButton();
@@ -103,7 +104,6 @@
             this.Group_Hyperlinks = this.Factory.CreateRibbonGroup();
             this.BtnHyperlinkSettings = this.Factory.CreateRibbonButton();
             this.BtnHyperlinks = this.Factory.CreateRibbonButton();
-            this.separator7 = this.Factory.CreateRibbonSeparator();
             this.XLQuickTools_Tab.SuspendLayout();
             this.Group_Formatting.SuspendLayout();
             this.Group_Data.SuspendLayout();
@@ -292,6 +292,10 @@
             this.BtnConvertTableRemove.ShowImage = true;
             this.BtnConvertTableRemove.SuperTip = "Convert tables to ranges and remove formatting.";
             this.BtnConvertTableRemove.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnConvertTableRemove_Click);
+            // 
+            // separator7
+            // 
+            this.separator7.Name = "separator7";
             // 
             // BtnRemoveObjects
             // 
@@ -749,10 +753,6 @@
             this.BtnHyperlinks.SuperTip = "Add/Remove Custom Links\n\nToggle custom hyperlinks on/off on a selected column usi" +
     "ng your active parameterized URL.";
             this.BtnHyperlinks.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnHyperlinks_Click);
-            // 
-            // separator7
-            // 
-            this.separator7.Name = "separator7";
             // 
             // XLQuickTools
             // 

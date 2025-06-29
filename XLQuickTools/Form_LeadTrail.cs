@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
+using static XLQuickTools.QTConstants;
 
 namespace XLQuickTools
 {
@@ -17,8 +18,8 @@ namespace XLQuickTools
             string leading = TbLeading.Text;
             string trailing = TbTrailing.Text;
 
-            // 8 = Add leading and trailing
-            QTFormat.FormatMenu(8,leading, trailing);
+            // Add leading and trailing
+            QTFormat.FormatMenu(ADD_LEADING_TRAILING,leading, trailing);
 
             // Close after running
             this.Close();

@@ -209,6 +209,7 @@
     can be found.
   -->
   <ItemGroup>
+    <Compile Include="QTConstants.cs" />
     <Compile Include="Form_CopyHighlighted.cs">
       <SubType>Form</SubType>
     </Compile>

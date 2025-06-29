@@ -119,6 +119,7 @@
             this.TbMaxRows.Size = new System.Drawing.Size(86, 31);
             this.TbMaxRows.TabIndex = 6;
             this.TbMaxRows.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.TbMaxRows.Leave += new System.EventHandler(this.TbMaxRows_Leave);
             // 
             // label1
             // 

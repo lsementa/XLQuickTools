@@ -7,6 +7,7 @@ using System.Windows.Forms;
 using Microsoft.Office.Interop.Excel;
 using static XLQuickTools.QTSettings;
 using static XLQuickTools.QTUtils;
+using static XLQuickTools.QTConstants;
 using Excel = Microsoft.Office.Interop.Excel;
 
 namespace XLQuickTools
@@ -214,9 +215,9 @@ namespace XLQuickTools
                         }
                     }
 
-                    // Check if the number of unique values exceeds the threshold (e.g., 50)
+                    // Check if the number of unique values exceeds the threshold
                     int uniqueCount = uniqueValues.Count;
-                    if (uniqueCount > 50)
+                    if (uniqueCount > MAX_SHEETS)
                     {
                         DialogResult result = MessageBox.Show(
                             $"There are {uniqueCount} unique values, which will create a large number of sheets. Do you want to proceed?",
@@ -516,12 +517,11 @@ namespace XLQuickTools
                         object[,] values = selectedRange.Value2 as object[,];
 
                         int totalRows = lastRow;
-                        int chunkSize = 5000; // Process in chunks
 
                         // Process the data in chunks
-                        for (int startRow = 2; startRow <= totalRows; startRow += chunkSize)
+                        for (int startRow = 2; startRow <= totalRows; startRow += CHUNK_SIZE)
                         {
-                            int endRow = Math.Min(startRow + chunkSize - 1, totalRows);
+                            int endRow = Math.Min(startRow + CHUNK_SIZE - 1, totalRows);
                             int rowsToProcess = endRow - startRow + 1;
 
                             object[,] processArray = new object[rowsToProcess, 1];

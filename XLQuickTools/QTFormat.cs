@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using static XLQuickTools.QTSettings;
+using static XLQuickTools.QTConstants;
 using System.Windows.Forms;
 using Excel = Microsoft.Office.Interop.Excel;
 using System.Globalization;
@@ -19,25 +20,25 @@ namespace XLQuickTools
         {
             switch (option)
             {
-                case 0: // Uppercase
+                case UPPERCASE:
                     return input.ToUpper();
-                case 1: // Lowercase
+                case LOWERCASE:
                     return input.ToLower();
-                case 2: // Proper case
+                case PROPERCASE:
                     return System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(input.ToLower());
-                case 3: // Remove letters
+                case REMOVE_LETTERS:
                     return System.Text.RegularExpressions.Regex.Replace(input, "\\p{L}", "");
-                case 4: // Remove numbers
+                case REMOVE_NUMBERS:
                     return System.Text.RegularExpressions.Regex.Replace(input, "[0-9]", "");
-                case 5: // Remove special characters (keep spaces and accents)
+                case REMOVE_SPECIAL: // Remove special characters (keep spaces and accents)
                     return System.Text.RegularExpressions.Regex.Replace(input, @"[^a-zA-Z0-9\u00C0-\u024F\s]", "");
-                case 6: // Normalize Text/Remove diacritics
+                case NORMALIZE_TEXT: // Normalize Text/Remove diacritics
                     return NormalizeText(input);
-                case 7: // Trim and Clean
+                case TRIMCLEAN:
                     if (input != null)
                     {
-                        // Trim
-                        input = input.Trim();
+                        // Trim and remove extra spaces
+                        input = Regex.Replace(input, @"\s{2,}", " ").Trim();
 
                         // Check for string containing only spaces
                         if (input.Length > 0 && input.All(c => c == ' '))
@@ -46,11 +47,11 @@ namespace XLQuickTools
                         }
                     }
                     return Clean(input);
-                case 8: // Add leading or trailing
+                case ADD_LEADING_TRAILING:
                     return (leading ?? "") + input + (trailing ?? "");
-                case 9: // Remove non-ASCII
+                case REPLACE_NON_ASCII:
                     return ReplaceNonAscii(input);
-                case 10: // Remove extra spaces
+                case REMOVE_SPACES:
                     return Regex.Replace(input, @"\s{2,}", " ").Trim();
                 default:
                     throw new ArgumentException("Invalid option.");
@@ -202,7 +203,6 @@ namespace XLQuickTools
         {
             Excel.Application excelApp = Globals.ThisAddIn.Application;
             Excel.Workbook activeWorkbook = excelApp.ActiveWorkbook;
-            int option = 7; // Trim and Clean
             bool processSuccess = true;
 
             try
@@ -213,14 +213,14 @@ namespace XLQuickTools
                 {
                     // Process active worksheet only
                     Excel.Worksheet activeSheet = excelApp.ActiveSheet;
-                    processSuccess = ProcessSheet(activeSheet, option);
+                    processSuccess = ProcessSheet(activeSheet, TRIMCLEAN);
                 }
                 else if (rangeType.ToLower() == "workbook")
                 {
                     // Process all worksheets in workbook
                     foreach (Excel.Worksheet worksheet in activeWorkbook.Worksheets)
                     {
-                        if (!ProcessSheet(worksheet, option))
+                        if (!ProcessSheet(worksheet, TRIMCLEAN))
                         {
                             processSuccess = false;
                             break;

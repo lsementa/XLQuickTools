@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Windows.Forms;
 using static XLQuickTools.QTSettings;
+using static XLQuickTools.QTConstants;
 
 namespace XLQuickTools
 {
@@ -203,16 +204,20 @@ namespace XLQuickTools
             // Try to parse the text in the textbox to an integer
             if (int.TryParse(TbZoom.Text, out int zoomValue))
             {
-                // Check if the value is greater than 100
-                if (zoomValue > 100)
+                // Check thresholds
+                if (zoomValue > MAX_ZOOM)
                 {
-                    TbZoom.Text = "100";
+                    TbZoom.Text = MAX_ZOOM.ToString();
+                }
+                if(zoomValue <= 0)
+                {
+                    TbZoom.Text = MIN_ZOOM.ToString();
                 }
             }
-            else if (!string.IsNullOrEmpty(TbZoom.Text))
+            else
             {
-                // Default to 100 if input is not valid
-                TbZoom.Text = "100";
+                // Default if input is not valid
+                TbZoom.Text = DEFAULT_ZOOM.ToString();
             }
         }
 
@@ -224,17 +229,21 @@ namespace XLQuickTools
             if (int.TryParse(TbFontSize.Text, out int fontValue))
 
             {
-                // Check if the value is greater than 72
-                if (fontValue > 72)
+                // Check thresholds
+                if (fontValue > MAX_FONT_SIZE)
                 {
-                    TbFontSize.Text = "72";
+                    TbFontSize.Text = MAX_FONT_SIZE.ToString();
+                }
+                if (fontValue <= 0)
+                {
+                    TbFontSize.Text = DEFAULT_FONT_SIZE.ToString();
                 }
 
             }
-            else if (!string.IsNullOrEmpty(TbFontSize.Text))
+            else
             {
                 // Default for non numeric input
-                TbFontSize.Text = "11";
+                TbFontSize.Text = DEFAULT_FONT_SIZE.ToString();
             }
         }
 
@@ -308,40 +317,48 @@ namespace XLQuickTools
         private void TbRowHeight_Leave(object sender, EventArgs e)
         {
             // Try to parse the text
-            if (int.TryParse(TbRowHeight.Text, out int heightValue))
+            if (double.TryParse(TbRowHeight.Text, out double heightValue))
 
             {
-                // Check if the value is greater than 400
-                if (heightValue > 400)
+                // Check thresholds
+                if (heightValue > MAX_ROW_HEIGHT)
                 {
-                    TbRowHeight.Text = "400";
+                    TbRowHeight.Text = MAX_ROW_HEIGHT.ToString();
+                }
+                if(heightValue <= 0)
+                {
+                    TbRowHeight.Text = DEFAULT_ROW_HEIGHT.ToString();
                 }
 
             }
-            else if (!string.IsNullOrEmpty(TbRowHeight.Text))
+            else
             {
                 // Default for non numeric input
-                TbRowHeight.Text = "15";
+                TbRowHeight.Text = DEFAULT_ROW_HEIGHT.ToString();
             }
         }
         // Column Width Text change
         private void TbColWidth_Leave(object sender, EventArgs e)
         {
             // Try to parse the text
-            if (int.TryParse(TbColWidth.Text, out int widthValue))
+            if (double.TryParse(TbColWidth.Text, out double widthValue))
 
             {
-                // Check if the value is greater than 250
-                if (widthValue > 250)
+                // Check thresholds
+                if (widthValue > MAX_COLUMN_WIDTH)
                 {
-                    TbColWidth.Text = "250";
+                    TbColWidth.Text = MAX_COLUMN_WIDTH.ToString();
+                }
+                if(widthValue <= 0)
+                {
+                    TbColWidth.Text = DEFAULT_COLUMN_WIDTH.ToString();
                 }
 
             }
-            else if (!string.IsNullOrEmpty(TbColWidth.Text))
+            else
             {
                 // Default for non numeric input
-                TbColWidth.Text = "8.43";
+                TbColWidth.Text = DEFAULT_COLUMN_WIDTH.ToString();
             }
         }
 

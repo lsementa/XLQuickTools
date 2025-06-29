@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using Excel = Microsoft.Office.Interop.Excel;
+using static XLQuickTools.QTConstants;
 
 namespace XLQuickTools
 {
@@ -116,7 +117,7 @@ namespace XLQuickTools
             if (!int.TryParse(TbMaxRows.Text, out int maxRows))
             {
                 // If parsing fails
-                maxRows = 25;
+                maxRows = DEFAULT_DATAGRID_ROWS;
             }
 
             try
@@ -173,7 +174,7 @@ namespace XLQuickTools
                 int rowCount = Math.Max(missingInRange2.Count, missingInRange1.Count);
 
                 // Use a worksheet instead of datagridview if high count
-                if (rowCount > maxRows || rowCount > 50)
+                if (rowCount > maxRows || rowCount > MAX_ROWS)
                 {
                     // Create MissingReport worksheet only if differences are found
                     Excel.Worksheet missingReportSheet = QTUtils.AddUniqueNamedWorksheet(workbook, activeSheet, "Missing");
@@ -250,7 +251,7 @@ namespace XLQuickTools
             // Reset all relevant fields
             TbRange1.Text = string.Empty;
             TbRange2.Text = string.Empty;
-            TbMaxRows.Text = "25"; // Reset to default
+            TbMaxRows.Text = DEFAULT_DATAGRID_ROWS.ToString(); // Reset to default
 
             // Clear any DataGridView
             if (DgMissing != null)
@@ -340,5 +341,28 @@ namespace XLQuickTools
             ResetFields();
         }
 
+        // Max rows textbox leave event
+        private void TbMaxRows_Leave(object sender, EventArgs e)
+        {
+            // Try to parse the text
+            if (int.TryParse(TbMaxRows.Text, out int maxRows))
+            {
+                // Check thresholds
+                if (maxRows > MAX_ROWS)
+                {
+                    TbMaxRows.Text = MAX_ROWS.ToString();
+                }
+                if (maxRows <= 0)
+                {
+                    TbMaxRows.Text = MIN_ROWS.ToString();
+                }
+
+            }
+            else
+            {
+                // Default for non numeric input
+                TbMaxRows.Text = DEFAULT_DATAGRID_ROWS.ToString();
+            }
+        }
     }
 }

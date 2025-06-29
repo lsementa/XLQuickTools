@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using Excel = Microsoft.Office.Interop.Excel;
+using static XLQuickTools.QTConstants;
 
 namespace XLQuickTools
 {
@@ -296,7 +297,7 @@ namespace XLQuickTools
             int maxRows;
             if (!int.TryParse(TbMaxRows.Text, out maxRows))
             {
-                maxRows = 25; // If parsing fails
+                maxRows = DEFAULT_DATAGRID_ROWS; // If parsing fails
             }
 
             List<Tuple<object, string, object, string>> diffList = new List<Tuple<object, string, object, string>>(); // To track differences
@@ -471,7 +472,7 @@ namespace XLQuickTools
         public void ResetFields()
         {
             // Reset all relevant fields
-            TbMaxRows.Text = "25"; // Reset to default
+            TbMaxRows.Text = DEFAULT_DATAGRID_ROWS.ToString(); // Reset to default
             CbWorkbooks1.Text = string.Empty;
             CbWorksheets1.Text = string.Empty;
             CbWorksheets2.Text = string.Empty;
@@ -493,5 +494,28 @@ namespace XLQuickTools
             ResetFields();
         }
 
+        // Max rows textbox leave event
+        private void TbMaxRows_Leave(object sender, EventArgs e)
+        {
+            // Try to parse the text
+            if (int.TryParse(TbMaxRows.Text, out int maxRows))
+            {
+                // Check thresholds
+                if (maxRows > MAX_ROWS)
+                {
+                    TbMaxRows.Text = MAX_ROWS.ToString();
+                }
+                if (maxRows <= 0)
+                {
+                    TbMaxRows.Text = MIN_ROWS.ToString();
+                }
+
+            }
+            else
+            {
+                // Default for non numeric input
+                TbMaxRows.Text = DEFAULT_DATAGRID_ROWS.ToString();
+            }
+        }
     }
 }
