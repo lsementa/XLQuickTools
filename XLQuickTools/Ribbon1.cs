@@ -139,19 +139,6 @@ namespace XLQuickTools
             QTFormat.QuickFormat(true);
         }
 
-        // Add/Remove hyperlinks
-        private void BtnHyperlinks_Click(object sender, RibbonControlEventArgs e)
-        {
-            QTFunctions.ToggleHyperlinks();
-        }
-
-        // Hyperlink settings (Form)
-        private void BtnHyperlinkSettings_Click(object sender, RibbonControlEventArgs e)
-        {
-            HyperlinkForm form1 = new HyperlinkForm();
-            form1.ShowDialog();
-        }
-
         // Find duplicates
         private void BtnDuplicates_Click(object sender, RibbonControlEventArgs e)
         {
@@ -410,6 +397,31 @@ namespace XLQuickTools
         {
             Excel.Application excelApp = Globals.ThisAddIn.Application;
             HighlightForm form1 = new HighlightForm(excelApp);
+            form1.ShowDialog();
+        }
+
+        // Add Hyperlinks large button
+        private void BtnHyperlinks_Click(object sender, RibbonControlEventArgs e)
+        {
+            QTFunctions.AddHyperlinks();
+        }
+
+        // Add Hyperlinks small button
+        private void BtnAddHyperlinks_Click(object sender, RibbonControlEventArgs e)
+        {
+            QTFunctions.AddHyperlinks();
+        }
+
+        // Remove Hyperlinks
+        private void BtnRemoveHyperlinks_Click(object sender, RibbonControlEventArgs e)
+        {
+            QTFunctions.RemoveHyperlinks();
+        }
+
+        // Hyperlink settings (Form)
+        private void BtnHyperlinkSettings_Click(object sender, RibbonControlEventArgs e)
+        {
+            HyperlinkForm form1 = new HyperlinkForm();
             form1.ShowDialog();
         }
 

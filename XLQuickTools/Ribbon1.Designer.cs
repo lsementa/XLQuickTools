@@ -103,7 +103,9 @@
             this.BtnSheetToFile = this.Factory.CreateRibbonButton();
             this.BtnSplitToRows = this.Factory.CreateRibbonButton();
             this.BtnHyperlinkSettings = this.Factory.CreateRibbonButton();
-            this.BtnHyperlinks = this.Factory.CreateRibbonButton();
+            this.BtnHyperlinks = this.Factory.CreateRibbonSplitButton();
+            this.BtnAddHyperlinks = this.Factory.CreateRibbonButton();
+            this.BtnRemoveHyperlinks = this.Factory.CreateRibbonButton();
             this.XLQuickTools_Tab.SuspendLayout();
             this.Group_Formatting.SuspendLayout();
             this.Group_Data.SuspendLayout();
@@ -746,13 +748,31 @@
             // BtnHyperlinks
             // 
             this.BtnHyperlinks.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.BtnHyperlinks.Items.Add(this.BtnAddHyperlinks);
+            this.BtnHyperlinks.Items.Add(this.BtnRemoveHyperlinks);
             this.BtnHyperlinks.Label = "Add/Remove";
             this.BtnHyperlinks.Name = "BtnHyperlinks";
             this.BtnHyperlinks.OfficeImageId = "HyperlinkInsert";
-            this.BtnHyperlinks.ShowImage = true;
-            this.BtnHyperlinks.SuperTip = "Add/Remove Custom Links\n\nToggle custom hyperlinks on/off on a selected column usi" +
-    "ng your active parameterized URL.";
+            this.BtnHyperlinks.SuperTip = "Add or Remove Custom Hyperlinks";
             this.BtnHyperlinks.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnHyperlinks_Click);
+            // 
+            // BtnAddHyperlinks
+            // 
+            this.BtnAddHyperlinks.Label = "Add Hyperlinks";
+            this.BtnAddHyperlinks.Name = "BtnAddHyperlinks";
+            this.BtnAddHyperlinks.OfficeImageId = "HyperlinkInsert";
+            this.BtnAddHyperlinks.ShowImage = true;
+            this.BtnAddHyperlinks.SuperTip = "Add custom hyperlinks on a selected column using your active parameterized URL.";
+            this.BtnAddHyperlinks.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnAddHyperlinks_Click);
+            // 
+            // BtnRemoveHyperlinks
+            // 
+            this.BtnRemoveHyperlinks.Label = "Remove [Cell && Formula]";
+            this.BtnRemoveHyperlinks.Name = "BtnRemoveHyperlinks";
+            this.BtnRemoveHyperlinks.OfficeImageId = "HyperlinksRemove";
+            this.BtnRemoveHyperlinks.ShowImage = true;
+            this.BtnRemoveHyperlinks.SuperTip = "Remove both cell and formula based hyperlinks.";
+            this.BtnRemoveHyperlinks.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnRemoveHyperlinks_Click);
             // 
             // XLQuickTools
             // 
@@ -789,7 +809,6 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnMissing;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnDuplicates;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnCompare;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnHyperlinks;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnHyperlinkSettings;
         internal Microsoft.Office.Tools.Ribbon.RibbonSeparator Separator_Delimiter;
         internal Microsoft.Office.Tools.Ribbon.RibbonSeparator Separator_Formatting;
@@ -845,6 +864,9 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnCopyHighlightedRows;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnCopyHighlightedValues;
         internal Microsoft.Office.Tools.Ribbon.RibbonSeparator separator7;
+        internal Microsoft.Office.Tools.Ribbon.RibbonSplitButton BtnHyperlinks;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnAddHyperlinks;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnRemoveHyperlinks;
     }
 
     partial class ThisRibbonCollection

@@ -444,16 +444,60 @@ namespace XLQuickTools
                 }
             }
         }
+        // Remove hyperlinks
+        public static void RemoveHyperlinks()
+        {
+            Excel.Application excelApp = Globals.ThisAddIn.Application;
+            Excel.Workbook activeWorkbook = excelApp.ActiveWorkbook;
 
-        // Add or remove hyperlinks
-        public static void ToggleHyperlinks()
+            if (activeWorkbook != null)
+            {
+                Excel.Worksheet activeSheet = excelApp.ActiveSheet;
+                Excel.Range selectedRange = excelApp.Selection;
+
+                // Ensure the user selects only one full column
+                if (selectedRange.Columns.Count != 1 || selectedRange.Rows.Count != activeSheet.Rows.Count)
+                {
+                    Excel.Range selectedColumn = QTUtils.ColumnSelection(excelApp);
+
+                    if (selectedColumn != null)
+                    {
+                        selectedRange = selectedColumn;
+                    }
+                    else
+                    {
+                        return;
+                    }
+                }
+                try
+                {
+                    excelApp.ScreenUpdating = false;
+                    // Set to Text
+                    selectedRange.NumberFormat = "@";
+                    selectedRange.Value2 = selectedRange.Value2;
+                    // Remove hyperlink formatting: Reset font color and underline
+                    selectedRange.Font.Underline = Excel.XlUnderlineStyle.xlUnderlineStyleNone;
+                    selectedRange.Font.ColorIndex = Excel.XlColorIndex.xlColorIndexAutomatic;
+                    // Bulk remove cell-based hyperlinks
+                    selectedRange.Hyperlinks.Delete();
+                }
+                finally
+                {
+                    // Turn screen updating back on
+                    excelApp.ScreenUpdating = true;
+                }
+            }
+        }
+
+        // Add hyperlinks
+        public static void AddHyperlinks()
         {
             UserSettings settings = LoadUserSettingsFromXml();
             Excel.Application excelApp = Globals.ThisAddIn.Application;
             Excel.Workbook activeWorkbook = excelApp.ActiveWorkbook;
             string selectedURL = string.Empty;
 
-            // Find the use this hyperlink
+            // Find the "use this" hyperlink
             var matchingEntry = settings.HyperlinkEntries
                 .FirstOrDefault(entry => entry.Use == true);
 
@@ -482,79 +526,54 @@ namespace XLQuickTools
                         return;
                     }
                 }
-
                 try
                 {
                     excelApp.ScreenUpdating = false;
 
-                    // Search for "HYPERLINK" formulas in the selected column
-                    Excel.Range firstFound = selectedRange.Find(
-                        What: "HYPERLINK",
-                        After: selectedRange.Cells[1, 1],
-                        LookIn: Excel.XlFindLookIn.xlFormulas,
-                        LookAt: Excel.XlLookAt.xlPart,
-                        SearchOrder: Excel.XlSearchOrder.xlByColumns,
-                        SearchDirection: Excel.XlSearchDirection.xlNext,
-                        MatchCase: false);
+                    // Process the column
+                    Excel.Range lastCell = selectedRange.Cells[selectedRange.Rows.Count, 1].End(Excel.XlDirection.xlUp);
+                    int lastRow = lastCell.Row;
 
-                    if (firstFound != null)
+                    // Read the column values into an array
+                    object[,] values = selectedRange.Value2 as object[,];
+
+                    int totalRows = lastRow;
+
+                    // Process the data in chunks
+                    for (int startRow = 2; startRow <= totalRows; startRow += CHUNK_SIZE)
                     {
-                        // HYPERLINK formula found, copy and paste values in the column
-                        // Set to Text
-                        selectedRange.NumberFormat = "@";
-                        selectedRange.Value2 = selectedRange.Value2;
-                        // Remove hyperlink formatting: Reset font color and underline
-                        selectedRange.Font.Underline = Excel.XlUnderlineStyle.xlUnderlineStyleNone;
-                        selectedRange.Font.ColorIndex = Excel.XlColorIndex.xlColorIndexAutomatic;
-                    }
-                    else
-                    {
-                        // No hyperlinks found, process the column
-                        Excel.Range lastCell = selectedRange.Cells[selectedRange.Rows.Count, 1].End(Excel.XlDirection.xlUp);
-                        int lastRow = lastCell.Row;
+                        int endRow = Math.Min(startRow + CHUNK_SIZE - 1, totalRows);
+                        int rowsToProcess = endRow - startRow + 1;
 
-                        // Read the column values into an array
-                        object[,] values = selectedRange.Value2 as object[,];
+                        object[,] processArray = new object[rowsToProcess, 1];
 
-                        int totalRows = lastRow;
-
-                        // Process the data in chunks
-                        for (int startRow = 2; startRow <= totalRows; startRow += CHUNK_SIZE)
+                        // Copy data into a new array, excluding the header
+                        for (int i = startRow; i <= endRow; i++)
                         {
-                            int endRow = Math.Min(startRow + CHUNK_SIZE - 1, totalRows);
-                            int rowsToProcess = endRow - startRow + 1;
-
-                            object[,] processArray = new object[rowsToProcess, 1];
-
-                            // Copy data into a new array, excluding the header
-                            for (int i = startRow; i <= endRow; i++)
-                            {
-                                processArray[i - startRow, 0] = values[i, 1]; // Skip header
-                            }
-
-                            // Iterate through the processed chunk
-                            for (int i = 0; i < rowsToProcess; i++)
-                            {
-                                string cellValue = processArray[i, 0]?.ToString() ?? string.Empty;
-
-                                // Toggle on: Create a hyperlink
-                                if (!string.IsNullOrEmpty(cellValue))
-                                {
-                                    string hyperlinkURL = selectedURL.Replace("{ID}", cellValue).Replace("{id}", cellValue);
-                                    string hyperlinkFormula = $"=HYPERLINK(\"{hyperlinkURL}\", \"{cellValue}\")";
-
-                                    processArray[i, 0] = hyperlinkFormula;
-                                }
-                            }
-
-                            // Set column to General format
-                            selectedRange.NumberFormat = "General";
-
-                            // Write the processed array back to Excel
-                            Excel.Range rangeToUpdate = selectedRange.Cells[startRow, 1].Resize[rowsToProcess, 1];
-                            rangeToUpdate.Value2 = processArray;
+                            processArray[i - startRow, 0] = values[i, 1]; // Skip header
                         }
 
+                        // Iterate through the processed chunk
+                        for (int i = 0; i < rowsToProcess; i++)
+                        {
+                            string cellValue = processArray[i, 0]?.ToString() ?? string.Empty;
+
+                            // Toggle on: Create a hyperlink
+                            if (!string.IsNullOrEmpty(cellValue))
+                            {
+                                string hyperlinkURL = selectedURL.Replace("{ID}", cellValue).Replace("{id}", cellValue);
+                                string hyperlinkFormula = $"=HYPERLINK(\"{hyperlinkURL}\", \"{cellValue}\")";
+
+                                processArray[i, 0] = hyperlinkFormula;
+                            }
+                        }
+
+                        // Set column to General format
+                        selectedRange.NumberFormat = "General";
+
+                        // Write the processed array back to Excel
+                        Excel.Range rangeToUpdate = selectedRange.Cells[startRow, 1].Resize[rowsToProcess, 1];
+                        rangeToUpdate.Value2 = processArray;
                     }
                 }
                 finally
