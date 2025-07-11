@@ -117,9 +117,9 @@ Compares two worksheets, even if they belong to different workbooks, provided bo
 The built-in Excel Filter button, placed on the Quick Tools tab for easier access while using other tools in the add-in.
 
 ### **Unique Data Options**
-- **Selection Count:** Get the count of unique values and unique rows.
 - **Selection to Clipboard:** Copy the selections unique data to clipboard.
 - **Copy Data to New Worksheets:** Copies data to new worksheets based on the unique values from a selected column.
+- **Column Information:** Displays details on the selected column - unique values, blanks, non-blanks, and total row count.
 
 ### **Selection**
 Comma-separates a selected range and stores the result in your clipboard.
