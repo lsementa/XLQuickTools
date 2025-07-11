@@ -82,12 +82,6 @@ namespace XLQuickTools
             form1.ShowDialog();
         }
 
-        // Clean and trim active sheet
-        private void BtnTrimClean_Click(object sender, RibbonControlEventArgs e)
-        {
-            QTFormat.FormatMenu(TRIMCLEAN);
-        }
-
         // Split columns to rows (Form)
         private void BtnSplitToRows_Click(object sender, RibbonControlEventArgs e)
         {
@@ -425,6 +419,11 @@ namespace XLQuickTools
             form1.ShowDialog();
         }
 
+        // Column Information
+        private void BtnColumnInfo_Click(object sender, RibbonControlEventArgs e)
+        {
+            QTFunctions.CountValuesInColumn();
+        }
     }
 }
 

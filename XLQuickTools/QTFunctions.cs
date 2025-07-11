@@ -920,5 +920,65 @@ namespace XLQuickTools
             }
         }
 
+        // Column information
+        public static void CountValuesInColumn()
+        {
+            Excel.Application excelApp = Globals.ThisAddIn.Application;
+            Excel.Workbook activeWorkbook = excelApp.ActiveWorkbook;
+
+            if (activeWorkbook != null)
+            {
+                Excel.Worksheet activeSheet = excelApp.ActiveSheet;
+                Excel.Range selectedRange = excelApp.Selection;
+                Excel.Range rangeToProcess = QTUtils.GetRangeToProcess(excelApp);
+
+                try
+                {
+                    // Ensure the user selects only one full column
+                    if (selectedRange.Columns.Count != 1 || selectedRange.Rows.Count != activeSheet.Rows.Count)
+                    {
+                        Excel.Range selectedColumn = QTUtils.ColumnSelection(excelApp);
+
+                        if (selectedColumn != null)
+                        {
+                            selectedRange = selectedColumn;
+                        }
+                        else
+                        {
+                            return;
+                        }
+                    }
+
+                    // Get all the values
+                    int columnIndex = selectedRange.Column;
+                    string columnLetter = QTUtils.GetColumnLetter(columnIndex);
+                    int uniqueCount = GetUniqueCount(selectedRange);
+                    int totalNonBlankCells = (int)excelApp.WorksheetFunction.CountA(selectedRange);
+                    // Use rangeToProcess function
+                    int totalBlankCells = rangeToProcess.Cells.Count - totalNonBlankCells;
+                    int rowCount = totalNonBlankCells > 0 ? (int)excelApp.WorksheetFunction.CountA(selectedRange) : 0;
+
+                    // Show all the values
+                    string message = $"Column {columnLetter} contains:\n" +
+                                "     " + $"Unique Values: {uniqueCount:N0}\n" +
+                                "     " + $"Total Non-Blank Cells: {totalNonBlankCells:N0}\n" +
+                                "     " + $"Total Blank Cells: {totalBlankCells:N0}\n" +
+                                "     " + $"Total Rows with Data: {rowCount:N0}";
+
+                    MessageBox.Show(message, "Column Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                }
+                catch (Exception ex)
+                {
+                    QTUtils.ShowError(ex);
+                }
+                finally
+                {
+                    QTUtils.CleanupResources(selectedRange);
+                    QTUtils.CleanupResources(rangeToProcess);
+
+                }
+            }
+        }
     }
 }

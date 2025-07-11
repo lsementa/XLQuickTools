@@ -108,7 +108,7 @@ namespace XLQuickTools
                     // Use column letters
                     for (int i = 1; i <= colCount; i++)
                     {
-                        string colLetter = GetExcelColumnLetter(range.Cells[1, i].Column);
+                        string colLetter = QTUtils.GetColumnLetter(range.Cells[1, i].Column);
                         ClbColumns.Items.Add("Column " + colLetter, true);
                     }
                 }
@@ -118,7 +118,7 @@ namespace XLQuickTools
                 // Use column letters
                 for (int i = 1; i <= colCount; i++)
                 {
-                    string colLetter = GetExcelColumnLetter(range.Cells[1, i].Column);
+                    string colLetter = QTUtils.GetColumnLetter(range.Cells[1, i].Column);
                     ClbColumns.Items.Add("Column " + colLetter, true);
                 }
             }
@@ -133,19 +133,6 @@ namespace XLQuickTools
             TbUniqueValues.Text = QTFunctions.GetUniqueCount(rangeToProcess).ToString();
             TbUniqueRows.Text = QTFunctions.GetUniqueRows(rangeToProcess, ClbColumns, false).ToString();
 
-        }
-
-        // Helper function to convert column index to letter (A, B, C, ... AA, AB, etc.)
-        private string GetExcelColumnLetter(int colIndex)
-        {
-            string columnLetter = "";
-            while (colIndex > 0)
-            {
-                colIndex--;
-                columnLetter = (char)('A' + (colIndex % 26)) + columnLetter;
-                colIndex /= 26;
-            }
-            return columnLetter;
         }
 
         // Checkbox Listbox Change

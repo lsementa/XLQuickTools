@@ -98,6 +98,7 @@
             this.SBtnUniqueClipboard = this.Factory.CreateRibbonSplitButton();
             this.BtnUniqueClipboard = this.Factory.CreateRibbonButton();
             this.BtnCopyToSheets = this.Factory.CreateRibbonButton();
+            this.BtnColumnInfo = this.Factory.CreateRibbonButton();
             this.BtnCommaSelection = this.Factory.CreateRibbonButton();
             this.BtnDelimSelection = this.Factory.CreateRibbonButton();
             this.BtnSheetToFile = this.Factory.CreateRibbonButton();
@@ -672,6 +673,7 @@
             this.SBtnUniqueClipboard.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
             this.SBtnUniqueClipboard.Items.Add(this.BtnUniqueClipboard);
             this.SBtnUniqueClipboard.Items.Add(this.BtnCopyToSheets);
+            this.SBtnUniqueClipboard.Items.Add(this.BtnColumnInfo);
             this.SBtnUniqueClipboard.Label = "Unique";
             this.SBtnUniqueClipboard.Name = "SBtnUniqueClipboard";
             this.SBtnUniqueClipboard.OfficeImageId = "TableColumnSelect";
@@ -696,6 +698,16 @@
             this.BtnCopyToSheets.SuperTip = "Create worksheets based on the unique values of a column and copy data to each on" +
     "e.";
             this.BtnCopyToSheets.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnCopyToSheets_Click);
+            // 
+            // BtnColumnInfo
+            // 
+            this.BtnColumnInfo.Label = "Column &Information";
+            this.BtnColumnInfo.Name = "BtnColumnInfo";
+            this.BtnColumnInfo.OfficeImageId = "InformationDialog";
+            this.BtnColumnInfo.ShowImage = true;
+            this.BtnColumnInfo.SuperTip = "Displays details on the selected column: unique values, blanks, non-blanks, and t" +
+    "otal row count.";
+            this.BtnColumnInfo.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnColumnInfo_Click);
             // 
             // BtnCommaSelection
             // 
@@ -867,6 +879,7 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonSplitButton BtnHyperlinks;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnAddHyperlinks;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnRemoveHyperlinks;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnColumnInfo;
     }
 
     partial class ThisRibbonCollection

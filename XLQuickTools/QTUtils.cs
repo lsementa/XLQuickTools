@@ -170,6 +170,19 @@ namespace XLQuickTools
             return newSheet;
         }
 
+        // Convert column index to letter (A, B, C, ... AA, AB, etc.)
+        public static string GetColumnLetter(int colIndex)
+        {
+            string columnLetter = "";
+            while (colIndex > 0)
+            {
+                colIndex--;
+                columnLetter = (char)('A' + (colIndex % 26)) + columnLetter;
+                colIndex /= 26;
+            }
+            return columnLetter;
+        }
+
         // Show error message
         public static void ShowError(Exception ex)
         {
