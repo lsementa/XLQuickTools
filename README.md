@@ -152,7 +152,7 @@ Create and save parameterized URLs. Check "Active" to specify which URL will be 
 </div>
 
 ### **Add/Remove Hyperlinks**
-Adds or removes hyperlinks on an entire column using a saved parameterized URL. Toggle this On/Off with the column selected.
+Adds or removes hyperlinks on an entire column using a saved parameterized URL. Remove will handle both formula and cell based hyperlinks.
 
 <div align="center">
 <img src="images/AddHyperlinks.png" alt="Screenshot">
