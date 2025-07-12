@@ -122,11 +122,13 @@ namespace XLQuickTools
             return modified;
         }
 
-        // Method to remove excess formatting from entirie workbook
+        // Method to remove excess formatting
         public static void RemoveExcess(bool processWorkbook = false)
         {
             Excel.Application excelApp = Globals.ThisAddIn.Application;
             Excel.Workbook activeWorkbook = excelApp.ActiveWorkbook;
+            Excel.Range lastRowFoundCell = null;
+            Excel.Range lastColumnFoundCell = null;
 
             if (activeWorkbook != null)
             {
@@ -142,20 +144,41 @@ namespace XLQuickTools
 
                     foreach (Excel.Worksheet ws in worksheetsToProcess)
                     {
-                        // Last row with actual data
-                        int lastDataRow = ws.Cells.Find("*", System.Reflection.Missing.Value,
-                            Excel.XlFindLookIn.xlFormulas, Excel.XlLookAt.xlPart,
-                            Excel.XlSearchOrder.xlByRows, Excel.XlSearchDirection.xlPrevious,
-                            false, System.Reflection.Missing.Value, System.Reflection.Missing.Value)?.Row ?? 0;
+                        // Last row with actual data (ignoring formatting)
+                        lastRowFoundCell = ws.Cells.Find(
+                            What: "*",
+                            After: System.Reflection.Missing.Value,
+                            LookIn: Excel.XlFindLookIn.xlFormulas,
+                            LookAt: Excel.XlLookAt.xlPart,
+                            SearchOrder: Excel.XlSearchOrder.xlByRows,
+                            SearchDirection: Excel.XlSearchDirection.xlPrevious,
+                            MatchCase: false,
+                            MatchByte: System.Reflection.Missing.Value,
+                            SearchFormat: false // Ignore formatting
+                        );
 
-                        // Last column with actual data
-                        int lastDataColumn = ws.Cells.Find("*", System.Reflection.Missing.Value,
-                            Excel.XlFindLookIn.xlFormulas, Excel.XlLookAt.xlPart,
-                            Excel.XlSearchOrder.xlByColumns, Excel.XlSearchDirection.xlPrevious,
-                            false, System.Reflection.Missing.Value, System.Reflection.Missing.Value)?.Column ?? 0;
+                        int lastDataRow = lastRowFoundCell?.Row ?? 0;
+
+                        // Last column with actual data (ignoring formatting)
+                        lastColumnFoundCell = ws.Cells.Find(
+                            What: "*",
+                            After: System.Reflection.Missing.Value,
+                            LookIn: Excel.XlFindLookIn.xlFormulas,
+                            LookAt: Excel.XlLookAt.xlPart,
+                            SearchOrder: Excel.XlSearchOrder.xlByColumns,
+                            SearchDirection: Excel.XlSearchDirection.xlPrevious,
+                            MatchCase: false,
+                            MatchByte: System.Reflection.Missing.Value,
+                            SearchFormat: false // Ignore formatting
+                        );
+
+                        int lastDataColumn = lastColumnFoundCell?.Column ?? 0;
+
+                        // Get Excels max rows and columns allowed
+                        int totalRows = ws.Rows.Count;
+                        int totalColumns = ws.Columns.Count;
 
                         // Clear excess rows
-                        int totalRows = ws.Rows.Count;
                         if (lastDataRow < totalRows)
                         {
                             Excel.Range rowsToClear = ws.Rows[$"{lastDataRow + 1}:{totalRows}"];
@@ -163,14 +186,12 @@ namespace XLQuickTools
                         }
 
                         // Clear excess columns
-                        int totalColumns = ws.Columns.Count;
                         if (lastDataColumn < totalColumns)
                         {
-                            // Use a safe range
                             int startColumn = lastDataColumn + 1;
                             if (startColumn <= totalColumns)
                             {
-                                Excel.Range columnsToClear = ws.Range[ws.Cells[1, startColumn], ws.Cells[1, totalColumns]];
+                                Excel.Range columnsToClear = ws.Range[ws.Cells[1, startColumn], ws.Cells[lastDataRow + 1, totalColumns]];
                                 columnsToClear.ClearFormats();
                             }
                         }
@@ -184,6 +205,9 @@ namespace XLQuickTools
                 {
                     // Turn screen updating back on
                     excelApp.ScreenUpdating = true;
+                    // Clean up
+                    QTUtils.CleanupResources(lastRowFoundCell);
+                    QTUtils.CleanupResources(lastColumnFoundCell);
 
                     // Update message based on whether workbook or worksheet
                     string message = processWorkbook
@@ -762,7 +786,7 @@ namespace XLQuickTools
                     // Get the width of the current column from the source range
                     double columnWidth = (double)((Excel.Range)sourceRange.Columns[i]).ColumnWidth;
                     // Apply the width to the corresponding column in the target range
-                   ((Excel.Range)targetRange.Columns[i]).ColumnWidth = columnWidth;
+                    ((Excel.Range)targetRange.Columns[i]).ColumnWidth = columnWidth;
 
                 }
             }

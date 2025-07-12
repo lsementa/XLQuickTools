@@ -380,20 +380,22 @@ namespace XLQuickTools
                     compareSheet.Cells[1, 3].Value = sheet2.Name + " Cell Contains";
                     compareSheet.Cells[1, 4].Value = "Reference";
 
-                    int compareRow = 2; // For adding differences to compareSheet
+                    int compareRow = 2; // Start row
 
                     foreach (var diff in diffList)
                     {
                         compareSheet.Cells[compareRow, 1].Value = diff.Item1;
-                        compareSheet.Cells[compareRow, 2].Value = diff.Item2;
+                        // Add link to cell reference for sheet 1
+                        compareSheet.Cells[compareRow, 2].Formula = $"=HYPERLINK(\"#'{sheet1.Name}'!{diff.Item2}\",\"{diff.Item2}\"";
                         compareSheet.Cells[compareRow, 3].Value = diff.Item3;
-                        compareSheet.Cells[compareRow, 4].Value = diff.Item4;
-
+                        // Add link to cell reference for sheet 2
+                        compareSheet.Cells[compareRow, 4].Formula = $"=HYPERLINK(\"#'{sheet2.Name}'!{diff.Item4}\",\"{diff.Item4}\"";
                         compareRow++;
                     }
 
                     // Finalize the compareSheet
                     Excel.Range headerRange = compareSheet.Range["A1", "D1"];
+                    headerRange.Font.Bold = true;
                     headerRange.Borders.LineStyle = Excel.XlLineStyle.xlContinuous;
                     headerRange.Borders.Weight = Excel.XlBorderWeight.xlThin;
                     compareSheet.Columns.AutoFit();

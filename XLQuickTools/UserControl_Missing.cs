@@ -195,6 +195,7 @@ namespace XLQuickTools
 
                     // Apply borders and formatting
                     Excel.Range headerRange = missingReportSheet.Range["A1", "B1"];
+                    headerRange.Font.Bold = true;
                     headerRange.Borders.LineStyle = Excel.XlLineStyle.xlContinuous;
                     headerRange.Borders.Weight = Excel.XlBorderWeight.xlThin;
                     missingReportSheet.Columns.AutoFit();

@@ -143,9 +143,11 @@ namespace XLQuickTools
                     row++;
                 }
 
-                // Make header row bold
+                // Header formatting
                 Excel.Range headerRange = sheet.Range[sheet.Cells[1, 1], sheet.Cells[1, col - 1]];
                 headerRange.Font.Bold = true;
+                headerRange.Borders.LineStyle = Excel.XlLineStyle.xlContinuous;
+                headerRange.Borders.Weight = Excel.XlBorderWeight.xlThin;
 
                 // Auto-fit all used columns
                 Excel.Range usedRange = sheet.UsedRange;

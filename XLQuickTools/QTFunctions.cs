@@ -960,10 +960,12 @@ namespace XLQuickTools
 
                     // Show all the values
                     string message = $"Column {columnLetter} contains:\n" +
-                                "     " + $"Unique Values: {uniqueCount:N0}\n" +
-                                "     " + $"Total Non-Blank Cells: {totalNonBlankCells:N0}\n" +
-                                "     " + $"Total Blank Cells: {totalBlankCells:N0}\n" +
-                                "     " + $"Total Rows with Data: {rowCount:N0}";
+                                "──────────────────────────────\n" +
+                                $"Unique Values: {uniqueCount:N0}\n" +
+                                $"Total Non-Blank Cells: {totalNonBlankCells:N0}\n" +
+                                $"Total Blank Cells: {totalBlankCells:N0}\n" +
+                                $"Number of Rows: {rowCount:N0}\n" +
+                                "──────────────────────────────\n";
 
                     MessageBox.Show(message, "Column Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
