@@ -64,7 +64,7 @@ namespace XLQuickTools
             this.TbCustom.Select();
         }
 
-        // Main method to split delimted column cells to new rows
+        // Main method to split delimted columns to new rows
         public void SplitToRows(Excel.Worksheet activeSheet, string delimText, string customValue)
         {
             var excelApp = Globals.ThisAddIn.Application;
@@ -83,27 +83,24 @@ namespace XLQuickTools
                 int changeCnt = 0;
                 string delimiter = QTUtils.GetDelimiter(delimText, customValue);
 
-                for (int iLoop = endRow; iLoop >= startRow; iLoop--)
+                // Start from the bottom row and work your way up
+                for (int row = endRow; row >= startRow; row--)
                 {
                     int maxCnt = 0;
 
-                    for (int i = startCol; i <= endCol; i++)
+                    // Column iteration: First pass
+                    for (int col = startCol; col <= endCol; col++)
                     {
-                        var cell = activeSheet.Cells[iLoop, i] as Excel.Range;
+                        var cell = activeSheet.Cells[row, col] as Excel.Range;
                         string cellValue = null;
 
+                        // Work with the string value
                         if (cell != null && cell.Value2 != null)
                         {
-                            if (cell.Value2 is double || cell.Value2 is int)
-                            {
-                                cellValue = cell.Value2.ToString();
-                            }
-                            else if (cell.Value2 is string)
-                            {
-                                cellValue = (string)cell.Value2;
-                            }
+                            cellValue = cell.Value2.ToString();
                         }
-
+                        
+                        // Get the max amount of rows needed
                         if (!string.IsNullOrEmpty(cellValue))
                         {
                             string[] temp = cellValue.Split(new[] { delimiter }, StringSplitOptions.None);
@@ -117,52 +114,51 @@ namespace XLQuickTools
                         }
                     }
 
+                    // Insert the max amount of rows needed
                     if (maxCnt > 0)
                     {
-                        Excel.Range insertRange = activeSheet.Rows[iLoop + 1 + ":" + (iLoop + maxCnt)];
+                        Excel.Range insertRange = activeSheet.Rows[row + 1 + ":" + (row + maxCnt)];
                         insertRange.Insert(Excel.XlInsertShiftDirection.xlShiftDown, Type.Missing);
-                    }
 
-                    for (int i = startCol; i <= endCol; i++)
-                    {
-                        var cell = activeSheet.Cells[iLoop, i] as Excel.Range;
-                        string cellValue = null;
-
-                        if (cell != null && cell.Value2 != null)
+                        // Column iteration: Second pass
+                        for (int col = startCol; col <= endCol; col++)
                         {
-                            if (cell.Value2 is double || cell.Value2 is int)
-                            {
-                                cellValue = cell.Value2.ToString();
-                            }
-                            else if (cell.Value2 is string)
-                            {
-                                cellValue = (string)cell.Value2;
-                            }
-                            else
-                            {
-                                cellValue = cell.Value2.ToString();
-                            }
+                            var cell = activeSheet.Cells[row, col] as Excel.Range;
+                            string cellValue = null;
 
-                            if (!string.IsNullOrEmpty(cellValue))
+                            if (cell != null && cell.Value2 != null)
                             {
-                                string[] temp = cellValue.Split(new[] { delimiter }, StringSplitOptions.None);
+                                // Work with the string value
+                                cellValue = cell.Value2.ToString();
 
-                                for (int jLoop = 0; jLoop < temp.Length; jLoop++)
+                                if (!string.IsNullOrEmpty(cellValue))
                                 {
-                                    string cleanedValue = Clean(temp[jLoop].Trim());
-                                    activeSheet.Cells[iLoop + jLoop, i].Value2 = cleanedValue;
+                                    string[] temp = cellValue.Split(new[] { delimiter }, StringSplitOptions.None);
+
+                                    // Single value column fill to max splits
+                                    if (temp.Length == 1)
+                                    {
+                                        for (int fill = 0; fill <= maxCnt; fill++)
+                                        {
+                                            // temp[0] for single value
+                                            activeSheet.Cells[row + fill, col].Value2 = temp[0].Trim();
+                                        }
+                                    }
+                                    // Delimited value column fill with delimited values
+                                    else
+                                    {
+                                        for (int fill = 0; fill < temp.Length; fill++)
+                                        {
+                                            activeSheet.Cells[row + fill, col].Value2 = temp[fill].Trim();
+                                        }
+                                    }
                                 }
                             }
                         }
                     }
-
-                    if (maxCnt > 0)
-                    {
-                        Excel.Range fillRange = activeSheet.Rows[iLoop + 1 + ":" + (iLoop + maxCnt)];
-                        QTFunctions.FillBlanks(fillRange);
-                    }
                 }
 
+                // Changes were made
                 if (changeCnt > 0)
                 {
                     // Check original range
@@ -170,7 +166,10 @@ namespace XLQuickTools
                     {
                         originalRange = usedRange;
                     }
+                    // Unwrap text
                     usedRange.WrapText = false;
+
+                    // Select Range A1
                     Excel.Range firstCell = activeSheet.Cells[originalRange.Row, originalRange.Column];
                     firstCell.Select();
                 }
@@ -198,13 +197,6 @@ namespace XLQuickTools
             }
         }
 
-        // Custom method to mimic Excel's CLEAN function
-        private string Clean(string input)
-        {
-            // Removes non-printable characters
-            return new string(input.Where(c => !char.IsControl(c)).ToArray());
-        }
-
         // OK button
         private void SplitterForm_Ok_Click(object sender, EventArgs e)
         {
@@ -220,7 +212,7 @@ namespace XLQuickTools
         // Cancel button
         private void SplitterForm_Cancel_Click(object sender, EventArgs e)
         {
-            // Select cell A1 to clear selection
+            // Select cell A1 first
             _activeSheet.Range["A1"].Select();
             this.Close();
         }
