@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
@@ -65,114 +66,182 @@ namespace XLQuickTools
         }
 
         // Main method to split delimted columns to new rows
-        public void SplitToRows(Excel.Worksheet activeSheet, string delimText, string customValue)
+        public void SplitToRows(Excel.Worksheet activeSheet, string delimText, string customValue, bool hasHeaders)
         {
-            var excelApp = Globals.ThisAddIn.Application;
-            if (usedRange == null) return;
+            Excel.Application excelApp = Globals.ThisAddIn.Application;
+            if (usedRange == null)
+            {
+                System.Windows.Forms.MessageBox.Show("No data found in worksheet.", "Split Columns to Rows",
+                    System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Information);
+                return;
+            }
+
+            // Set usedRange back to originalRange to be used in the process
+            usedRange = originalRange;
+
+            // Turn screen updating off
+            excelApp.ScreenUpdating = false;
 
             try
             {
-                excelApp.ScreenUpdating = false;
+                // Read all values from the used range into a 2D array
+                object[,] originalValues = (object[,])usedRange.Value2;
 
-                // Determine actual bounds of usedRange
-                int startRow = usedRange.Row;
-                int endRow = startRow + usedRange.Rows.Count - 1;
-                int startCol = usedRange.Column;
-                int endCol = startCol + usedRange.Columns.Count - 1;
+                if (originalValues == null)
+                {
+                    System.Windows.Forms.MessageBox.Show("No data found in worksheet.", "Split Columns to Rows",
+                        System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Information);
+                    return;
+                }
 
-                int changeCnt = 0;
+                // Number of rows in the fetched array
+                int originalRows = originalValues.GetLength(0);
+                // Number of columns in the fetched array
+                int originalCols = originalValues.GetLength(1);
+                // Get the delimiter
                 string delimiter = QTUtils.GetDelimiter(delimText, customValue);
 
-                // Start from the bottom row and work your way up
-                for (int row = endRow; row >= startRow; row--)
+                List<List<object>> processedRows = new List<List<object>>();
+                int totalRowsAdded = 0;
+                bool changeMade = false;
+
+                int dataStartRowIndex = 1;
+                if (hasHeaders)
                 {
-                    int maxCnt = 0;
-
-                    // Column iteration: First pass
-                    for (int col = startCol; col <= endCol; col++)
+                    // Add header row directly to processedRows list
+                    List<object> headerRow = new List<object>();
+                    for (int c = 1; c <= originalCols; c++)
                     {
-                        var cell = activeSheet.Cells[row, col] as Excel.Range;
-                        string cellValue = null;
+                        headerRow.Add(originalValues[1, c]);
+                    }
+                    processedRows.Add(headerRow);
+                    dataStartRowIndex = 2;
+                    if (originalRows == 1)
+                    {
+                        System.Windows.Forms.MessageBox.Show("No data rows to process after skipping headers.", "Split Columns to Rows",
+                           System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Information);
+                        return;
+                    }
+                }
 
-                        // Work with the string value
-                        if (cell != null && cell.Value2 != null)
-                        {
-                            cellValue = cell.Value2.ToString();
-                        }
-                        
-                        // Get the max amount of rows needed
+                // Iterate through data rows
+                for (int r = dataStartRowIndex; r <= originalRows; r++)
+                {
+                    int maxSplitsInRow = 0;
+
+                    // First pass: determine maximum number of delimiters used in the current row
+                    for (int c = 1; c <= originalCols; c++)
+                    {
+                        object cellValueObj = originalValues[r, c];
+                        string cellValue = cellValueObj?.ToString() ?? string.Empty;
+
                         if (!string.IsNullOrEmpty(cellValue))
                         {
-                            string[] temp = cellValue.Split(new[] { delimiter }, StringSplitOptions.None);
-                            int cntDelim = temp.Length - 1;
-
-                            if (cntDelim > maxCnt)
-                            {
-                                maxCnt = cntDelim;
-                                changeCnt++;
-                            }
+                            string[] parts = cellValue.Split(new[] { delimiter }, StringSplitOptions.None);
+                            maxSplitsInRow = Math.Max(maxSplitsInRow, parts.Length - 1);
                         }
                     }
 
-                    // Insert the max amount of rows needed
-                    if (maxCnt > 0)
+                    if (maxSplitsInRow == 0)
                     {
-                        Excel.Range insertRange = activeSheet.Rows[row + 1 + ":" + (row + maxCnt)];
-                        insertRange.Insert(Excel.XlInsertShiftDirection.xlShiftDown, Type.Missing);
-
-                        // Column iteration: Second pass
-                        for (int col = startCol; col <= endCol; col++)
+                        // No splits in this row, add it as is
+                        List<object> currentRowData = new List<object>();
+                        for (int c = 1; c <= originalCols; c++)
                         {
-                            var cell = activeSheet.Cells[row, col] as Excel.Range;
-                            string cellValue = null;
+                            currentRowData.Add(originalValues[r, c]);
+                        }
+                        processedRows.Add(currentRowData);
+                    }
+                    else
+                    {
+                        changeMade = true;
+                        totalRowsAdded += maxSplitsInRow;
 
-                            if (cell != null && cell.Value2 != null)
+                        // Initialize new rows for the current original row with empty strings
+                        // +1 because if maxSplitsInRow is 1, you need 2 rows (original part + 1 split part)
+                        List<List<object>> newRowsForCurrentOriginalRow = new List<List<object>>();
+                        for (int k = 0; k <= maxSplitsInRow; k++)
+                        {
+                            newRowsForCurrentOriginalRow.Add(Enumerable.Repeat((object)string.Empty, originalCols).ToList());
+                        }
+
+                        // Second pass: populate the split data into the newRowsForCurrentOriginalRow
+                        for (int c = 1; c <= originalCols; c++)
+                        {
+                            object cellValueObj = originalValues[r, c];
+                            string cellValue = cellValueObj?.ToString() ?? string.Empty;
+
+                            if (!string.IsNullOrEmpty(cellValue))
                             {
-                                // Work with the string value
-                                cellValue = cell.Value2.ToString();
+                                string[] parts = cellValue.Split(new[] { delimiter }, StringSplitOptions.None)
+                                                         .Select(p => p.Trim())
+                                                         .ToArray();
 
-                                if (!string.IsNullOrEmpty(cellValue))
+                                // Populate the first `parts.Length` rows
+                                for (int k = 0; k < parts.Length; k++)
                                 {
-                                    string[] temp = cellValue.Split(new[] { delimiter }, StringSplitOptions.None);
+                                    newRowsForCurrentOriginalRow[k][c - 1] = parts[k];
+                                }
 
-                                    // Single value column fill to max splits
-                                    if (temp.Length == 1)
+                                // If a column has only one part but other columns in the same row
+                                // have multiple parts, fill down the single value for consistency.
+                                if (parts.Length == 1 && maxSplitsInRow > 0)
+                                {
+                                    for (int k = 1; k <= maxSplitsInRow; k++)
                                     {
-                                        for (int fill = 0; fill <= maxCnt; fill++)
-                                        {
-                                            // temp[0] for single value
-                                            activeSheet.Cells[row + fill, col].Value2 = temp[0].Trim();
-                                        }
-                                    }
-                                    // Delimited value column fill with delimited values
-                                    else
-                                    {
-                                        for (int fill = 0; fill < temp.Length; fill++)
-                                        {
-                                            activeSheet.Cells[row + fill, col].Value2 = temp[fill].Trim();
-                                        }
+                                        newRowsForCurrentOriginalRow[k][c - 1] = parts[0];
                                     }
                                 }
                             }
                         }
+
+                        processedRows.AddRange(newRowsForCurrentOriginalRow);
                     }
                 }
 
-                // Changes were made
-                if (changeCnt > 0)
+                if (!changeMade)
                 {
-                    // Check original range
-                    if (originalRange == null)
-                    {
-                        originalRange = usedRange;
-                    }
-                    // Unwrap text
-                    usedRange.WrapText = false;
-
-                    // Select Range A1
-                    Excel.Range firstCell = activeSheet.Cells[originalRange.Row, originalRange.Column];
-                    firstCell.Select();
+                    System.Windows.Forms.MessageBox.Show("No cells contained the delimiter. No changes made.", "Split Columns to Rows",
+                        System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Information);
+                    return;
                 }
+
+                // Convert List<List<object>> to object[,] for writing back to Excel
+                object[,] finalOutputArray = new object[processedRows.Count, originalCols];
+                for (int r = 0; r < processedRows.Count; r++)
+                {
+                    for (int c = 0; c < originalCols; c++)
+                    {
+                        finalOutputArray[r, c] = processedRows[r][c];
+                    }
+                }
+
+                // Get the range to clear
+                Excel.Range clearRange = activeSheet.Range[
+                    activeSheet.Cells[originalRange.Row, originalRange.Column],
+                    activeSheet.Cells[originalRange.Row + originalRows - 1 + totalRowsAdded, originalRange.Column + originalCols - 1]
+                ];
+
+                // Clear contents
+                clearRange.ClearContents();
+
+                // Determine the target range for writing the new data
+                Excel.Range targetRange = activeSheet.Range[
+                    activeSheet.Cells[originalRange.Row, originalRange.Column],
+                    activeSheet.Cells[originalRange.Row + processedRows.Count - 1, originalRange.Column + originalCols - 1]
+                ];
+
+                // Write all processed data to Excel in one go
+                targetRange.Value2 = finalOutputArray;
+
+                // Apply formatting once at the end
+                targetRange.WrapText = false;
+                targetRange.ShrinkToFit = false;
+
+                // Select Range A1 or the first cell of the original range
+                Excel.Range firstCell = activeSheet.Cells[originalRange.Row, originalRange.Column];
+                firstCell.Select();
+
             }
             catch (Exception ex)
             {
@@ -184,29 +253,26 @@ namespace XLQuickTools
             }
             finally
             {
-                if (usedRange != null && Marshal.IsComObject(usedRange))
-                {
-                    Marshal.ReleaseComObject(usedRange);
-                }
-                if (activeSheet != null && Marshal.IsComObject(activeSheet))
-                {
-                    Marshal.ReleaseComObject(activeSheet);
-                }
-
+                // Turn screenupdating back on
                 excelApp.ScreenUpdating = true;
+                // Clean up
+                QTUtils.CleanupResources(usedRange);
+                QTUtils.CleanupResources(originalRange);
+
             }
         }
 
         // OK button
         private void SplitterForm_Ok_Click(object sender, EventArgs e)
         {
-            // Get the input from the TextBox
+            // Get the input values from the form
             string delimiter = CbDelimiter.Text;
             string customValue = TbCustom.Text;
+            bool headers = CbHeaders.Checked;
 
             // Split to rows
-            SplitToRows(_activeSheet, delimiter, customValue);
-            this.Close();        
+            SplitToRows(_activeSheet, delimiter, customValue, headers);
+            this.Close();
         }
 
         // Cancel button
@@ -263,6 +329,5 @@ namespace XLQuickTools
 
             usedRange.Select();
         }
-
     }
 }
