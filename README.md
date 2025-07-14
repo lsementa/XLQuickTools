@@ -31,8 +31,10 @@ An Excel VSTO Add-in featuring a collection of different tools.
 Delete unnecessary formatting from rows or columns that extend beyond the data in your worksheet. This helps reduce file size and improve performance by removing potentially thousands of blank, formatted rows.
 
 ### **Trim and Clean**
-- Removes leading, trailing, and multiple spaces.
-- Removes non-printable characters that can cause issues in your dataset.
+- Removes leading and trailing spaces.
+- Can remove two or more spaces or all spaces.
+- Can remove non-printable characters that can cause issues in your dataset.
+- Can remove non-ASCII characters.
 - Can be applied to a selected range, active worksheet or workbook.
 
 ### **Quick Format Settings**
