@@ -30,6 +30,37 @@ namespace XLQuickTools
             QTFormat.RemoveExcess(true);
         }
 
+        // Trim & Clean a selected range (Main button)
+        private void BtnTrimClean_Click_1(object sender, RibbonControlEventArgs e)
+        {
+            QTFormat.FormatMenu(TRIMCLEAN);
+        }
+
+        // Trim & Clean a selected range (Dropdown button)
+        private void BtnTrimClean_Click_2(object sender, RibbonControlEventArgs e)
+        {
+            QTFormat.FormatMenu(TRIMCLEAN);
+        }
+
+        // Trim & Clean active worksheet
+        private void BtnTrimCleanWorksheet_Click(object sender, RibbonControlEventArgs e)
+        {
+            QTFormat.TrimClean("worksheet");
+        }
+
+        // Trim & Clean active workbook
+        private void BtnTrimCleanWorkbook_Click(object sender, RibbonControlEventArgs e)
+        {
+            QTFormat.TrimClean("workbook");
+        }
+
+        // Trim and Clean Settings
+        private void BtnTrimCleanSettings_Click(object sender, RibbonControlEventArgs e)
+        {
+            CleanSettingsForm form1 = new CleanSettingsForm();
+            form1.ShowDialog();
+        }
+
         // Remove formatting
         private void BtnRemoveFormatting_Click(object sender, RibbonControlEventArgs e)
         {
@@ -163,7 +194,6 @@ namespace XLQuickTools
             Excel.Application excelApp = Globals.ThisAddIn.Application;
             TextConvertForm form1 = new TextConvertForm(excelApp);
             form1.ShowDialog();
-
         }
 
         // Undo Date/Text formatting
@@ -220,18 +250,6 @@ namespace XLQuickTools
             QTFormat.FormatMenu(NORMALIZE_TEXT);
         }
 
-        // Trim & Clean a selected range (Main button)
-        private void BtnTrimClean_Click_1(object sender, RibbonControlEventArgs e)
-        {
-            QTFormat.FormatMenu(TRIMCLEAN);
-        }
-
-        // Trim & Clean a selected range (Dropdown button)
-        private void BtnTrimClean_Click_2(object sender, RibbonControlEventArgs e)
-        {
-            QTFormat.FormatMenu(TRIMCLEAN);
-        }
-
         // Add leading or trailing characters
         private void BtnAddLeadingTrailing_Click(object sender, RibbonControlEventArgs e)
         {
@@ -273,18 +291,6 @@ namespace XLQuickTools
         private void BtnResetColumn_Click(object sender, RibbonControlEventArgs e)
         {
             QTFormat.ResetColumn();
-        }
-
-        // Trim & Clean active worksheet
-        private void BtnTrimCleanWorksheet_Click(object sender, RibbonControlEventArgs e)
-        {
-            QTFormat.TrimClean("worksheet");
-        }
-
-        // Trim & Clean active workbook
-        private void BtnTrimCleanWorkbook_Click(object sender, RibbonControlEventArgs e)
-        {
-            QTFormat.TrimClean("workbook");
         }
 
         // Copy unique to clipboard (Split button)

@@ -106,7 +106,7 @@
             // 
             this.TbSheetName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.TbSheetName.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TbSheetName.Location = new System.Drawing.Point(25, 149);
+            this.TbSheetName.Location = new System.Drawing.Point(25, 152);
             this.TbSheetName.Margin = new System.Windows.Forms.Padding(6);
             this.TbSheetName.Name = "TbSheetName";
             this.TbSheetName.Size = new System.Drawing.Size(412, 35);
@@ -116,7 +116,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(20, 114);
+            this.label1.Location = new System.Drawing.Point(20, 117);
             this.label1.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(190, 29);
@@ -129,7 +129,7 @@
             this.CbChildFolders.Location = new System.Drawing.Point(25, 42);
             this.CbChildFolders.Margin = new System.Windows.Forms.Padding(4);
             this.CbChildFolders.Name = "CbChildFolders";
-            this.CbChildFolders.Size = new System.Drawing.Size(257, 29);
+            this.CbChildFolders.Size = new System.Drawing.Size(286, 33);
             this.CbChildFolders.TabIndex = 9;
             this.CbChildFolders.Text = "&Include Subdirectories";
             this.CbChildFolders.UseVisualStyleBackColor = true;
@@ -140,7 +140,7 @@
             this.CbActiveSheet.Location = new System.Drawing.Point(25, 79);
             this.CbActiveSheet.Margin = new System.Windows.Forms.Padding(4);
             this.CbActiveSheet.Name = "CbActiveSheet";
-            this.CbActiveSheet.Size = new System.Drawing.Size(256, 29);
+            this.CbActiveSheet.Size = new System.Drawing.Size(279, 33);
             this.CbActiveSheet.TabIndex = 10;
             this.CbActiveSheet.Text = "Use &Active Worksheet";
             this.CbActiveSheet.UseVisualStyleBackColor = true;
@@ -152,7 +152,7 @@
             this.CbDateModified.Location = new System.Drawing.Point(25, 78);
             this.CbDateModified.Margin = new System.Windows.Forms.Padding(4);
             this.CbDateModified.Name = "CbDateModified";
-            this.CbDateModified.Size = new System.Drawing.Size(177, 29);
+            this.CbDateModified.Size = new System.Drawing.Size(195, 33);
             this.CbDateModified.TabIndex = 5;
             this.CbDateModified.Text = "&Date Modified";
             this.CbDateModified.UseVisualStyleBackColor = true;
@@ -163,7 +163,7 @@
             this.CbFileSize.Location = new System.Drawing.Point(25, 154);
             this.CbFileSize.Margin = new System.Windows.Forms.Padding(4);
             this.CbFileSize.Name = "CbFileSize";
-            this.CbFileSize.Size = new System.Drawing.Size(127, 29);
+            this.CbFileSize.Size = new System.Drawing.Size(139, 33);
             this.CbFileSize.TabIndex = 7;
             this.CbFileSize.Text = "File &Size";
             this.CbFileSize.UseVisualStyleBackColor = true;
@@ -174,7 +174,7 @@
             this.CbFileLocation.Location = new System.Drawing.Point(25, 42);
             this.CbFileLocation.Margin = new System.Windows.Forms.Padding(4);
             this.CbFileLocation.Name = "CbFileLocation";
-            this.CbFileLocation.Size = new System.Drawing.Size(167, 29);
+            this.CbFileLocation.Size = new System.Drawing.Size(183, 33);
             this.CbFileLocation.TabIndex = 4;
             this.CbFileLocation.Text = "File &Location";
             this.CbFileLocation.UseVisualStyleBackColor = true;
@@ -185,7 +185,7 @@
             this.CbFileType.Location = new System.Drawing.Point(25, 115);
             this.CbFileType.Margin = new System.Windows.Forms.Padding(4);
             this.CbFileType.Name = "CbFileType";
-            this.CbFileType.Size = new System.Drawing.Size(133, 29);
+            this.CbFileType.Size = new System.Drawing.Size(147, 33);
             this.CbFileType.TabIndex = 6;
             this.CbFileType.Text = "File &Type";
             this.CbFileType.UseVisualStyleBackColor = true;
@@ -193,12 +193,13 @@
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.CbFileSize);
-            this.groupBox1.Controls.Add(this.CbFileType);
             this.groupBox1.Controls.Add(this.CbDateModified);
             this.groupBox1.Controls.Add(this.CbFileLocation);
+            this.groupBox1.Controls.Add(this.CbFileType);
+            this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox1.Location = new System.Drawing.Point(29, 112);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(218, 208);
+            this.groupBox1.Size = new System.Drawing.Size(237, 208);
             this.groupBox1.TabIndex = 3;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Display";
@@ -209,6 +210,7 @@
             this.groupBox2.Controls.Add(this.label1);
             this.groupBox2.Controls.Add(this.CbActiveSheet);
             this.groupBox2.Controls.Add(this.CbChildFolders);
+            this.groupBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox2.Location = new System.Drawing.Point(272, 112);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(461, 208);
@@ -220,7 +222,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(763, 422);
+            this.ClientSize = new System.Drawing.Size(763, 418);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.FileListForm_Browse);

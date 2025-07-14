@@ -209,6 +209,12 @@
     can be found.
   -->
   <ItemGroup>
+    <Compile Include="Form_CleanSettings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form_CleanSettings.Designer.cs">
+      <DependentUpon>Form_CleanSettings.cs</DependentUpon>
+    </Compile>
     <Compile Include="QTConstants.cs" />
     <Compile Include="Form_CopyHighlighted.cs">
       <SubType>Form</SubType>
@@ -296,6 +302,9 @@
     <Compile Include="UserControl_Compare.Designer.cs">
       <DependentUpon>UserControl_Compare.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Form_CleanSettings.resx">
+      <DependentUpon>Form_CleanSettings.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form_CopyHighlighted.resx">
       <DependentUpon>Form_CopyHighlighted.cs</DependentUpon>
     </EmbeddedResource>

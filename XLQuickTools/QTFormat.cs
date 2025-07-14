@@ -16,8 +16,9 @@ namespace XLQuickTools
     public class QTFormat
     {
         // Method to transform text based on an option
-        private static string TransformText(string input, int option, string leading = null, string trailing = null)
+        private static string TransformText(string input, int option, string leading = null, string trailing = null, UserSettings settings = null)
         {
+
             switch (option)
             {
                 case UPPERCASE:
@@ -37,8 +38,32 @@ namespace XLQuickTools
                 case TRIMCLEAN:
                     if (input != null)
                     {
-                        // Trim and remove extra spaces
-                        input = Regex.Replace(input, @"\s{2,}", " ").Trim();
+                        // Trim as default
+                        input = input.Trim();
+
+                        // Remove two or more spaces
+                        if (settings.Spaces)
+                        {
+                            input = Regex.Replace(input, @"\s{2,}", " ").Trim();
+                        }
+
+                        // Remove all spaces
+                        if (settings.SpacesAll)
+                        {
+                            input = Regex.Replace(input, @"\s+", "").Trim();
+                        }
+
+                        // Clean
+                        if (settings.NonPrintable)
+                        {
+                            input = Clean(input);
+                        }
+
+                        // Remove Non-ASCII
+                        if (settings.NonASCII)
+                        {
+                            input = ReplaceNonAscii(input, false);
+                        }
 
                         // Check for string containing only spaces
                         if (input.Length > 0 && input.All(c => c == ' '))
@@ -46,11 +71,11 @@ namespace XLQuickTools
                             input = string.Empty;
                         }
                     }
-                    return Clean(input);
+                    return input;
                 case ADD_LEADING_TRAILING:
                     return (leading ?? "") + input + (trailing ?? "");
                 case REPLACE_NON_ASCII:
-                    return ReplaceNonAscii(input);
+                    return ReplaceNonAscii(input, true);
                 case REMOVE_SPACES:
                     return Regex.Replace(input, @"\s{2,}", " ").Trim();
                 default:
@@ -63,6 +88,9 @@ namespace XLQuickTools
         {
             Excel.Application excelApp = Globals.ThisAddIn.Application;
             Excel.Range rangeToProcess = null;
+
+            // Load settings and validate
+            UserSettings settings = QTSettings.LoadUserSettingsFromXml();
 
             try
             {
@@ -77,7 +105,7 @@ namespace XLQuickTools
                 // Copy and store values
                 clipboard.CopyAndStoreFormat(rangeToProcess);
 
-                if (ProcessFormat(values, option, leading, trailing))
+                if (ProcessFormat(values, option, leading, trailing, settings))
                 {
                     rangeToProcess.Value2 = values;
                 }
@@ -89,12 +117,13 @@ namespace XLQuickTools
             finally
             {
                 excelApp.ScreenUpdating = true;
+                // Clean up
                 QTUtils.CleanupResources(rangeToProcess);
             }
         }
 
         // Process the Format Menu option array and modify values if necessary
-        private static bool ProcessFormat(object[,] values, int option, string leading = null, string trailing = null)
+        private static bool ProcessFormat(object[,] values, int option, string leading = null, string trailing = null, UserSettings settings = null)
         {
             if (values == null) return false;
 
@@ -113,7 +142,7 @@ namespace XLQuickTools
                         string cellValue = values[row, col].ToString();
                         if (cellValue.Length > 0)
                         {
-                            values[row, col] = TransformText(cellValue, option, leading, trailing).Trim();
+                            values[row, col] = TransformText(cellValue, option, leading, trailing, settings);
                             modified = true;
                         }
                     }
@@ -271,7 +300,7 @@ namespace XLQuickTools
                 {
                     string scope = rangeType.ToLower() == "worksheet" ? "worksheet" : "workbook";
                     System.Windows.Forms.MessageBox.Show(
-                        $"All cells in the {scope} have been trimmed and cleaned of any non-printable characters!",
+                        $"All cells in the {scope} have been trimmed and cleaned.",
                         "Trim and Clean",
                         System.Windows.Forms.MessageBoxButtons.OK,
                         System.Windows.Forms.MessageBoxIcon.Information);
@@ -306,8 +335,14 @@ namespace XLQuickTools
         // Custom method to mimic Excel's CLEAN function
         public static string Clean(string input)
         {
-            // Removes non-printable characters
+            if (string.IsNullOrEmpty(input))
+            {
+                return input;
+            }
+
+            // Remove non-printable characters
             return new string(input.Where(c => !char.IsControl(c)).ToArray());
+
         }
 
         // Function to remove formatting
@@ -711,7 +746,7 @@ namespace XLQuickTools
         }
 
         // Method to replace non-ASCII characters with HTML entity
-        private static string ReplaceNonAscii(string input)
+        private static string ReplaceNonAscii(string input, bool html = false)
         {
             System.Text.StringBuilder sb = new System.Text.StringBuilder();
 
@@ -723,7 +758,14 @@ namespace XLQuickTools
                 }
                 else
                 {
-                    sb.Append($"&#{(int)c};"); // Convert
+                    if (html)
+                    {
+                        sb.Append($"&#{(int)c};"); // Convert
+                    }
+                    else
+                    {
+                        // Do nothing to remove it
+                    }
                 }
             }
 

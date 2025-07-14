@@ -39,26 +39,25 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.CbConvertType = new System.Windows.Forms.ComboBox();
-            this.CbCurrentLocale = new System.Windows.Forms.ComboBox();
             this.CbConvertLocale = new System.Windows.Forms.ComboBox();
-            this.LblCurrentLocale = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.LblFormatLocale = new System.Windows.Forms.Label();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.groupBox1.SuspendLayout();
+            this.LblCurrentLocale = new System.Windows.Forms.Label();
+            this.CbCurrentLocale = new System.Windows.Forms.ComboBox();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // CbCategory
             // 
             this.CbCategory.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.CbCategory.DropDownWidth = 363;
             this.CbCategory.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.CbCategory.FormattingEnabled = true;
             this.CbCategory.Location = new System.Drawing.Point(28, 52);
             this.CbCategory.Margin = new System.Windows.Forms.Padding(6);
             this.CbCategory.Name = "CbCategory";
-            this.CbCategory.Size = new System.Drawing.Size(376, 37);
+            this.CbCategory.Size = new System.Drawing.Size(403, 37);
             this.CbCategory.TabIndex = 1;
             this.CbCategory.SelectedIndexChanged += new System.EventHandler(this.CbCategory_SelectedIndexChanged);
             // 
@@ -181,37 +180,17 @@
             this.CbConvertType.Size = new System.Drawing.Size(241, 37);
             this.CbConvertType.TabIndex = 11;
             // 
-            // CbCurrentLocale
-            // 
-            this.CbCurrentLocale.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.CbCurrentLocale.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.CbCurrentLocale.FormattingEnabled = true;
-            this.CbCurrentLocale.Location = new System.Drawing.Point(22, 76);
-            this.CbCurrentLocale.Name = "CbCurrentLocale";
-            this.CbCurrentLocale.Size = new System.Drawing.Size(242, 37);
-            this.CbCurrentLocale.TabIndex = 4;
-            this.CbCurrentLocale.SelectedIndexChanged += new System.EventHandler(this.CbCurrentLocale_SelectedIndexChanged);
-            // 
             // CbConvertLocale
             // 
             this.CbConvertLocale.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.CbConvertLocale.DropDownWidth = 363;
             this.CbConvertLocale.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.CbConvertLocale.FormattingEnabled = true;
-            this.CbConvertLocale.Location = new System.Drawing.Point(294, 76);
+            this.CbConvertLocale.Location = new System.Drawing.Point(30, 216);
             this.CbConvertLocale.Name = "CbConvertLocale";
-            this.CbConvertLocale.Size = new System.Drawing.Size(240, 37);
+            this.CbConvertLocale.Size = new System.Drawing.Size(401, 37);
             this.CbConvertLocale.TabIndex = 6;
             this.CbConvertLocale.SelectedIndexChanged += new System.EventHandler(this.CbConvertLocale_SelectedIndexChanged);
-            // 
-            // LblCurrentLocale
-            // 
-            this.LblCurrentLocale.AutoSize = true;
-            this.LblCurrentLocale.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LblCurrentLocale.Location = new System.Drawing.Point(17, 44);
-            this.LblCurrentLocale.Name = "LblCurrentLocale";
-            this.LblCurrentLocale.Size = new System.Drawing.Size(98, 29);
-            this.LblCurrentLocale.TabIndex = 3;
-            this.LblCurrentLocale.Text = "C&urrent:";
             // 
             // label6
             // 
@@ -227,24 +206,11 @@
             // 
             this.LblFormatLocale.AutoSize = true;
             this.LblFormatLocale.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LblFormatLocale.Location = new System.Drawing.Point(289, 44);
+            this.LblFormatLocale.Location = new System.Drawing.Point(25, 184);
             this.LblFormatLocale.Name = "LblFormatLocale";
-            this.LblFormatLocale.Size = new System.Drawing.Size(138, 29);
+            this.LblFormatLocale.Size = new System.Drawing.Size(180, 29);
             this.LblFormatLocale.TabIndex = 5;
-            this.LblFormatLocale.Text = "C&onvert To:";
-            // 
-            // groupBox1
-            // 
-            this.groupBox1.Controls.Add(this.CbCurrentLocale);
-            this.groupBox1.Controls.Add(this.CbConvertLocale);
-            this.groupBox1.Controls.Add(this.LblCurrentLocale);
-            this.groupBox1.Controls.Add(this.LblFormatLocale);
-            this.groupBox1.Location = new System.Drawing.Point(28, 111);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(558, 150);
-            this.groupBox1.TabIndex = 2;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Locale";
+            this.LblFormatLocale.Text = "C&onvert Locale:";
             // 
             // groupBox2
             // 
@@ -256,6 +222,7 @@
             this.groupBox2.Controls.Add(this.label6);
             this.groupBox2.Controls.Add(this.label3);
             this.groupBox2.Controls.Add(this.label4);
+            this.groupBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox2.Location = new System.Drawing.Point(28, 280);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(558, 236);
@@ -263,16 +230,40 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Conversion";
             // 
+            // LblCurrentLocale
+            // 
+            this.LblCurrentLocale.AutoSize = true;
+            this.LblCurrentLocale.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LblCurrentLocale.Location = new System.Drawing.Point(23, 98);
+            this.LblCurrentLocale.Name = "LblCurrentLocale";
+            this.LblCurrentLocale.Size = new System.Drawing.Size(176, 29);
+            this.LblCurrentLocale.TabIndex = 3;
+            this.LblCurrentLocale.Text = "C&urrent Locale:";
+            // 
+            // CbCurrentLocale
+            // 
+            this.CbCurrentLocale.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.CbCurrentLocale.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.CbCurrentLocale.FormattingEnabled = true;
+            this.CbCurrentLocale.Location = new System.Drawing.Point(28, 130);
+            this.CbCurrentLocale.Name = "CbCurrentLocale";
+            this.CbCurrentLocale.Size = new System.Drawing.Size(403, 37);
+            this.CbCurrentLocale.TabIndex = 4;
+            this.CbCurrentLocale.SelectedIndexChanged += new System.EventHandler(this.CbCurrentLocale_SelectedIndexChanged);
+            // 
             // TextConvertForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoValidate = System.Windows.Forms.AutoValidate.EnablePreventFocusChange;
             this.BackColor = System.Drawing.SystemColors.Control;
-            this.ClientSize = new System.Drawing.Size(613, 627);
+            this.ClientSize = new System.Drawing.Size(616, 627);
+            this.Controls.Add(this.CbCurrentLocale);
             this.Controls.Add(this.groupBox2);
-            this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.LblCurrentLocale);
+            this.Controls.Add(this.CbConvertLocale);
             this.Controls.Add(this.CbCategory);
+            this.Controls.Add(this.LblFormatLocale);
             this.Controls.Add(this.TextConvertForm_Cancel);
             this.Controls.Add(this.TextConvertForm_Ok);
             this.Controls.Add(this.label1);
@@ -283,8 +274,6 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Date/Text Converter";
             this.Load += new System.EventHandler(this.TextConvertForm_Load);
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.ResumeLayout(false);
@@ -305,12 +294,11 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.ComboBox CbConvertType;
-        private System.Windows.Forms.ComboBox CbCurrentLocale;
         private System.Windows.Forms.ComboBox CbConvertLocale;
-        private System.Windows.Forms.Label LblCurrentLocale;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label LblFormatLocale;
-        private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.Label LblCurrentLocale;
+        private System.Windows.Forms.ComboBox CbCurrentLocale;
     }
 }

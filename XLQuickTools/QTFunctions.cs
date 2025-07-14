@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using Microsoft.Office.Interop.Excel;
 using static XLQuickTools.QTSettings;
 using static XLQuickTools.QTUtils;
 using static XLQuickTools.QTConstants;
@@ -959,7 +958,7 @@ namespace XLQuickTools
                     int rowCount = totalNonBlankCells > 0 ? (int)excelApp.WorksheetFunction.CountA(selectedRange) : 0;
 
                     // Show all the values
-                    string message = $"Column {columnLetter} contains:\n" +
+                    string message = $"Column [ {columnLetter} ]\n" +
                                 "──────────────────────────────\n" +
                                 $"Unique Values: {uniqueCount:N0}\n" +
                                 $"Total Non-Blank Cells: {totalNonBlankCells:N0}\n" +

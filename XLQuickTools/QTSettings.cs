@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Xml;
 using System.Xml.Serialization;
 
 namespace XLQuickTools
@@ -59,6 +60,12 @@ namespace XLQuickTools
             public bool AllignTop_FR { get; set; }
             public bool AllignMiddle_FR { get; set; }
             public bool AllignBottom_FR { get; set; }
+
+            // Clean properties
+            public bool Spaces { get; set; }
+            public bool SpacesAll { get; set; }
+            public bool NonPrintable { get; set; }
+            public bool NonASCII { get; set; }
 
             // Hyperlink entries
             public List<HyperlinkEntry> HyperlinkEntries { get; set; } = new List<HyperlinkEntry>();
