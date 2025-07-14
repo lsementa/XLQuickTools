@@ -24,7 +24,7 @@ namespace XLQuickTools
             this.CbConvertType.Items.AddRange(new object[]
             {
                 "Text",
-                "Excel Date"
+                "Excel Format"
             });
 
             // Set the default converstion type
@@ -553,7 +553,7 @@ namespace XLQuickTools
 
         private void SetFinalNumberFormat(Excel.Range range, string convertType, string format)
         {
-            if (convertType == "Excel Date")
+            if (convertType == "Excel Format")
             {
                 range.NumberFormat = QTUtils.GetExcelNumberFormat(format);
             }
