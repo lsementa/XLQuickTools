@@ -146,15 +146,17 @@ Generates a delimited file from the active worksheet.
 ### **Split Columns to Rows**
 Splits delimited columns into rows. It can handle columns with varying delimited lengths.
 
-### **URL Settings**
-Create and save parameterized URLs. Check "Active" to specify which URL will be applied when using the **Add/Remove** feature.
+### **Custom Links**
+Create and save parameterized URLs. Check "Active" to specify which URL will be applied when clicking the **Add** button.
 
 <div align="center">
 <img src="images/HyperlinkSettings.png" alt="Screenshot" width="400">
 </div>
 
 ### **Add/Remove Hyperlinks**
-Adds or removes hyperlinks on an entire column using a saved parameterized URL. Remove will handle both formula and cell based hyperlinks.
+- **Add Custom Hyperlinks:** Adds hyperlinks on an entire column using a saved parameterized URL.
+- **Add Hyperlinks:** Adds hyperlinks on an entire column using the URL in the current cell.
+- **Remove [Cell & Formula]:** Removes both cell based and hyperlinks created with a formula.
 
 <div align="center">
 <img src="images/AddHyperlinks.png" alt="Screenshot">
