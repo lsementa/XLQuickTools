@@ -489,7 +489,7 @@ namespace XLQuickTools
         }
 
         // Add hyperlinks
-        public static void AddHyperlinks()
+        public static void AddHyperlinks(bool custom)
         {
             UserSettings settings = LoadUserSettingsFromXml();
             Excel.Application excelApp = Globals.ThisAddIn.Application;
@@ -506,7 +506,7 @@ namespace XLQuickTools
                 selectedURL = matchingEntry.URL;
             }
 
-            if (activeWorkbook != null && !string.IsNullOrEmpty(selectedURL))
+            if (activeWorkbook != null)
             {
                 Excel.Worksheet activeSheet = excelApp.ActiveSheet;
                 Excel.Range selectedRange = excelApp.Selection;
@@ -556,12 +556,29 @@ namespace XLQuickTools
                         for (int i = 0; i < rowsToProcess; i++)
                         {
                             string cellValue = processArray[i, 0]?.ToString() ?? string.Empty;
+                            string hyperlinkURL = "";
+                            string hyperlinkFormula = "";
 
-                            // Toggle on: Create a hyperlink
+                            // Create a hyperlink
                             if (!string.IsNullOrEmpty(cellValue))
                             {
-                                string hyperlinkURL = selectedURL.Replace("{ID}", cellValue).Replace("{id}", cellValue);
-                                string hyperlinkFormula = $"=HYPERLINK(\"{hyperlinkURL}\", \"{cellValue}\")";
+                                if (custom)
+                                {
+                                    hyperlinkURL = selectedURL.Replace("{ID}", cellValue).Replace("{id}", cellValue);
+                                    hyperlinkFormula = $"=HYPERLINK(\"{hyperlinkURL}\", \"{cellValue}\")";
+                                }
+                                else
+                                {
+                                    hyperlinkURL = cellValue;
+
+                                    // Ensure the URL has a protocol for the HYPERLINK function to work reliably
+                                    if (!hyperlinkURL.StartsWith("http://") && !hyperlinkURL.StartsWith("https://"))
+                                    {
+                                        hyperlinkURL = "https://" + hyperlinkURL;
+                                    }
+
+                                    hyperlinkFormula  = $"=HYPERLINK(\"{hyperlinkURL}\", \"{cellValue}\")";
+                                }
 
                                 processArray[i, 0] = hyperlinkFormula;
                             }

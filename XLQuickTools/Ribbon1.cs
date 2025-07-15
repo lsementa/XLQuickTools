@@ -400,19 +400,25 @@ namespace XLQuickTools
             form1.ShowDialog();
         }
 
-        // Add Hyperlinks large button
+        // Add custom hyperlinks - large button
         private void BtnHyperlinks_Click(object sender, RibbonControlEventArgs e)
         {
-            QTFunctions.AddHyperlinks();
+            QTFunctions.AddHyperlinks(true);
         }
 
-        // Add Hyperlinks small button
+        // Add custom hyperlinks
         private void BtnAddHyperlinks_Click(object sender, RibbonControlEventArgs e)
         {
-            QTFunctions.AddHyperlinks();
+            QTFunctions.AddHyperlinks(true);
         }
 
-        // Remove Hyperlinks
+        // Add hyperlinks based on URL in cell
+        private void BtnAddHyperlinksCell_Click(object sender, RibbonControlEventArgs e)
+        {
+            QTFunctions.AddHyperlinks(false);
+        }
+
+        // Remove hyperlinks
         private void BtnRemoveHyperlinks_Click(object sender, RibbonControlEventArgs e)
         {
             QTFunctions.RemoveHyperlinks();
