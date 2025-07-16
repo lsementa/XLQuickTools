@@ -89,9 +89,6 @@ namespace XLQuickTools
             Excel.Application excelApp = Globals.ThisAddIn.Application;
             Excel.Range rangeToProcess = null;
 
-            // Load settings and validate
-            UserSettings settings = QTSettings.LoadUserSettingsFromXml();
-
             try
             {
                 rangeToProcess = QTUtils.GetRangeToProcess(excelApp);
@@ -105,7 +102,7 @@ namespace XLQuickTools
                 // Copy and store values
                 clipboard.CopyAndStoreFormat(rangeToProcess);
 
-                if (ProcessFormat(values, option, leading, trailing, settings))
+                if (ProcessFormat(values, option, leading, trailing))
                 {
                     rangeToProcess.Value2 = values;
                 }
@@ -123,9 +120,12 @@ namespace XLQuickTools
         }
 
         // Process the Format Menu option array and modify values if necessary
-        private static bool ProcessFormat(object[,] values, int option, string leading = null, string trailing = null, UserSettings settings = null)
+        private static bool ProcessFormat(object[,] values, int option, string leading = null, string trailing = null)
         {
             if (values == null) return false;
+
+            // Load settings and validate
+            UserSettings settings = QTSettings.LoadUserSettingsFromXml();
 
             bool modified = false;
             int baseIndex = values.GetLowerBound(0);
