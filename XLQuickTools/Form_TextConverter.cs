@@ -610,6 +610,5 @@ namespace XLQuickTools
         {
             UpdateFieldOptions();
         }
-
     }
 }
