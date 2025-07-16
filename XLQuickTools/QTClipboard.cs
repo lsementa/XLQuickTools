@@ -68,6 +68,14 @@ namespace XLQuickTools
                 {
                     // Multi-cell: Direct cast
                     _originalValues = selectedRange.Value2 as object[,];
+
+                    // Use flat index to get 2nd cell
+                    if (selectedRange.Cells.Count >= 2)
+                    {
+                        Excel.Range secondCell = selectedRange.Cells[2] as Excel.Range;
+                        // Use 2nd cell number format instead
+                        _originalNumberFormat = secondCell.NumberFormat as string ?? string.Empty;
+                    }
                 }
 
                 // Update UI
@@ -120,9 +128,13 @@ namespace XLQuickTools
                 {
                     range.NumberFormat = _originalNumberFormat;
                 }
+                else
+                {
+                    range.NumberFormat = "General";
+                }
 
-                // Update UI
-                Globals.Ribbons.Ribbon1.BtnUndo.Enabled = false;
+                    // Update UI
+                    Globals.Ribbons.Ribbon1.BtnUndo.Enabled = false;
                 range.Select();
             }
             catch (Exception ex)
