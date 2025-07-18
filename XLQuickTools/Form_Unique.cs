@@ -71,10 +71,18 @@ namespace XLQuickTools
                 {
                     rangeToProcess = originalRange;
                 }
+
+                // Make include headers active
+                CbHeadersInclude.Enabled = true;
+                CbHeadersInclude.Checked = true;
             }
             else
             {
                 rangeToProcess = originalRange;
+
+                // Make include headers inacvite
+                CbHeadersInclude.Checked = false;
+                CbHeadersInclude.Enabled = false;
             }
 
             // Select the adjusted range
@@ -166,7 +174,7 @@ namespace XLQuickTools
         private void UniqueForm_Ok_Click(object sender, EventArgs e)
         {
              // Include the headers when copying
-             if (CbHeaders.Checked)
+             if (CbHeadersInclude.Checked)
              {
                 rangeToProcess = rangeToProcess.Offset[-1, 0].Resize[rangeToProcess.Rows.Count + 1, rangeToProcess.Columns.Count];
              }
