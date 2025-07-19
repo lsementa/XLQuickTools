@@ -972,7 +972,7 @@ namespace XLQuickTools
                     int totalNonBlankCells = (int)excelApp.WorksheetFunction.CountA(selectedRange);
                     // Use rangeToProcess function
                     int totalBlankCells = rangeToProcess.Cells.Count - totalNonBlankCells;
-                    int rowCount = totalNonBlankCells > 0 ? (int)excelApp.WorksheetFunction.CountA(selectedRange) : 0;
+                    int rowCount = rangeToProcess.Rows.Count;
 
                     // Show all the values
                     string message = $"Column [ {columnLetter} ]\n" +
