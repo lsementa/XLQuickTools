@@ -1,7 +1,9 @@
-﻿using System.Windows.Forms;
+﻿using System;
+using System.Diagnostics;
+using System.Windows.Forms;
 using Microsoft.Office.Tools.Ribbon;
-using static XLQuickTools.QTUtils;
 using static XLQuickTools.QTConstants;
+using static XLQuickTools.QTUtils;
 using Excel = Microsoft.Office.Interop.Excel;
 
 namespace XLQuickTools
@@ -435,6 +437,27 @@ namespace XLQuickTools
         private void BtnColumnInfo_Click(object sender, RibbonControlEventArgs e)
         {
             QTFunctions.CountValuesInColumn();
+        }
+
+        // About/Help Button
+        private void BtnAbout_Click(object sender, RibbonControlEventArgs e)
+        {
+            string url = "https://github.com/lsementa/XLQuickTools";
+
+            try
+            {
+                // UseShellExecute = true ensures it uses the default browser
+                Process.Start(new ProcessStartInfo
+                {
+                    FileName = url,
+                    UseShellExecute = true
+                });
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Unable to open the browser.\n{ex.Message}",
+                                "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }
