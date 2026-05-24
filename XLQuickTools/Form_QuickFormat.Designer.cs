@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormatSettingsForm));
             this.label1 = new System.Windows.Forms.Label();
             this.CbBold = new System.Windows.Forms.CheckBox();
             this.CbFreeze = new System.Windows.Forms.CheckBox();
@@ -556,10 +557,10 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.groupBox2);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "FormatSettingsForm";
-            this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Quick Format Settings";
             this.Load += new System.EventHandler(this.FormatSettingsForm_Load);

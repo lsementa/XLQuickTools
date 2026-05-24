@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SheetFileForm));
             this.TbCustom = new System.Windows.Forms.TextBox();
             this.TbFilename = new System.Windows.Forms.TextBox();
             this.CbExtension = new System.Windows.Forms.ComboBox();
@@ -224,10 +225,10 @@
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "SheetFileForm";
-            this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Worksheet to File";
             this.Load += new System.EventHandler(this.SheetFileForm_Load);

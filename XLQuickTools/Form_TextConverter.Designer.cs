@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TextConvertForm));
             this.CbFormat = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -278,10 +279,10 @@
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.TextConvertForm_Cancel);
             this.Controls.Add(this.TextConvertForm_Ok);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
             this.Margin = new System.Windows.Forms.Padding(6);
             this.Name = "TextConvertForm";
-            this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Date/Text Converter";
             this.Load += new System.EventHandler(this.TextConvertForm_Load);

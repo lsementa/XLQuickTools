@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SplitterForm));
             this.TbCustom = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.SplitterForm_Cancel = new System.Windows.Forms.Button();
@@ -44,7 +45,7 @@
             this.TbCustom.Location = new System.Drawing.Point(32, 208);
             this.TbCustom.Margin = new System.Windows.Forms.Padding(4);
             this.TbCustom.Name = "TbCustom";
-            this.TbCustom.Size = new System.Drawing.Size(383, 35);
+            this.TbCustom.Size = new System.Drawing.Size(417, 35);
             this.TbCustom.TabIndex = 3;
             this.TbCustom.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
@@ -62,7 +63,7 @@
             // SplitterForm_Cancel
             // 
             this.SplitterForm_Cancel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SplitterForm_Cancel.Location = new System.Drawing.Point(251, 280);
+            this.SplitterForm_Cancel.Location = new System.Drawing.Point(285, 273);
             this.SplitterForm_Cancel.Margin = new System.Windows.Forms.Padding(4);
             this.SplitterForm_Cancel.Name = "SplitterForm_Cancel";
             this.SplitterForm_Cancel.Size = new System.Drawing.Size(164, 56);
@@ -85,7 +86,7 @@
             // SplitterForm_Ok
             // 
             this.SplitterForm_Ok.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SplitterForm_Ok.Location = new System.Drawing.Point(68, 280);
+            this.SplitterForm_Ok.Location = new System.Drawing.Point(102, 273);
             this.SplitterForm_Ok.Margin = new System.Windows.Forms.Padding(4);
             this.SplitterForm_Ok.Name = "SplitterForm_Ok";
             this.SplitterForm_Ok.Size = new System.Drawing.Size(164, 56);
@@ -102,7 +103,7 @@
             this.CbDelimiter.Location = new System.Drawing.Point(32, 116);
             this.CbDelimiter.Margin = new System.Windows.Forms.Padding(4);
             this.CbDelimiter.Name = "CbDelimiter";
-            this.CbDelimiter.Size = new System.Drawing.Size(383, 37);
+            this.CbDelimiter.Size = new System.Drawing.Size(417, 37);
             this.CbDelimiter.TabIndex = 1;
             this.CbDelimiter.SelectedIndexChanged += new System.EventHandler(this.cbDelimiter_SelectedIndexChanged);
             // 
@@ -123,7 +124,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
-            this.ClientSize = new System.Drawing.Size(449, 361);
+            this.ClientSize = new System.Drawing.Size(480, 361);
             this.Controls.Add(this.CbHeaders);
             this.Controls.Add(this.CbDelimiter);
             this.Controls.Add(this.TbCustom);
@@ -131,10 +132,10 @@
             this.Controls.Add(this.SplitterForm_Ok);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.label2);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "SplitterForm";
-            this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Split to Rows";
             this.Load += new System.EventHandler(this.SplitterForm_Load);

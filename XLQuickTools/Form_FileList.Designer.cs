@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FileListForm));
             this.TbFolder = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.FileListForm_Cancel = new System.Windows.Forms.Button();
@@ -230,8 +231,8 @@
             this.Controls.Add(this.FileListForm_Ok);
             this.Controls.Add(this.TbFolder);
             this.Controls.Add(this.label4);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "FileListForm";
-            this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Create File List";
             this.Load += new System.EventHandler(this.FileListForm_Load);
