@@ -95,7 +95,10 @@ namespace XLQuickTools
                 if (rangeToProcess == null) return;
 
                 excelApp.ScreenUpdating = false;
-                var values = QTUtils.GetRangeValues(rangeToProcess);
+
+                // Get values AND their source row numbers so we can write back
+                // to the correct rows even when a filter is active
+                var (values, sourceRows) = QTUtils.GetRangeValuesWithRows(rangeToProcess);
 
                 // Create an instance of QTClipboard
                 QTClipboard clipboard = QTClipboard.Instance;
@@ -104,7 +107,8 @@ namespace XLQuickTools
 
                 if (ProcessFormat(values, option, leading, trailing))
                 {
-                    rangeToProcess.Value2 = values;
+                    // Write back to the exact rows that were read
+                    QTUtils.SetRangeValues(rangeToProcess, values, sourceRows);
                 }
             }
             catch (Exception ex)
@@ -316,12 +320,12 @@ namespace XLQuickTools
                 Excel.Range rangeToProcess = sheet.UsedRange;
                 if (rangeToProcess == null) return true;
 
-                var values = QTUtils.GetRangeValues(rangeToProcess);
+                var (values, sourceRows) = QTUtils.GetRangeValuesWithRows(rangeToProcess);
 
                 // Apply trim & clean
                 if (ProcessFormat(values, option))
                 {
-                    rangeToProcess.Value2 = values;
+                    QTUtils.SetRangeValues(rangeToProcess, values, sourceRows);
                     return true;
                 }
                 return false;
@@ -981,4 +985,3 @@ namespace XLQuickTools
         }
     }
 }
-

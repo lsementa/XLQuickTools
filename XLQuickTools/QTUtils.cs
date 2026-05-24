@@ -80,9 +80,119 @@ namespace XLQuickTools
             return selectedRange;
         }
 
+        // Check if the sheet has any active filters hiding rows
+        private static bool HasActiveFilter(Excel.Worksheet sheet)
+        {
+            if (sheet.AutoFilterMode && sheet.AutoFilter != null)
+            {
+                foreach (Excel.Filter filter in sheet.AutoFilter.Filters)
+                {
+                    if (filter.On) return true;
+                }
+            }
+            return false;
+        }
 
-        // Set the range values to an array
+        // Set the range values to an array (filter-aware)
         public static object[,] GetRangeValues(Excel.Range range)
+        {
+            Excel.Worksheet sheet = range.Worksheet;
+
+            if (!HasActiveFilter(sheet))
+            {
+                return GetRangeValuesUnfiltered(range);
+            }
+
+            Excel.Range visibleCells;
+            try
+            {
+                visibleCells = range.SpecialCells(Excel.XlCellType.xlCellTypeVisible);
+            }
+            catch
+            {
+                return new object[0, 0];
+            }
+
+            int colCount = range.Columns.Count;
+            int firstCol = range.Column;
+
+            // Pass 1: count visible rows
+            int visibleRowCount = 0;
+            foreach (Excel.Range area in visibleCells.Areas)
+                visibleRowCount += area.Rows.Count;
+
+            if (visibleRowCount == 0) return new object[0, 0];
+
+            var result = new object[visibleRowCount, colCount];
+            int destRow = 0;
+
+            // Pass 2: bulk-read each contiguous area
+            foreach (Excel.Range area in visibleCells.Areas)
+            {
+                int areaRowCount = area.Rows.Count;
+
+                Excel.Range fullArea = sheet.Range[
+                    sheet.Cells[area.Row, firstCol],
+                    sheet.Cells[area.Row + areaRowCount - 1, firstCol + colCount - 1]
+                ];
+
+                // Normalize to object[,] regardless of area shape
+                object[,] areaValues = NormalizeToGrid(fullArea, areaRowCount, colCount);
+
+                for (int r = 0; r < areaRowCount; r++)
+                {
+                    for (int c = 0; c < colCount; c++)
+                    {
+                        result[destRow + r, c] = areaValues[r, c];
+                    }
+                }
+                destRow += areaRowCount;
+            }
+
+            return result;
+        }
+
+        // Handles all edge cases: single cell, single row, single column, or multi-cell
+        private static object[,] NormalizeToGrid(Excel.Range range, int rowCount, int colCount)
+        {
+            var grid = new object[rowCount, colCount];
+
+            // Single cell — Value2 is a scalar
+            if (rowCount == 1 && colCount == 1)
+            {
+                grid[0, 0] = range.Value2;
+                return grid;
+            }
+
+            // Multi-cell — Value2 is object[,] but 1-based from Excel
+            if (rowCount > 1 && colCount > 1)
+            {
+                object[,] raw = range.Value2 as object[,];
+                if (raw == null) return grid;
+                for (int r = 0; r < rowCount; r++)
+                    for (int c = 0; c < colCount; c++)
+                        grid[r, c] = raw[r + 1, c + 1]; // Excel returns 1-based arrays
+                return grid;
+            }
+
+            // Single row or single column — Value2 comes back as object[,] but
+            // still 1-based; handle both orientations explicitly
+            object[,] rawEdge = range.Value2 as object[,];
+            if (rawEdge != null)
+            {
+                for (int r = 0; r < rowCount; r++)
+                    for (int c = 0; c < colCount; c++)
+                        grid[r, c] = rawEdge[r + 1, c + 1];
+                return grid;
+            }
+
+            // Fallback: scalar leaked through (shouldn't happen, but be safe)
+            grid[0, 0] = range.Value2;
+            return grid;
+        }
+
+        // Original bulk read
+        private static object[,] GetRangeValuesUnfiltered(Excel.Range range)
         {
             if (range.Rows.Count == 1 && range.Columns.Count == 1)
             {
@@ -90,7 +200,117 @@ namespace XLQuickTools
                 values[0, 0] = range.Value2;
                 return values;
             }
-            return range.Value2 as object[,];
+
+            // Normalize 1-based Excel array to 0-based
+            object[,] raw = range.Value2 as object[,];
+            if (raw == null) return new object[0, 0];
+
+            int rows = range.Rows.Count;
+            int cols = range.Columns.Count;
+            var result = new object[rows, cols];
+            for (int r = 0; r < rows; r++)
+                for (int c = 0; c < cols; c++)
+                    result[r, c] = raw[r + 1, c + 1];
+
+            return result;
+        }
+
+        // Returns values AND the original Excel row number for each row (filter-aware)
+        public static (object[,] Values, int[] SourceRows) GetRangeValuesWithRows(Excel.Range range)
+        {
+            Excel.Worksheet sheet = range.Worksheet;
+
+            if (!HasActiveFilter(sheet))
+            {
+                // No filter — source rows are sequential from range.Row
+                object[,] vals = GetRangeValuesUnfiltered(range);
+                int rowCount = vals.GetLength(0);
+                int[] rows = new int[rowCount];
+                for (int i = 0; i < rowCount; i++)
+                    rows[i] = range.Row + i;
+                return (vals, rows);
+            }
+
+            Excel.Range visibleCells;
+            try
+            {
+                visibleCells = range.SpecialCells(Excel.XlCellType.xlCellTypeVisible);
+            }
+            catch
+            {
+                return (new object[0, 0], Array.Empty<int>());
+            }
+
+            int colCount = range.Columns.Count;
+            int firstCol = range.Column;
+
+            // Pass 1: record Excel row number of every visible row
+            var sourceRowList = new List<int>();
+            foreach (Excel.Range area in visibleCells.Areas)
+                for (int r = 0; r < area.Rows.Count; r++)
+                    sourceRowList.Add(area.Row + r);
+
+            int visibleRowCount = sourceRowList.Count;
+            if (visibleRowCount == 0) return (new object[0, 0], Array.Empty<int>());
+
+            var result = new object[visibleRowCount, colCount];
+            int destRow = 0;
+
+            // Pass 2: bulk-read each contiguous area
+            foreach (Excel.Range area in visibleCells.Areas)
+            {
+                int areaRowCount = area.Rows.Count;
+
+                Excel.Range fullArea = sheet.Range[
+                    sheet.Cells[area.Row, firstCol],
+                    sheet.Cells[area.Row + areaRowCount - 1, firstCol + colCount - 1]
+                ];
+
+                object[,] areaValues = NormalizeToGrid(fullArea, areaRowCount, colCount);
+
+                for (int r = 0; r < areaRowCount; r++)
+                    for (int c = 0; c < colCount; c++)
+                        result[destRow + r, c] = areaValues[r, c];
+
+                destRow += areaRowCount;
+            }
+
+            return (result, sourceRowList.ToArray());
+        }
+
+        // Write processed values back to their exact original row positions (filter-aware)
+        public static void SetRangeValues(Excel.Range originalRange, object[,] values, int[] sourceRows)
+        {
+            Excel.Worksheet sheet = originalRange.Worksheet;
+            int firstCol = originalRange.Column;
+            int colCount = originalRange.Columns.Count;
+            int rowCount = sourceRows.Length;
+
+            int i = 0;
+            while (i < rowCount)
+            {
+                // Find the end of this consecutive run of row numbers
+                int j = i;
+                while (j + 1 < rowCount && sourceRows[j + 1] == sourceRows[j] + 1)
+                    j++;
+
+                int areaRowCount = j - i + 1;
+
+                // Build sub-array for this contiguous block
+                var areaValues = new object[areaRowCount, colCount];
+                for (int r = 0; r < areaRowCount; r++)
+                    for (int c = 0; c < colCount; c++)
+                        areaValues[r, c] = values[i + r, c];
+
+                // Write the whole block in one COM call
+                Excel.Range writeArea = sheet.Range[
+                    sheet.Cells[sourceRows[i], firstCol],
+                    sheet.Cells[sourceRows[j], firstCol + colCount - 1]
+                ];
+                writeArea.Value2 = areaValues;
+
+                i = j + 1;
+            }
         }
 
         // Method tp delete empty rows

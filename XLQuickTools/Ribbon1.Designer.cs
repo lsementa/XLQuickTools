@@ -487,9 +487,9 @@
             this.AdditionalMenu.Items.Add(this.BtnCopyHighlightedValues);
             this.AdditionalMenu.Items.Add(this.BtnCopyHighlightedRows);
             this.AdditionalMenu.Items.Add(this.separator6);
-            this.AdditionalMenu.Items.Add(this.BtnDisplayLength);
             this.AdditionalMenu.Items.Add(this.BtnSheetNames);
             this.AdditionalMenu.Items.Add(this.BtnFileList);
+            this.AdditionalMenu.Items.Add(this.BtnDisplayLength);
             this.AdditionalMenu.Label = "Additional Options";
             this.AdditionalMenu.Name = "AdditionalMenu";
             this.AdditionalMenu.OfficeImageId = "ControlWizards";
