@@ -11,6 +11,9 @@ namespace XLQuickTools
         private Excel.Range rangeToProcess;
         private Excel.Range originalRange;
 
+        // Suppresses recounting while the form is still building itself
+        private bool isLoading = true;
+
         public UniqueDataForm(Excel.Range rangeToProcess)
         {
             InitializeComponent();
@@ -22,6 +25,7 @@ namespace XLQuickTools
         // On Load
         private void UniqueDataForm_Load(object sender, EventArgs e)
         {
+
             // Process pending Windows messages to clear the spinning cursor
             Application.DoEvents();
 
@@ -41,12 +45,109 @@ namespace XLQuickTools
                 // Populate columns list
                 PopulateColumnList(rangeToProcess, false);
             }
+
+            // Populate the delimiter combobox with options
+            this.CbDelimiter.Items.AddRange(new object[]
+            {
+                "Tab",
+                "Space",
+                "Carriage Return",
+                "Line Feed (Newline)",
+                "Vertical Tab",
+                "Form Feed",
+                "Carriage Return and Line Feed",
+                "Non-breaking Space",
+                "--Custom--"
+            });
+
+            // Set the dropdown to custom
+            this.CbDelimiter.SelectedItem = "--Custom--";
+
+            // Delimiter fields stay off until the checkbox is ticked
+            this.CbDelimiter.Enabled = CbHasDelimiter.Checked;
+            this.TbCustom.Enabled = false;
+
+            // Recount as the custom delimiter is typed
+            this.TbCustom.TextChanged += TbCustom_TextChanged;
+
+            // Loading is done - run the counts once
+            isLoading = false;
+            PopulateCounts();
+
         }
 
-        // Checkbox Changed
+        // Returns the active delimiter, or an empty string when the checkbox is off
+        private string GetActiveDelimiter()
+        {
+            if (!CbHasDelimiter.Checked) return string.Empty;
+
+            string delimText = CbDelimiter.Text;
+            string customValue = TbCustom.Text;
+
+            // Get the delimiter
+            string delimiter = QTUtils.GetDelimiter(delimText, customValue);
+
+            return delimiter ?? string.Empty;
+        }
+
+        // Has headers checkbox changed
         private void Cb_Headers_CheckedChanged(object sender, EventArgs e)
         {
             AdjustRangeAndPopulate();
+        }
+
+        // Has delimiter checkbox changed
+        private void CbHasDelimiter_CheckedChanged(object sender, EventArgs e)
+        {
+            if (CbHasDelimiter.Checked)
+            {
+                // Make delimiter fields active
+                CbDelimiter.Enabled = true;
+                TbCustom.Enabled = (CbDelimiter.Text == "--Custom--");
+            }
+            else
+            {
+                // Make delimiter fields inactive
+                CbDelimiter.Enabled = false;
+                TbCustom.Enabled = false;
+            }
+
+            // Put the cursor in the custom textbox
+            if (TbCustom.Enabled)
+            {
+                this.TbCustom.Select();
+            }
+
+            // Delimiter state changed - refresh the counts
+            PopulateCounts();
+        }
+
+        // Delimiter combobox changed
+        private void CbDelimiter_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (this.CbDelimiter.Text != "--Custom--")
+            {
+                // Clear and disable
+                this.TbCustom.Text = "";
+                this.TbCustom.Enabled = false;
+            }
+            else
+            {
+                // Enable
+                this.TbCustom.Enabled = CbHasDelimiter.Checked;
+                // Put the cursor in the custom textbox
+                this.TbCustom.Select();
+
+            }
+
+            // Delimiter changed - refresh the counts
+            PopulateCounts();
+        }
+
+        // Custom delimiter typed
+        private void TbCustom_TextChanged(object sender, EventArgs e)
+        {
+            PopulateCounts();
         }
 
         // Adjusts range based on checkbox state and updates UI
@@ -137,16 +238,25 @@ namespace XLQuickTools
 
         private void PopulateCounts()
         {
+            // Skip while the form is still loading - Load does the final pass
+            if (isLoading) return;
+
+            string delimiter = GetActiveDelimiter();
+
             // Populate Unique Values Count
-            TbUniqueValues.Text = QTFunctions.GetUniqueCount(rangeToProcess).ToString();
-            TbUniqueRows.Text = QTFunctions.GetUniqueRows(rangeToProcess, ClbColumns, false).ToString();
+            TbUniqueValues.Text = QTFunctions.GetUniqueCount(rangeToProcess, delimiter).ToString("N0");
+            TbUniqueRows.Text = QTFunctions.GetUniqueRows(rangeToProcess, ClbColumns, false, delimiter).ToString("N0");
 
         }
 
         // Checkbox Listbox Change
         private void ClbColumns_SelectedIndexChanged(object sender, EventArgs e)
         {
-            TbUniqueRows.Text = QTFunctions.GetUniqueRows(rangeToProcess, ClbColumns, false).ToString();
+            if (isLoading) return;
+
+            TbUniqueRows.Text = QTFunctions
+                .GetUniqueRows(rangeToProcess, ClbColumns, false, GetActiveDelimiter())
+                .ToString("N0");
         }
 
         // Select all columns
@@ -173,15 +283,17 @@ namespace XLQuickTools
         // OK button
         private void UniqueForm_Ok_Click(object sender, EventArgs e)
         {
-             // Include the headers when copying
-             if (CbHeadersInclude.Checked)
-             {
+            bool includeHeaderRow = CbHeadersInclude.Checked;
+
+            // Include the headers when copying
+            if (includeHeaderRow)
+            {
                 rangeToProcess = rangeToProcess.Offset[-1, 0].Resize[rangeToProcess.Rows.Count + 1, rangeToProcess.Columns.Count];
-             }
-                
-             // Copy unique data to clipboard
-             _ = QTFunctions.GetUniqueRows(rangeToProcess, ClbColumns, true);
-            
+            }
+
+            // Copy unique data to clipboard
+            _ = QTFunctions.GetUniqueRows(rangeToProcess, ClbColumns, true, GetActiveDelimiter(), includeHeaderRow);
+
             // Close
             this.Close();
         }
@@ -194,6 +306,7 @@ namespace XLQuickTools
             // Close
             this.Close();
         }
+
 
     }
 }

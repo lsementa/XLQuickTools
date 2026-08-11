@@ -296,6 +296,8 @@ namespace XLQuickTools
             {
                 // Enable
                 this.TbCustom.Enabled = true;
+                // Put the cursor in the custom textbox
+                this.TbCustom.Select();
             }
         }
 

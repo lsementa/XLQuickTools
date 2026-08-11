@@ -45,7 +45,7 @@
             this.TbCustom.Location = new System.Drawing.Point(32, 208);
             this.TbCustom.Margin = new System.Windows.Forms.Padding(4);
             this.TbCustom.Name = "TbCustom";
-            this.TbCustom.Size = new System.Drawing.Size(417, 35);
+            this.TbCustom.Size = new System.Drawing.Size(234, 35);
             this.TbCustom.TabIndex = 3;
             this.TbCustom.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 

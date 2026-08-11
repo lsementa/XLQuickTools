@@ -739,20 +739,93 @@ namespace XLQuickTools
                 System.Windows.Forms.MessageBoxIcon.Information);
         }
 
+        // Split a cell value on the delimiter. Returns the original value untouched
+        // when no delimiter is in play, so non-delimited behavior is unchanged.
+        private static List<string> SplitValue(string value, string delimiter, bool useDelimiter)
+        {
+            List<string> result = new List<string>();
+
+            if (!useDelimiter || string.IsNullOrEmpty(value))
+            {
+                result.Add(value ?? string.Empty);
+                return result;
+            }
+
+            // Delimiter is set but this cell does not contain it
+            if (value.IndexOf(delimiter, StringComparison.Ordinal) < 0)
+            {
+                result.Add(value.Trim());
+                return result;
+            }
+
+            foreach (string part in value.Split(new string[] { delimiter }, StringSplitOptions.None))
+            {
+                string trimmed = part.Trim();
+                if (!string.IsNullOrEmpty(trimmed))
+                {
+                    result.Add(trimmed);
+                }
+            }
+
+            // Value was nothing but delimiters
+            if (result.Count == 0) result.Add(string.Empty);
+
+            return result;
+        }
+
+        // Cartesian expansion across the checked columns. With no delimiter every
+        // list holds a single entry, so this yields exactly one combination per row.
+        private static IEnumerable<string[]> ExpandCombinations(List<List<string>> tokens)
+        {
+            int count = tokens.Count;
+            if (count == 0) yield break;
+
+            int[] idx = new int[count];
+
+            while (true)
+            {
+                string[] combo = new string[count];
+                for (int i = 0; i < count; i++)
+                {
+                    combo[i] = tokens[i][idx[i]];
+                }
+
+                yield return combo;
+
+                // Advance the odometer
+                int pos = count - 1;
+                while (pos >= 0)
+                {
+                    idx[pos]++;
+                    if (idx[pos] < tokens[pos].Count) break;
+                    idx[pos] = 0;
+                    pos--;
+                }
+
+                if (pos < 0) yield break;
+            }
+        }
+
         // Get the Unique count
-        public static int GetUniqueCount(Excel.Range rangeToProcess)
+        public static int GetUniqueCount(Excel.Range rangeToProcess, string delimiter = "")
         {
             try
             {
                 if (rangeToProcess == null) return 0;
 
                 var values = QTUtils.GetRangeValues(rangeToProcess);
+                if (values == null) return 0;
 
-                // Flatten the values into a single list, excluding null or empty cells
+                bool useDelimiter = !string.IsNullOrEmpty(delimiter);
+
+                // Flatten the values into a single list, excluding null or empty cells,
+                // splitting each cell on the delimiter when one is set
                 var allValues = values.Cast<object>()
                                       .Where(v => v != null && !string.IsNullOrWhiteSpace(v.ToString()))
-                                      .Select(v => v.ToString())
+                                      .SelectMany(v => SplitValue(v.ToString(), delimiter, useDelimiter))
+                                      .Where(s => !string.IsNullOrWhiteSpace(s))
                                       .ToList();
+
                 // Unique count
                 int uniqueCount = allValues.Distinct().Count();
 
@@ -765,8 +838,12 @@ namespace XLQuickTools
             }
         }
 
-        // Get the unique row count with optional clipboard copy
-        public static int GetUniqueRows(Excel.Range rangeToProcess, CheckedListBox clbColumns, bool copyToClipboard = false)
+        // Get the unique row count with optional clipboard copy.
+        // skipFirstRow treats row 1 as a header: it is excluded from the uniqueness
+        // comparison and written to the clipboard verbatim as the first line.
+        public static int GetUniqueRows(Excel.Range rangeToProcess, CheckedListBox clbColumns,
+                                        bool copyToClipboard = false, string delimiter = "",
+                                        bool skipFirstRow = false)
         {
             try
             {
@@ -790,61 +867,77 @@ namespace XLQuickTools
                 int rowCount = data.GetLength(0);
                 int colCount = data.GetLength(1);
 
+                bool useDelimiter = !string.IsNullOrEmpty(delimiter);
+
+                // Start below the header row when one is present
+                int startRow = skipFirstRow ? 2 : 1;
+
                 // Process each row
-                for (int row = 1; row <= rowCount; row++)
+                for (int row = startRow; row <= rowCount; row++)
                 {
-                    // Build a key string from the checked columns for this row
-                    StringBuilder keyBuilder = new StringBuilder();
+                    // Build the token lists for the checked columns on this row
+                    List<int> activeColumns = new List<int>();
+                    List<List<string>> rowTokens = new List<List<string>>();
                     bool rowHasValue = false;
 
                     foreach (int colIndex in checkedColumnIndices)
                     {
                         // Check if the column index is within the range
-                        if (colIndex < colCount)
+                        if (colIndex >= colCount) continue;
+
+                        // Get column value
+                        object value = data[row, colIndex + 1]; // +1 because Excel arrays are 1-based
+                        string strValue = value?.ToString() ?? string.Empty;
+
+                        // Check if this cell has a value
+                        if (!string.IsNullOrWhiteSpace(strValue))
                         {
-                            // Get column value
-                            object value = data[row, colIndex + 1]; // +1 because Excel arrays are 1-based
-                            string strValue = value?.ToString() ?? string.Empty;
-
-                            // Check if this cell has a value
-                            if (!string.IsNullOrWhiteSpace(strValue))
-                            {
-                                rowHasValue = true;
-                            }
-
-                            keyBuilder.Append(strValue);
-                            keyBuilder.Append("|"); // Use a separator unlikely to appear in cell values
+                            rowHasValue = true;
                         }
+
+                        activeColumns.Add(colIndex);
+                        rowTokens.Add(SplitValue(strValue, delimiter, useDelimiter));
                     }
 
                     // Only add non-blank rows to the unique set
-                    if (rowHasValue)
+                    if (!rowHasValue) continue;
+
+                    // One pass per delimited value (a single pass when no delimiter is set)
+                    foreach (string[] combo in ExpandCombinations(rowTokens))
                     {
+                        // Build a key string from the checked columns for this combination
+                        StringBuilder keyBuilder = new StringBuilder();
+                        foreach (string token in combo)
+                        {
+                            keyBuilder.Append(token);
+                            keyBuilder.Append("|"); // Use a separator unlikely to appear in cell values
+                        }
+
                         string key = keyBuilder.ToString();
+                        if (uniqueRowData.ContainsKey(key)) continue;
 
                         // If we're copying to clipboard, store the entire row
                         if (copyToClipboard)
                         {
-                            // Only store the row data if we need to copy to clipboard
-                            if (!uniqueRowData.ContainsKey(key))
+                            // Extract all cell values for this row
+                            List<object> rowValues = new List<object>();
+                            for (int col = 1; col <= colCount; col++)
                             {
-                                // Extract all cell values for this row
-                                List<object> rowValues = new List<object>();
-                                for (int col = 1; col <= colCount; col++)
-                                {
-                                    rowValues.Add(data[row, col]);
-                                }
-
-                                uniqueRowData.Add(key, rowValues);
+                                rowValues.Add(data[row, col]);
                             }
+
+                            // Replace the checked columns with the individual split value
+                            for (int i = 0; i < activeColumns.Count; i++)
+                            {
+                                rowValues[activeColumns[i]] = combo[i];
+                            }
+
+                            uniqueRowData.Add(key, rowValues);
                         }
                         else
                         {
                             // If not copying, just track the unique keys
-                            if (!uniqueRowData.ContainsKey(key))
-                            {
-                                uniqueRowData.Add(key, null); // Just use null as we don't need the data
-                            }
+                            uniqueRowData.Add(key, null); // Just use null as we don't need the data
                         }
                     }
                 }
@@ -854,6 +947,22 @@ namespace XLQuickTools
                 {
                     // Create a string builder for the clipboard text
                     StringBuilder clipboardContent = new StringBuilder();
+
+                    // Write the header row first, exactly as it appears on the sheet
+                    if (skipFirstRow && rowCount >= 1)
+                    {
+                        for (int col = 1; col <= colCount; col++)
+                        {
+                            clipboardContent.Append(data[1, col]?.ToString() ?? string.Empty);
+
+                            if (col < colCount)
+                            {
+                                clipboardContent.Append("\t");
+                            }
+                        }
+
+                        clipboardContent.AppendLine();
+                    }
 
                     // Add each unique row to the clipboard content
                     foreach (var kvp in uniqueRowData)

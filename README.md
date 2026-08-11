@@ -102,7 +102,7 @@ Displays missing data between two selected ranges. This can be extended across m
 Checks for duplicates in a selected column:
 - If no duplicates are found, you'll be notified.
 - If duplicates exist, a count column will be added to the right of the selected column.
-- Toggle the count column On/Off with the column selected.
+- Toggle the count column On/Off.
 
 <div align="center">
 <img src="images/Duplicates.png" alt="Screenshot">
@@ -119,7 +119,7 @@ Compares two worksheets, even if they belong to different workbooks, provided bo
 The built-in Excel Filter button, placed on the Quick Tools tab for easier access while using other tools in the add-in.
 
 ### **Unique Data Options**
-- **Selection to Clipboard:** Copy the selections unique data to clipboard.
+- **Selection to Clipboard:** Copy the selections unique data to clipboard. Option to use a delimiter is also available.
 - **Copy Data to New Worksheets:** Copies data to new worksheets based on the unique values from a selected column.
 - **Column Information:** Displays details on the selected column - unique values, blanks, non-blanks, and total row count.
 
