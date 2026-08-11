@@ -34,7 +34,7 @@
     <PublishUrl>C:\Users\luigi\source\repos\lsementa\XLQuickTools\Publish\</PublishUrl>
     <InstallUrl />
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>1.0.0.8</ApplicationVersion>
+    <ApplicationVersion>1.0.0.10</ApplicationVersion>
     <AutoIncrementApplicationRevision>true</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>7</UpdateInterval>
@@ -394,7 +394,7 @@
     </ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>C9047AA45B34146400DF38B96C2BB054DAF3D701</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>8C26B2B5F862250F59D105721CB0B2395E874A81</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestTimestampUrl>http://timestamp.digicert.com</ManifestTimestampUrl>

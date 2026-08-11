@@ -286,9 +286,20 @@ namespace XLQuickTools
             }
         }
 
-        // Find duplicates
+        // Find duplicates - acts as a toggle. First click adds the Count column and
+        // stores the location, second click returns to it and removes the column.
         public static void FindDuplicates()
         {
+            QTClipboard clipboard = QTClipboard.Instance;
+
+            // Toggle OFF - a Count column created this session is still live somewhere.
+            // Handled before touching the selection, since the user may have moved away.
+            if (clipboard.HasDuplicatesState)
+            {
+                RemoveDuplicatesCount();
+                return;
+            }
+
             Excel.Application excelApp = Globals.ThisAddIn.Application;
             Excel.Workbook activeWorkbook = excelApp.ActiveWorkbook;
 
@@ -331,7 +342,8 @@ namespace XLQuickTools
                     // Reference the header of the adjacent column
                     Excel.Range adjacentHeaderCell = activeSheet.Cells[1, nextColumn];
 
-                    // Check if the next column is a "Count" column
+                    // Fallback for a Count column left over from a previous session
+                    // (add-in reload, Excel restart) where the stored state is gone
                     if (adjacentHeaderCell.Value != null && adjacentHeaderCell.Value.ToString() == "Count")
                     {
                         // Remove Autofilter if applied
@@ -339,6 +351,9 @@ namespace XLQuickTools
 
                         // Delete the "Count" column
                         adjacentHeaderCell.EntireColumn.Delete();
+
+                        // No state to clear, but this resets the button label
+                        clipboard.ClearDuplicatesState();
                         return;
                     }
 
@@ -426,6 +441,9 @@ namespace XLQuickTools
                             MessageBox.Show($"Error applying AutoFilter: {ex.Message}\nCount column has been left unfilterd.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                         }
 
+                        // Store the location last, so a failure above leaves the button
+                        // in the off state - matching what is actually on the sheet
+                        clipboard.StoreDuplicatesState(columnRange, nextColumn);
                     }
                     else
                     {
@@ -433,8 +451,9 @@ namespace XLQuickTools
                             MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                 }
-                catch
+                catch (Exception ex)
                 {
+                    QTUtils.ShowError(ex);
                 }
                 finally
                 {
@@ -443,6 +462,58 @@ namespace XLQuickTools
                 }
             }
         }
+
+        // Return to the stored selection, drop the Count column and reset the state
+        private static void RemoveDuplicatesCount()
+        {
+            Excel.Application excelApp = Globals.ThisAddIn.Application;
+            QTClipboard clipboard = QTClipboard.Instance;
+
+            Excel.Worksheet worksheet;
+            Excel.Range sourceRange;
+            int countColumn;
+
+            // Workbook or sheet is gone - nothing to undo, just reset the button
+            if (!clipboard.TryGetDuplicatesTarget(out worksheet, out sourceRange, out countColumn))
+            {
+                clipboard.ClearDuplicatesState();
+                return;
+            }
+
+            try
+            {
+                excelApp.ScreenUpdating = false;
+
+                // Bring the stored selection back into view
+                ((Excel.Workbook)worksheet.Parent).Activate();
+                worksheet.Activate();
+
+                // Remove the filter that was applied to the Count column
+                if (worksheet.AutoFilterMode) worksheet.AutoFilterMode = false;
+
+                // Only delete if it is still our column - guards against the user
+                // inserting or deleting columns while the toggle was on
+                Excel.Range header = worksheet.Cells[1, countColumn];
+                if (header.Value2 != null &&
+                    string.Equals(header.Value2.ToString(), "Count", StringComparison.OrdinalIgnoreCase))
+                {
+                    header.EntireColumn.Delete();
+                }
+
+                sourceRange.Select();
+            }
+            catch (Exception ex)
+            {
+                QTUtils.ShowError(ex);
+            }
+            finally
+            {
+                excelApp.ScreenUpdating = true;
+                clipboard.ClearDuplicatesState();
+                QTUtils.CleanupResources(sourceRange);
+            }
+        }
+
         // Remove hyperlinks
         public static void RemoveHyperlinks()
         {
@@ -577,7 +648,7 @@ namespace XLQuickTools
                                         hyperlinkURL = "https://" + hyperlinkURL;
                                     }
 
-                                    hyperlinkFormula  = $"=HYPERLINK(\"{hyperlinkURL}\", \"{cellValue}\")";
+                                    hyperlinkFormula = $"=HYPERLINK(\"{hyperlinkURL}\", \"{cellValue}\")";
                                 }
 
                                 processArray[i, 0] = hyperlinkFormula;

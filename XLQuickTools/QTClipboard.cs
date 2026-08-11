@@ -29,11 +29,18 @@ namespace XLQuickTools
             }
         }
 
+        // Undo formatting state
         private object[,] _originalValues;
         private string _originalNumberFormat;
         private string _lastFormattedRangeAddress;
         private string _lastWorksheetName;
         private string _lastWorkbookName;
+
+        // Duplicates toggle state
+        private string _dupWorkbookName;
+        private string _dupWorksheetName;
+        private string _dupSourceAddress;
+        private int _dupCountColumn;
 
         private QTClipboard()
         {
@@ -133,8 +140,8 @@ namespace XLQuickTools
                     range.NumberFormat = "General";
                 }
 
-                    // Update UI
-                    Globals.Ribbons.Ribbon1.BtnUndo.Enabled = false;
+                // Update UI
+                Globals.Ribbons.Ribbon1.BtnUndo.Enabled = false;
                 range.Select();
             }
             catch (Exception ex)
@@ -156,6 +163,110 @@ namespace XLQuickTools
             }
         }
 
+        // Duplicates toggle
+        public bool HasDuplicatesState
+        {
+            // True when a Count column created this session is still live on a sheet
+            get { return !string.IsNullOrEmpty(_dupWorkbookName) && _dupCountColumn > 0; }
+        }
+
+        // Store the selection that produced the Count column and flip the button label
+        public void StoreDuplicatesState(Excel.Range sourceColumn, int countColumn)
+        {
+            if (sourceColumn == null)
+            {
+                throw new ArgumentNullException(nameof(sourceColumn), "Source column cannot be null.");
+            }
+
+            try
+            {
+                _dupWorkbookName = sourceColumn.Worksheet.Parent.Name;
+                _dupWorksheetName = sourceColumn.Worksheet.Name;
+                _dupSourceAddress = sourceColumn.Address[false, false];
+                _dupCountColumn = countColumn;
+
+                SetDuplicatesLabel(true);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error in StoreDuplicatesState: {ex.Message}");
+                throw;
+            }
+        }
+
+        // Drop the stored state and put the button back to its default label
+        public void ClearDuplicatesState()
+        {
+            _dupWorkbookName = null;
+            _dupWorksheetName = null;
+            _dupSourceAddress = null;
+            _dupCountColumn = 0;
+
+            SetDuplicatesLabel(false);
+        }
+
+        // Resolve the stored location. Returns false if the workbook, sheet or range is gone.
+        public bool TryGetDuplicatesTarget(out Excel.Worksheet worksheet,
+                                           out Excel.Range sourceRange,
+                                           out int countColumn)
+        {
+            worksheet = null;
+            sourceRange = null;
+            countColumn = _dupCountColumn;
+
+            if (_disposed || !HasDuplicatesState) return false;
+
+            try
+            {
+                Excel.Application excelApp = Globals.ThisAddIn.Application;
+
+                // Look the workbook up by name. The indexer throws if it has been closed
+                Excel.Workbook workbook = null;
+                foreach (Excel.Workbook wb in excelApp.Workbooks)
+                {
+                    if (string.Equals(wb.Name, _dupWorkbookName, StringComparison.OrdinalIgnoreCase))
+                    {
+                        workbook = wb;
+                        break;
+                    }
+                }
+                if (workbook == null) return false;
+
+                foreach (Excel.Worksheet ws in workbook.Worksheets)
+                {
+                    if (string.Equals(ws.Name, _dupWorksheetName, StringComparison.OrdinalIgnoreCase))
+                    {
+                        worksheet = ws;
+                        break;
+                    }
+                }
+                if (worksheet == null) return false;
+
+                sourceRange = worksheet.Range[_dupSourceAddress];
+                return sourceRange != null;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error resolving duplicates target: {ex.Message}");
+                worksheet = null;
+                sourceRange = null;
+                return false;
+            }
+        }
+
+        // Ribbon label helper
+        private static void SetDuplicatesLabel(bool on)
+        {
+            try
+            {
+                Globals.Ribbons.Ribbon1.BtnDuplicates.Label = on ? "Duplicates [On]" : "Duplicates [Off]";
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error updating duplicates label: {ex.Message}");
+            }
+        }
+
         public void Dispose()
         {
             if (!_disposed)
@@ -165,6 +276,12 @@ namespace XLQuickTools
                 _lastFormattedRangeAddress = null;
                 _lastWorksheetName = null;
                 _lastWorkbookName = null;
+
+                _dupWorkbookName = null;
+                _dupWorksheetName = null;
+                _dupSourceAddress = null;
+                _dupCountColumn = 0;
+
                 _disposed = true;
                 GC.SuppressFinalize(this);
             }
