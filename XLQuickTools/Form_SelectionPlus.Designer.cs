@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CSVForm));
             this.TbLeading = new System.Windows.Forms.TextBox();
             this.CSVForm_Ok = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
@@ -227,10 +226,10 @@
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.label2);
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "CSVForm";
+            this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Selection+";
             this.Load += new System.EventHandler(this.CSVForm_Load);

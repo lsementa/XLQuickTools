@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RemoveObjectsForm));
             this.RemoveObjectsForm_Cancel = new System.Windows.Forms.Button();
             this.RemoveObjectsForm_Ok = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -142,8 +141,8 @@
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.RemoveObjectsForm_Cancel);
             this.Controls.Add(this.RemoveObjectsForm_Ok);
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "RemoveObjectsForm";
+            this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Remove Objects";
             this.Load += new System.EventHandler(this.RemoveObjectsForm_Load);

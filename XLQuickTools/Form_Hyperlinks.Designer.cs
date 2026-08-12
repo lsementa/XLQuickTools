@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(HyperlinkForm));
             this.HyperlinkForm_Cancel = new System.Windows.Forms.Button();
             this.HyperlinkForm_Save = new System.Windows.Forms.Button();
             this.LbEntries = new System.Windows.Forms.ListBox();
@@ -196,10 +195,10 @@
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label1);
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "HyperlinkForm";
+            this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Custom Links";
             this.Load += new System.EventHandler(this.HyperlinkForm_Load);

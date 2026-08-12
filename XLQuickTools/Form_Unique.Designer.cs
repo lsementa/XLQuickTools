@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UniqueDataForm));
             this.ClbColumns = new System.Windows.Forms.CheckedListBox();
             this.CbHeaders = new System.Windows.Forms.CheckBox();
             this.TbUniqueValues = new System.Windows.Forms.TextBox();
@@ -250,8 +249,8 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.CbHeadersInclude);
             this.Controls.Add(this.CbHeaders);
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "UniqueDataForm";
+            this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Selection to Clipboard";
             this.Load += new System.EventHandler(this.UniqueDataForm_Load);

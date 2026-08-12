@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CleanSettingsForm));
             this.TrimCleanForm_Cancel = new System.Windows.Forms.Button();
             this.TrimCleanForm_Save = new System.Windows.Forms.Button();
             this.CbNonPrintable = new System.Windows.Forms.CheckBox();
@@ -135,8 +134,8 @@
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.TrimCleanForm_Cancel);
             this.Controls.Add(this.TrimCleanForm_Save);
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "CleanSettingsForm";
+            this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Clean Settings";
             this.Load += new System.EventHandler(this.Form_TrimCleanSettings_Load);

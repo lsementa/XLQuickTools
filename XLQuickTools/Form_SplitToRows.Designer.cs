@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SplitterForm));
             this.TbCustom = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.SplitterForm_Cancel = new System.Windows.Forms.Button();
@@ -132,10 +131,10 @@
             this.Controls.Add(this.SplitterForm_Ok);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.label2);
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "SplitterForm";
+            this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Split to Rows";
             this.Load += new System.EventHandler(this.SplitterForm_Load);
