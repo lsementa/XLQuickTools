@@ -195,41 +195,47 @@ namespace XLQuickTools
                         return;
                     }
 
-                    // Turn off screen updating
-                    excelApp.ScreenUpdating = false;
-
                     // Use AutoFilter to filter unique criteria
                     Excel.Range columnRange = selectedRange.Columns[1];
                     int lastRow = activeSheet.Cells[activeSheet.Rows.Count, columnRange.Column].End(Excel.XlDirection.xlUp).Row;
+
+                    // Nothing below the header row
+                    if (lastRow < 2)
+                    {
+                        MessageBox.Show("No data found below the header.", "Nothing to Process",
+                                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        return;
+                    }
+
                     Excel.Range dataRange = activeSheet.Range[activeSheet.Cells[1, 1], activeSheet.Cells[lastRow, activeSheet.Columns.Count]];
+
+                    // Read the column in one pass rather than cell by cell
+                    object[,] columnValues = activeSheet.Range[
+                        activeSheet.Cells[1, columnRange.Column],
+                        activeSheet.Cells[lastRow, columnRange.Column]].Value as object[,];
 
                     // Get unique values from the column
                     var uniqueValues = new HashSet<object>();
-                    for (int row = 2; row <= lastRow; row++) // Skip the header row
+                    if (columnValues != null)
                     {
-                        object value = columnRange.Cells[row, 1].Value;
-                        if (value != null && !uniqueValues.Contains(value))
+                        for (int row = 2; row <= lastRow; row++) // Skip the header row
                         {
-                            uniqueValues.Add(value);
+                            object value = columnValues[row, 1];
+                            if (value != null && !uniqueValues.Contains(value))
+                            {
+                                uniqueValues.Add(value);
+                            }
                         }
                     }
 
-                    // Check if the number of unique values exceeds the threshold
-                    int uniqueCount = uniqueValues.Count;
-                    if (uniqueCount > MAX_SHEETS)
+                    // Show the count up front. The user decides whether to proceed
+                    using (UniqueSheetsForm form1 = new UniqueSheetsForm(selectedRange, uniqueValues.Count))
                     {
-                        DialogResult result = MessageBox.Show(
-                            $"There are {uniqueCount} unique values, which will create a large number of sheets. Do you want to proceed?",
-                            "Warning: Large Number of Sheets",
-                            MessageBoxButtons.YesNo,
-                            MessageBoxIcon.Warning
-                        );
-
-                        if (result == DialogResult.No)
-                        {
-                            return; // Stop the process if the user clicks "No"
-                        }
+                        if (form1.ShowDialog() != DialogResult.OK) return;
                     }
+
+                    // Turn off screen updating
+                    excelApp.ScreenUpdating = false;
 
                     Excel.Worksheet lastSheet = activeSheet; // Start with the active sheet
 
