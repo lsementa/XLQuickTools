@@ -91,13 +91,13 @@
             this.BtnSheetNames = this.Factory.CreateRibbonButton();
             this.BtnFileList = this.Factory.CreateRibbonButton();
             this.BtnDisplayLength = this.Factory.CreateRibbonButton();
-            this.BtnMissing = this.Factory.CreateRibbonButton();
             this.BtnDuplicates = this.Factory.CreateRibbonButton();
-            this.BtnCompare = this.Factory.CreateRibbonButton();
-            this.BtnFilter = this.Factory.CreateRibbonButton();
             this.SBtnUniqueClipboard = this.Factory.CreateRibbonSplitButton();
             this.BtnUniqueClipboard = this.Factory.CreateRibbonButton();
             this.BtnCopyToSheets = this.Factory.CreateRibbonButton();
+            this.BtnCompare = this.Factory.CreateRibbonButton();
+            this.BtnFilter = this.Factory.CreateRibbonButton();
+            this.BtnMissing = this.Factory.CreateRibbonButton();
             this.BtnColumnInfo = this.Factory.CreateRibbonButton();
             this.BtnCommaSelection = this.Factory.CreateRibbonButton();
             this.BtnDelimSelection = this.Factory.CreateRibbonButton();
@@ -146,12 +146,12 @@
             // 
             // Group_Data
             // 
+            this.Group_Data.Items.Add(this.BtnMissing);
             this.Group_Data.Items.Add(this.BtnDuplicates);
-            this.Group_Data.Items.Add(this.SBtnUniqueClipboard);
             this.Group_Data.Items.Add(this.BtnCompare);
             this.Group_Data.Items.Add(this.Separator_Data);
             this.Group_Data.Items.Add(this.BtnFilter);
-            this.Group_Data.Items.Add(this.BtnMissing);
+            this.Group_Data.Items.Add(this.SBtnUniqueClipboard);
             this.Group_Data.Items.Add(this.BtnColumnInfo);
             this.Group_Data.Label = "Data";
             this.Group_Data.Name = "Group_Data";
@@ -635,17 +635,6 @@
     "Off].";
             this.BtnDisplayLength.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnDisplayLength_Click);
             // 
-            // BtnMissing
-            // 
-            this.BtnMissing.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.BtnMissing.Label = "Find Missing";
-            this.BtnMissing.Name = "BtnMissing";
-            this.BtnMissing.OfficeImageId = "WhatIfAnalysisMenu";
-            this.BtnMissing.ShowImage = true;
-            this.BtnMissing.SuperTip = "Find Missing Data\n\nToggle on/off the task pane used for finding missing data betw" +
-    "een two ranges.";
-            this.BtnMissing.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnMissing_Click);
-            // 
             // BtnDuplicates
             // 
             this.BtnDuplicates.Label = "Duplicates [Off]";
@@ -656,30 +645,12 @@
     "ff a count column based on the selected column.";
             this.BtnDuplicates.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnDuplicates_Click);
             // 
-            // BtnCompare
-            // 
-            this.BtnCompare.Label = "Compare Sheets";
-            this.BtnCompare.Name = "BtnCompare";
-            this.BtnCompare.OfficeImageId = "ReviewCompareTwoVersions";
-            this.BtnCompare.ShowImage = true;
-            this.BtnCompare.SuperTip = "Compare Worksheets\n\nToggle on/off the task pane to compare two worksheets.";
-            this.BtnCompare.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnCompare_Click);
-            // 
-            // BtnFilter
-            // 
-            this.BtnFilter.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.BtnFilter.Label = "Filter";
-            this.BtnFilter.Name = "BtnFilter";
-            this.BtnFilter.OfficeImageId = "DataFilter";
-            this.BtnFilter.ShowImage = true;
-            this.BtnFilter.SuperTip = "Filter\n\nToggle filtering on/off";
-            this.BtnFilter.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnFilter_Click);
-            // 
             // SBtnUniqueClipboard
             // 
+            this.SBtnUniqueClipboard.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
             this.SBtnUniqueClipboard.Items.Add(this.BtnUniqueClipboard);
             this.SBtnUniqueClipboard.Items.Add(this.BtnCopyToSheets);
-            this.SBtnUniqueClipboard.Label = "Extract Unique";
+            this.SBtnUniqueClipboard.Label = "Unique";
             this.SBtnUniqueClipboard.Name = "SBtnUniqueClipboard";
             this.SBtnUniqueClipboard.OfficeImageId = "FormattingUnique";
             this.SBtnUniqueClipboard.SuperTip = "Unique Data Options";
@@ -704,6 +675,35 @@
     "e.";
             this.BtnCopyToSheets.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnCopyToSheets_Click);
             // 
+            // BtnCompare
+            // 
+            this.BtnCompare.Label = "Compare Sheets";
+            this.BtnCompare.Name = "BtnCompare";
+            this.BtnCompare.OfficeImageId = "ReviewCompareTwoVersions";
+            this.BtnCompare.ShowImage = true;
+            this.BtnCompare.SuperTip = "Compare Worksheets\n\nToggle on/off the task pane to compare two worksheets.";
+            this.BtnCompare.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnCompare_Click);
+            // 
+            // BtnFilter
+            // 
+            this.BtnFilter.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.BtnFilter.Label = "Filter";
+            this.BtnFilter.Name = "BtnFilter";
+            this.BtnFilter.OfficeImageId = "DataFilter";
+            this.BtnFilter.ShowImage = true;
+            this.BtnFilter.SuperTip = "Filter\n\nToggle filtering on/off";
+            this.BtnFilter.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnFilter_Click);
+            // 
+            // BtnMissing
+            // 
+            this.BtnMissing.Label = "Find Missing";
+            this.BtnMissing.Name = "BtnMissing";
+            this.BtnMissing.OfficeImageId = "WhatIfAnalysisMenu";
+            this.BtnMissing.ShowImage = true;
+            this.BtnMissing.SuperTip = "Find Missing Data\n\nToggle on/off the task pane used for finding missing data betw" +
+    "een two ranges.";
+            this.BtnMissing.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnMissing_Click);
+            // 
             // BtnColumnInfo
             // 
             this.BtnColumnInfo.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
@@ -711,8 +711,8 @@
             this.BtnColumnInfo.Name = "BtnColumnInfo";
             this.BtnColumnInfo.OfficeImageId = "TableColumnSelect";
             this.BtnColumnInfo.ShowImage = true;
-            this.BtnColumnInfo.SuperTip = "Displays details on the selected column: unique values, blanks, non-blanks, and t" +
-    "otal row count.";
+            this.BtnColumnInfo.SuperTip = "Displays details on the selected column: unique values, number of duplicates, bla" +
+    "nks, non-blanks, and total row count.";
             this.BtnColumnInfo.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnColumnInfo_Click);
             // 
             // BtnCommaSelection

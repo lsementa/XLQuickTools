@@ -190,7 +190,7 @@
             this.CbDelimiter.Enabled = false;
             this.CbDelimiter.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.CbDelimiter.FormattingEnabled = true;
-            this.CbDelimiter.Location = new System.Drawing.Point(147, 161);
+            this.CbDelimiter.Location = new System.Drawing.Point(147, 167);
             this.CbDelimiter.Margin = new System.Windows.Forms.Padding(4);
             this.CbDelimiter.Name = "CbDelimiter";
             this.CbDelimiter.Size = new System.Drawing.Size(435, 37);
@@ -202,7 +202,7 @@
             this.TbCustom.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.TbCustom.Enabled = false;
             this.TbCustom.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TbCustom.Location = new System.Drawing.Point(147, 211);
+            this.TbCustom.Location = new System.Drawing.Point(147, 217);
             this.TbCustom.Margin = new System.Windows.Forms.Padding(4);
             this.TbCustom.Name = "TbCustom";
             this.TbCustom.Size = new System.Drawing.Size(230, 35);
@@ -214,7 +214,7 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(23, 164);
+            this.label3.Location = new System.Drawing.Point(23, 170);
             this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(116, 29);
@@ -225,7 +225,7 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(23, 211);
+            this.label4.Location = new System.Drawing.Point(23, 217);
             this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(101, 29);

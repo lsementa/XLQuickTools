@@ -1122,66 +1122,159 @@ namespace XLQuickTools
             }
         }
 
+        // Column stats returned to ColumnInfoForm
+        public class ColumnStats
+        {
+            public string ColumnLetter { get; set; } = string.Empty;
+            public string ColumnName { get; set; } = string.Empty;
+            public int UniqueValues { get; set; }
+            public int DuplicateValues { get; set; }
+            public int NonBlankCells { get; set; }
+            public int BlankCells { get; set; }
+            public int RowCount { get; set; }
+        }
+
+        // Trim a full column down to the rows actually in use
+        private static Excel.Range GetColumnDataRange(Excel.Worksheet sheet, Excel.Range column)
+        {
+            if (sheet == null || column == null) return null;
+
+            Excel.Range usedRange = sheet.UsedRange;
+            Excel.Range intersect = sheet.Application.Intersect(column.EntireColumn, usedRange);
+
+            return intersect;
+        }
+
+        // Build the counts for a single column
+        public static ColumnStats GetColumnStats(Excel.Range columnRange, bool hasHeaders)
+        {
+            ColumnStats stats = new ColumnStats();
+            if (columnRange == null) return stats;
+
+            stats.ColumnLetter = QTUtils.GetColumnLetter(columnRange.Column);
+            stats.ColumnName = "Column [ " + stats.ColumnLetter + " ]";
+
+            // Value2 returns a 2D array for a multi cell range, a scalar for one cell
+            object raw = columnRange.Value2;
+            object[,] data = raw as object[,];
+
+            // Tracks each distinct value and how many times it occurs
+            Dictionary<string, int> valueCounts = new Dictionary<string, int>();
+            int totalRows = 0;
+            int nonBlank = 0;
+
+            if (data != null)
+            {
+                int firstRow = data.GetLowerBound(0);
+                int lastRow = data.GetUpperBound(0);
+                int col = data.GetLowerBound(1);
+
+                // Use row 1 as the column name
+                if (hasHeaders)
+                {
+                    object header = data[firstRow, col];
+                    string headerText = header == null ? string.Empty : header.ToString().Trim();
+                    if (headerText.Length > 0) stats.ColumnName = headerText;
+                }
+
+                int startRow = hasHeaders ? firstRow + 1 : firstRow;
+
+                for (int r = startRow; r <= lastRow; r++)
+                {
+                    totalRows++;
+
+                    object value = data[r, col];
+                    string text = value == null ? string.Empty : value.ToString().Trim();
+                    if (text.Length == 0) continue;
+
+                    nonBlank++;
+
+                    if (valueCounts.ContainsKey(text))
+                        valueCounts[text]++;
+                    else
+                        valueCounts[text] = 1;
+                }
+            }
+            else if (raw != null && !hasHeaders)
+            {
+                // Single cell range with no header row
+                string text = raw.ToString().Trim();
+                totalRows = 1;
+
+                if (text.Length > 0)
+                {
+                    nonBlank = 1;
+                    valueCounts[text] = 1;
+                }
+            }
+            else if (raw != null)
+            {
+                // Single cell range that is the header
+                stats.ColumnName = raw.ToString().Trim();
+            }
+
+            stats.RowCount = totalRows;
+            stats.NonBlankCells = nonBlank;
+            stats.BlankCells = totalRows - nonBlank;
+            stats.UniqueValues = valueCounts.Count;
+
+            // Distinct values that occur more than once
+            stats.DuplicateValues = valueCounts.Count(kv => kv.Value > 1);
+
+            return stats;
+        }
+
+        // Column information
         // Column information
         public static void CountValuesInColumn()
         {
             Excel.Application excelApp = Globals.ThisAddIn.Application;
             Excel.Workbook activeWorkbook = excelApp.ActiveWorkbook;
+            if (activeWorkbook == null) return;
 
-            if (activeWorkbook != null)
+            Excel.Worksheet activeSheet = excelApp.ActiveSheet;
+            Excel.Range selectedRange = excelApp.Selection;
+            Excel.Range columnRange = null;
+
+            try
             {
-                Excel.Worksheet activeSheet = excelApp.ActiveSheet;
-                Excel.Range selectedRange = excelApp.Selection;
-                Excel.Range rangeToProcess = QTUtils.GetRangeToProcess(excelApp);
-
-                try
+                // Ensure the user selects only one full column
+                if (selectedRange.Columns.Count != 1 || selectedRange.Rows.Count != activeSheet.Rows.Count)
                 {
-                    // Ensure the user selects only one full column
-                    if (selectedRange.Columns.Count != 1 || selectedRange.Rows.Count != activeSheet.Rows.Count)
+                    Excel.Range selectedColumn = QTUtils.ColumnSelection(excelApp);
+
+                    if (selectedColumn != null)
                     {
-                        Excel.Range selectedColumn = QTUtils.ColumnSelection(excelApp);
-
-                        if (selectedColumn != null)
-                        {
-                            selectedRange = selectedColumn;
-                        }
-                        else
-                        {
-                            return;
-                        }
+                        selectedRange = selectedColumn;
                     }
-
-                    // Get all the values
-                    int columnIndex = selectedRange.Column;
-                    string columnLetter = QTUtils.GetColumnLetter(columnIndex);
-                    int uniqueCount = GetUniqueCount(selectedRange);
-                    int totalNonBlankCells = (int)excelApp.WorksheetFunction.CountA(selectedRange);
-                    // Use rangeToProcess function
-                    int totalBlankCells = rangeToProcess.Cells.Count - totalNonBlankCells;
-                    int rowCount = rangeToProcess.Rows.Count;
-
-                    // Show all the values
-                    string message = $"Column [ {columnLetter} ]\n" +
-                                "──────────────────────────────\n" +
-                                $"Unique Values: {uniqueCount:N0}\n" +
-                                $"Total Non-Blank Cells: {totalNonBlankCells:N0}\n" +
-                                $"Total Blank Cells: {totalBlankCells:N0}\n" +
-                                $"Number of Rows: {rowCount:N0}\n" +
-                                "──────────────────────────────\n";
-
-                    MessageBox.Show(message, "Column Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
+                    else
+                    {
+                        return;
+                    }
                 }
-                catch (Exception ex)
+
+                // Limit the column to the used rows
+                columnRange = GetColumnDataRange(activeSheet, selectedRange);
+                if (columnRange == null)
                 {
-                    QTUtils.ShowError(ex);
+                    MessageBox.Show("The selected column is empty.", "Column Information",
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
                 }
-                finally
-                {
-                    QTUtils.CleanupResources(selectedRange);
-                    QTUtils.CleanupResources(rangeToProcess);
 
+                using (ColumnInfoForm form1 = new ColumnInfoForm(columnRange))
+                {
+                    form1.ShowDialog();
                 }
+            }
+            catch (Exception ex)
+            {
+                QTUtils.ShowError(ex);
+            }
+            finally
+            {
+                QTUtils.CleanupResources(columnRange);
+                QTUtils.CleanupResources(selectedRange);
             }
         }
     }
