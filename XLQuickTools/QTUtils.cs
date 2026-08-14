@@ -40,34 +40,12 @@ namespace XLQuickTools
 
             if (isEntireColumnsSelected)
             {
-                int lastUsedRow = 1; // Start with the first row
-
-                // Iterate over selected columns to find the actual last row
-                foreach (Excel.Range column in selectedRange.Columns)
-                {
-                    Excel.Range columnCells = activeSheet.Range[
-                        activeSheet.Cells[1, column.Column],
-                        activeSheet.Cells[activeSheet.Rows.Count, column.Column]
-                    ];
-
-                    // Find the last non-empty row in this column
-                    Excel.Range lastCell = columnCells.Find(
-                        "*",
-                        Type.Missing,
-                        Excel.XlFindLookIn.xlValues,
-                        Excel.XlLookAt.xlPart,
-                        Excel.XlSearchOrder.xlByRows,
-                        Excel.XlSearchDirection.xlPrevious,
-                        false,
-                        Type.Missing,
-                        Type.Missing
-                    );
-
-                    if (lastCell != null)
-                    {
-                        lastUsedRow = Math.Max(lastUsedRow, lastCell.Row);
-                    }
-                }
+                // NOTE: Range.Find skips rows hidden by a filter, so it reports the last
+                // VISIBLE row and silently truncates the range - which is how a filtered
+                // column could collapse to a single cell. UsedRange is filter-agnostic.
+                Excel.Range used = activeSheet.UsedRange;
+                int lastUsedRow = used == null ? 1 : used.Row + used.Rows.Count - 1;
+                if (lastUsedRow < 1) lastUsedRow = 1;
 
                 // Restrict the range to the selected columns and last used row
                 return activeSheet.Range[
@@ -189,6 +167,25 @@ namespace XLQuickTools
             // Fallback: scalar leaked through (shouldn't happen, but be safe)
             grid[0, 0] = range.Value2;
             return grid;
+        }
+
+        // Reads a range into a 1-based object[,] regardless of its shape.
+        // Range.Value/Value2 hands back a scalar for a single cell, which makes any
+        // direct cast to object[,] fail; this always returns a 1-based grid.
+        public static object[,] GetValueArray(Excel.Range range)
+        {
+            if (range == null) return null;
+
+            object raw = range.Value2;
+
+            object[,] arr = raw as object[,];
+            if (arr != null) return arr;
+
+            // Single cell (or empty) - 1x1 array with lower bounds of 1
+            object[,] single = (object[,])Array.CreateInstance(
+                typeof(object), new[] { 1, 1 }, new[] { 1, 1 });
+            single[1, 1] = raw;
+            return single;
         }
 
         // Original bulk read

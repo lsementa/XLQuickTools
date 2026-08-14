@@ -10,7 +10,7 @@ namespace XLQuickTools
     public partial class TextConvertForm : Form
     {
         private readonly Excel.Application _excelApp;
-   
+
         public TextConvertForm(Excel.Application excelApp)
         {
             InitializeComponent();
@@ -106,9 +106,9 @@ namespace XLQuickTools
                             "yyyy.MM.dd",
                             "yyyy MMM dd"
                         });
-                    } 
-                    else 
-                    { 
+                    }
+                    else
+                    {
                         this.CbFormat.Items.AddRange(new object[]
                         {
                             "yyyy-MM-dd",
@@ -121,7 +121,7 @@ namespace XLQuickTools
                             "yyyy MMM dd"
                         });
                     }
-                    if(currentLocale.Equals("Global"))
+                    if (currentLocale.Equals("Global"))
                     {
                         // DMY Example
                         this.TbExample.Text = DateTime.Now.ToString("d/M/yyyy");
@@ -287,7 +287,7 @@ namespace XLQuickTools
                         {
                             return $"+1 ({digitsOnly.Substring(1, 3)}) {digitsOnly.Substring(4, 3)}-{digitsOnly.Substring(7, 4)}";
                         }
-                            break;
+                        break;
                 }
             }
 
@@ -442,19 +442,25 @@ namespace XLQuickTools
         private void ConvertValues(Excel.Application excelApp, string category, string format,
             string convertType, string convertLocale, string currentLocale)
         {
-            Excel.Worksheet ws = excelApp.ActiveSheet;
             Excel.Range rangeToProcess = QTUtils.GetRangeToProcess(excelApp);
+            if (rangeToProcess == null) return;
 
             try
             {
                 excelApp.ScreenUpdating = false;
-                SetInitialNumberFormat(rangeToProcess, convertType);
 
-                var values = GetRangeValues(rangeToProcess);
+                // Only reformat what the user can actually see - applying "@" to hidden
+                // rows makes their date serials display as raw numbers
+                Excel.Range formatTarget = VisiblePortion(rangeToProcess);
+                SetInitialNumberFormat(formatTarget, convertType);
+
+                // Filter-aware: values are compacted, sourceRows maps each back to its sheet row
+                var (values, sourceRows) = QTUtils.GetRangeValuesWithRows(rangeToProcess);
+
                 if (ProcessValues(values, category, format, convertType, currentLocale))
                 {
-                    SetFinalNumberFormat(rangeToProcess, convertType, format);
-                    rangeToProcess.Value2 = values;
+                    SetFinalNumberFormat(formatTarget, convertType, format);
+                    QTUtils.SetRangeValues(rangeToProcess, values, sourceRows);
                 }
             }
             catch (Exception ex)
@@ -468,35 +474,36 @@ namespace XLQuickTools
             }
         }
 
-        private void SetInitialNumberFormat(Excel.Range range, string convertType)
+        // Visible portion of a range when a filter is hiding rows, else the range itself
+        private Excel.Range VisiblePortion(Excel.Range range)
         {
-            range.NumberFormat = convertType == "Text" ? "@" : "General";
-        }
-
-        private object[,] GetRangeValues(Excel.Range range)
-        {
-            if (range.Rows.Count == 1 && range.Columns.Count == 1)
+            try
             {
-                var values = new object[1, 1];
-                values[0, 0] = range.Value2;
-                return values;
+                if (range.Worksheet.AutoFilterMode)
+                    return range.SpecialCells(Excel.XlCellType.xlCellTypeVisible);
             }
-            return range.Value2 as object[,];
+            catch { /* SpecialCells throws when nothing matches */ }
+
+            return range;
         }
 
         private bool ProcessValues(object[,] values, string category, string format,
             string convertType, string currentLocale)
         {
-            if (values == null) return false;
+            if (values == null || values.Length == 0) return false;
 
             bool modified = false;
-            int baseIndex = values.GetLowerBound(0);
-            int rowsCount = values.GetUpperBound(0);
-            int colsCount = values.GetUpperBound(1);
 
-            for (int row = baseIndex; row <= rowsCount; row++)
+            // Bounds per dimension - GetRangeValuesWithRows returns 0-based arrays
+            // while Value2 returns 1-based, so never reuse dimension 0's bound for columns
+            int firstRow = values.GetLowerBound(0);
+            int lastRow = values.GetUpperBound(0);
+            int firstCol = values.GetLowerBound(1);
+            int lastCol = values.GetUpperBound(1);
+
+            for (int row = firstRow; row <= lastRow; row++)
             {
-                for (int col = baseIndex; col <= colsCount; col++)
+                for (int col = firstCol; col <= lastCol; col++)
                 {
                     if (TryProcessCell(values, row, col, category, format, convertType, currentLocale))
                     {
@@ -504,7 +511,13 @@ namespace XLQuickTools
                     }
                 }
             }
+
             return modified;
+        }
+
+        private void SetInitialNumberFormat(Excel.Range range, string convertType)
+        {
+            range.NumberFormat = convertType == "Text" ? "@" : "General";
         }
 
         private bool TryProcessCell(object[,] values, int row, int col, string category,

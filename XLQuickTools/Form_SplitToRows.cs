@@ -12,11 +12,13 @@ namespace XLQuickTools
         private readonly Excel.Worksheet _activeSheet;
         private Excel.Range usedRange;
         private Excel.Range originalRange;
+        private bool _emptySheet;
 
         public SplitterForm(Excel.Worksheet activeSheet)
         {
             InitializeComponent();
             _activeSheet = activeSheet;
+            this.Shown += SplitterForm_Shown;
         }
 
         // On Load
@@ -25,8 +27,21 @@ namespace XLQuickTools
             // Process pending Windows messages to clear the spinning cursor
             Application.DoEvents();
 
-            // Get the used range and show the user
+            Excel.Application excelApp = Globals.ThisAddIn.Application;
+
+            // Get the used range and cache it immediately.
             usedRange = _activeSheet.UsedRange;
+            originalRange = usedRange;
+
+            // Real emptiness test: are there any non-blank cells?
+            if (Convert.ToDouble(excelApp.WorksheetFunction.CountA(usedRange)) == 0)
+            {
+                MessageBox.Show("No data found in worksheet.", "Split Columns to Rows",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                _emptySheet = true;
+                return;
+            }
+
             usedRange.Select();
 
             // Check if the range has more than one row and starts at row 1
@@ -65,34 +80,38 @@ namespace XLQuickTools
             this.TbCustom.Select();
         }
 
+        // Calling Close() from Load is unreliable, so bail out here instead
+        private void SplitterForm_Shown(object sender, EventArgs e)
+        {
+            if (_emptySheet)
+            {
+                this.Close();
+            }
+        }
+
         // Main method to split delimted columns to new rows
         public void SplitToRows(Excel.Worksheet activeSheet, string delimText, string customValue, bool hasHeaders)
         {
             Excel.Application excelApp = Globals.ThisAddIn.Application;
-            if (usedRange == null)
+
+            // Always work against the full original range
+            usedRange = originalRange ?? usedRange;
+
+            // Guard AFTER the reassignment above
+            if (usedRange == null || Convert.ToDouble(excelApp.WorksheetFunction.CountA(usedRange)) == 0)
             {
-                System.Windows.Forms.MessageBox.Show("No data found in worksheet.", "Split Columns to Rows",
-                    System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Information);
+                MessageBox.Show("No data found in worksheet.", "Split Columns to Rows",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
-
-            // Set usedRange back to originalRange to be used in the process
-            usedRange = originalRange;
 
             // Turn screen updating off
             excelApp.ScreenUpdating = false;
 
             try
             {
-                // Read all values from the used range into a 2D array
-                object[,] originalValues = (object[,])usedRange.Value2;
-
-                if (originalValues == null)
-                {
-                    System.Windows.Forms.MessageBox.Show("No data found in worksheet.", "Split Columns to Rows",
-                        System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Information);
-                    return;
-                }
+                // Read all values from the used range into a 1-based 2D array
+                object[,] originalValues = QTUtils.GetValueArray(usedRange);
 
                 // Number of rows in the fetched array
                 int originalRows = originalValues.GetLength(0);
@@ -100,6 +119,13 @@ namespace XLQuickTools
                 int originalCols = originalValues.GetLength(1);
                 // Get the delimiter
                 string delimiter = QTUtils.GetDelimiter(delimText, customValue);
+
+                if (string.IsNullOrEmpty(delimiter))
+                {
+                    MessageBox.Show("Please choose or enter a delimiter.", "Split Columns to Rows",
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
 
                 List<List<object>> processedRows = new List<List<object>>();
                 int totalRowsAdded = 0;
@@ -118,8 +144,8 @@ namespace XLQuickTools
                     dataStartRowIndex = 2;
                     if (originalRows == 1)
                     {
-                        System.Windows.Forms.MessageBox.Show("No data rows to process after skipping headers.", "Split Columns to Rows",
-                           System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Information);
+                        MessageBox.Show("No data rows to process after skipping headers.", "Split Columns to Rows",
+                           MessageBoxButtons.OK, MessageBoxIcon.Information);
                         return;
                     }
                 }
@@ -201,8 +227,8 @@ namespace XLQuickTools
 
                 if (!changeMade)
                 {
-                    System.Windows.Forms.MessageBox.Show("No cells contained the delimiter. No changes made.", "Split Columns to Rows",
-                        System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Information);
+                    MessageBox.Show("No cells contained the delimiter. No changes made.", "Split Columns to Rows",
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
                     return;
                 }
 
@@ -243,22 +269,44 @@ namespace XLQuickTools
                 firstCell.Select();
 
             }
+            catch (InvalidCastException ex)
+            {
+                MessageBox.Show(
+                    $"Could not read the worksheet data.\n\n{ex.Message}",
+                    "Split Columns to Rows",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
+            catch (COMException ex)
+            {
+                MessageBox.Show(
+                    $"Excel reported an error (0x{ex.ErrorCode:X8}).\n\n{ex.Message}",
+                    "Split Columns to Rows",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
             catch (Exception ex)
             {
-                System.Windows.Forms.MessageBox.Show(
-                    $"An error occurred: {ex.Message}\nStack trace: {ex.StackTrace}",
+                MessageBox.Show(
+                    $"An unexpected error occurred: {ex.Message}\nStack trace: {ex.StackTrace}",
                     "Error",
-                    System.Windows.Forms.MessageBoxButtons.OK,
-                    System.Windows.Forms.MessageBoxIcon.Error);
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
             }
             finally
             {
                 // Turn screenupdating back on
                 excelApp.ScreenUpdating = true;
-                // Clean up
-                QTUtils.CleanupResources(usedRange);
+
+                // Clean up - usedRange and originalRange may be the same object
+                if (!ReferenceEquals(usedRange, originalRange))
+                {
+                    QTUtils.CleanupResources(usedRange);
+                }
                 QTUtils.CleanupResources(originalRange);
 
+                usedRange = null;
+                originalRange = null;
             }
         }
 
@@ -304,13 +352,8 @@ namespace XLQuickTools
         // My data has headers checkbox
         private void CbHeaders_CheckedChanged(object sender, EventArgs e)
         {
-            if (usedRange == null) return;
-
-            // Cache the original range the first time
-            if (originalRange == null)
-            {
-                originalRange = usedRange;
-            }
+            // originalRange is cached in Load, so it is safe to rely on here
+            if (originalRange == null) return;
 
             if (CbHeaders.Checked)
             {

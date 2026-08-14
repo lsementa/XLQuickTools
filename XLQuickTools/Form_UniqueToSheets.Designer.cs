@@ -32,12 +32,13 @@
             this.UniqueSheetsForm_Ok = new System.Windows.Forms.Button();
             this.TbUniqueValues = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // UniqueSheetsForm_Cancel
             // 
             this.UniqueSheetsForm_Cancel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.UniqueSheetsForm_Cancel.Location = new System.Drawing.Point(413, 128);
+            this.UniqueSheetsForm_Cancel.Location = new System.Drawing.Point(413, 159);
             this.UniqueSheetsForm_Cancel.Margin = new System.Windows.Forms.Padding(4);
             this.UniqueSheetsForm_Cancel.Name = "UniqueSheetsForm_Cancel";
             this.UniqueSheetsForm_Cancel.Size = new System.Drawing.Size(164, 56);
@@ -49,7 +50,7 @@
             // UniqueSheetsForm_Ok
             // 
             this.UniqueSheetsForm_Ok.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.UniqueSheetsForm_Ok.Location = new System.Drawing.Point(227, 128);
+            this.UniqueSheetsForm_Ok.Location = new System.Drawing.Point(227, 159);
             this.UniqueSheetsForm_Ok.Margin = new System.Windows.Forms.Padding(4);
             this.UniqueSheetsForm_Ok.Name = "UniqueSheetsForm_Ok";
             this.UniqueSheetsForm_Ok.Size = new System.Drawing.Size(164, 56);
@@ -80,11 +81,22 @@
             this.label1.TabIndex = 14;
             this.label1.Text = "Number of Worksheets this will create:";
             // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(21, 98);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(226, 29);
+            this.label2.TabIndex = 16;
+            this.label2.Text = "Click Ok to continue";
+            // 
             // UniqueSheetsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(606, 214);
+            this.ClientSize = new System.Drawing.Size(606, 245);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.TbUniqueValues);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.UniqueSheetsForm_Cancel);
@@ -105,5 +117,6 @@
         private System.Windows.Forms.Button UniqueSheetsForm_Ok;
         private System.Windows.Forms.TextBox TbUniqueValues;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label2;
     }
 }

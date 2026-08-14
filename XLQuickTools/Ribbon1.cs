@@ -1,4 +1,6 @@
 ﻿using Microsoft.Office.Tools.Ribbon;
+using System;
+using System.Windows.Forms;
 using static XLQuickTools.QTConstants;
 using static XLQuickTools.QTUtils;
 using Excel = Microsoft.Office.Interop.Excel;
@@ -116,10 +118,27 @@ namespace XLQuickTools
         private void BtnSplitToRows_Click(object sender, RibbonControlEventArgs e)
         {
             Excel.Application excelApp = Globals.ThisAddIn.Application;
-            Excel.Worksheet activeSheet = (Excel.Worksheet)excelApp.ActiveSheet;
+            Excel.Worksheet activeSheet = excelApp.ActiveSheet as Excel.Worksheet;
 
-            SplitterForm form1 = new SplitterForm(activeSheet);
-            form1.ShowDialog();
+            // Guards against a chart sheet being active
+            if (activeSheet == null)
+            {
+                MessageBox.Show("Please select a worksheet.", "Split Columns to Rows",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            if (Convert.ToDouble(excelApp.WorksheetFunction.CountA(activeSheet.UsedRange)) == 0)
+            {
+                MessageBox.Show("No data found in worksheet.", "Split Columns to Rows",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            using (SplitterForm form1 = new SplitterForm(activeSheet))
+            {
+                form1.ShowDialog();
+            }
         }
 
         // Fill down

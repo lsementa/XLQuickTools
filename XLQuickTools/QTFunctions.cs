@@ -367,7 +367,9 @@ namespace XLQuickTools
                     Excel.Range columnRange = selectedRange.Columns[1];
 
                     // Read the values from the selected range into an array
-                    object[,] columnValues = columnRange.Value2 as object[,];
+                    // (1-based, and safe when the column holds a single cell)
+                    object[,] columnValues = QTUtils.GetValueArray(columnRange);
+                    if (columnValues == null) return;
 
                     // Create a dictionary to track the count of each unique value
                     Dictionary<string, int> valueCount = new Dictionary<string, int>();
@@ -611,7 +613,9 @@ namespace XLQuickTools
                     int lastRow = lastCell.Row;
 
                     // Read the column values into an array
-                    object[,] values = selectedRange.Value2 as object[,];
+                    // (1-based, and safe when the selection is a single cell)
+                    object[,] values = QTUtils.GetValueArray(selectedRange);
+                    if (values == null) return;
 
                     int totalRows = lastRow;
 
@@ -868,8 +872,12 @@ namespace XLQuickTools
                 // Dictionary to track unique combinations with their original row data
                 Dictionary<string, List<object>> uniqueRowData = new Dictionary<string, List<object>>();
 
-                // Convert range to array for faster processing
-                object[,] data = rangeToProcess.Value;
+                // Convert range to array for faster processing.
+                // NOTE: do not use rangeToProcess.Value here - it is late bound and a
+                // single cell returns a scalar, which fails to convert to object[,].
+                object[,] data = QTUtils.GetValueArray(rangeToProcess);
+                if (data == null) return 0;
+
                 int rowCount = data.GetLength(0);
                 int colCount = data.GetLength(1);
 
@@ -1008,31 +1016,51 @@ namespace XLQuickTools
         public static void UniqueSelect()
         {
             Excel.Application excelApp = Globals.ThisAddIn.Application;
-            Excel.Worksheet activeSheet = excelApp.ActiveSheet;
+            Excel.Worksheet activeSheet = excelApp.ActiveSheet as Excel.Worksheet;
             Excel.Range rangeToProcess = null;
+
+            if (activeSheet == null)
+            {
+                MessageBox.Show("Please select a worksheet.", "Unique Select",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
 
             try
             {
                 rangeToProcess = QTUtils.GetRangeToProcess(excelApp);
                 if (rangeToProcess == null) return;
 
-                // Check if the range is a single cell
-                if (rangeToProcess.Rows.Count == 1 && rangeToProcess.Columns.Count == 1)
+                // Single cell: widen to CurrentRegion, then UsedRange
+                if (rangeToProcess.Cells.Count == 1)
                 {
-                    // Get the CurrentRegion of the selected cell
-                    rangeToProcess = rangeToProcess.CurrentRegion;
-                    // Check if valid range
-                    if (rangeToProcess.Rows.Count == 1 && rangeToProcess.Columns.Count == 1)
+                    rangeToProcess = ReplaceRange(rangeToProcess, rangeToProcess.CurrentRegion);
+
+                    if (rangeToProcess.Cells.Count == 1)
                     {
-                        // Get the used range
-                        rangeToProcess = activeSheet.UsedRange;
-                        // Check if valid range
-                        if (rangeToProcess.Rows.Count == 1 && rangeToProcess.Columns.Count == 1)
-                            return;
+                        rangeToProcess = ReplaceRange(rangeToProcess, activeSheet.UsedRange);
                     }
                 }
 
-                // Show form without selecting the range first
+                // Trim whole-column / whole-row selections down to actual data
+                Excel.Range used = activeSheet.UsedRange;
+                if (rangeToProcess.Cells.Count > used.Cells.Count)
+                {
+                    Excel.Range trimmed = excelApp.Intersect(rangeToProcess, used);
+                    if (trimmed != null)
+                    {
+                        rangeToProcess = ReplaceRange(rangeToProcess, trimmed);
+                    }
+                }
+
+                // Test for real emptiness
+                if (Convert.ToDouble(excelApp.WorksheetFunction.CountA(rangeToProcess)) == 0)
+                {
+                    MessageBox.Show("No data found to process.", "Unique Select",
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+
                 using (UniqueDataForm form1 = new UniqueDataForm(rangeToProcess))
                 {
                     form1.ShowDialog();
@@ -1046,6 +1074,16 @@ namespace XLQuickTools
             {
                 QTUtils.CleanupResources(rangeToProcess);
             }
+        }
+
+        // Swap in a new range and release the old one
+        private static Excel.Range ReplaceRange(Excel.Range oldRange, Excel.Range newRange)
+        {
+            if (!ReferenceEquals(oldRange, newRange))
+            {
+                QTUtils.CleanupResources(oldRange);
+            }
+            return newRange;
         }
 
         // Sheet names to clipboard
@@ -1122,7 +1160,7 @@ namespace XLQuickTools
             }
         }
 
-        // Column stats returned to ColumnInfoForm
+        // Column stats used in Column Information
         public class ColumnStats
         {
             public string ColumnLetter { get; set; } = string.Empty;
@@ -1154,9 +1192,8 @@ namespace XLQuickTools
             stats.ColumnLetter = QTUtils.GetColumnLetter(columnRange.Column);
             stats.ColumnName = "Column [ " + stats.ColumnLetter + " ]";
 
-            // Value2 returns a 2D array for a multi cell range, a scalar for one cell
-            object raw = columnRange.Value2;
-            object[,] data = raw as object[,];
+            // Handles both a multi cell range and a single cell
+            object[,] data = QTUtils.GetValueArray(columnRange);
 
             // Tracks each distinct value and how many times it occurs
             Dictionary<string, int> valueCounts = new Dictionary<string, int>();
@@ -1195,23 +1232,6 @@ namespace XLQuickTools
                         valueCounts[text] = 1;
                 }
             }
-            else if (raw != null && !hasHeaders)
-            {
-                // Single cell range with no header row
-                string text = raw.ToString().Trim();
-                totalRows = 1;
-
-                if (text.Length > 0)
-                {
-                    nonBlank = 1;
-                    valueCounts[text] = 1;
-                }
-            }
-            else if (raw != null)
-            {
-                // Single cell range that is the header
-                stats.ColumnName = raw.ToString().Trim();
-            }
 
             stats.RowCount = totalRows;
             stats.NonBlankCells = nonBlank;
@@ -1224,7 +1244,6 @@ namespace XLQuickTools
             return stats;
         }
 
-        // Column information
         // Column information
         public static void CountValuesInColumn()
         {
@@ -1262,10 +1281,19 @@ namespace XLQuickTools
                     return;
                 }
 
-                using (ColumnInfoForm form1 = new ColumnInfoForm(columnRange))
-                {
-                    form1.ShowDialog();
-                }
+                // Get all the values
+                ColumnStats stats = GetColumnStats(columnRange, false);
+
+                // Show all the values
+                string message = $"Column [ {stats.ColumnLetter} ]\n" +
+                            "──────────────────────────────\n" +
+                            $" Unique Values:\t{stats.UniqueValues:N0}\n" +
+                            $" Duplicate Values:\t{stats.DuplicateValues:N0}\n" +
+                            $" Non-Blank Cells:\t{stats.NonBlankCells:N0}\n" +
+                            $" Blank Cells:\t{stats.BlankCells:N0}\n" +
+                            $" Number of Rows:\t{stats.RowCount:N0}\n" +
+                            "──────────────────────────────\n";
+                MessageBox.Show(message, "Column Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)
             {
