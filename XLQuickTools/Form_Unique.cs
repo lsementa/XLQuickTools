@@ -307,6 +307,5 @@ namespace XLQuickTools
             this.Close();
         }
 
-
     }
 }

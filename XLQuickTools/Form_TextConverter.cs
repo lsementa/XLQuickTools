@@ -33,22 +33,22 @@ namespace XLQuickTools
             // Populate the current locale
             this.CbCurrentLocale.Items.AddRange(new object[]
             {
-                "USA (Month, Day, Year)",
-                "Other (Day, Month, Year)"
+                "United States",
+                "Global"
             });
 
             // Set the default locale
-            this.CbCurrentLocale.SelectedItem = "USA (Month, Day, Year)";
+            this.CbCurrentLocale.SelectedItem = "United States";
 
             // Populate the convert locale
             this.CbConvertLocale.Items.AddRange(new object[]
             {
-                "USA (Month, Day, Year)",
-                "Other (Day, Month, Year)"
+                "United States",
+                "Global"
             });
 
             // Set the default locale
-            this.CbConvertLocale.SelectedItem = "USA (Month, Day, Year)";
+            this.CbConvertLocale.SelectedItem = "United States";
 
             // Populate the category list with options
             this.CbCategory.Items.AddRange(new object[]
@@ -92,7 +92,7 @@ namespace XLQuickTools
             switch (category)
             {
                 case "Date":
-                    if (convertLocale.Equals("Other (Day, Month, Year)"))
+                    if (convertLocale.Equals("Global"))
                     {
                         // Populate DMY date formats
                         this.CbFormat.Items.AddRange(new object[]
@@ -121,7 +121,7 @@ namespace XLQuickTools
                             "yyyy MMM dd"
                         });
                     }
-                    if(currentLocale.Equals("Other (Day, Month, Year)"))
+                    if(currentLocale.Equals("Global"))
                     {
                         // DMY Example
                         this.TbExample.Text = DateTime.Now.ToString("d/M/yyyy");
@@ -138,11 +138,11 @@ namespace XLQuickTools
                     // If null from category change then set it
                     if (string.IsNullOrEmpty(this.CbCurrentLocale.Text))
                     {
-                        this.CbCurrentLocale.Text = "USA (Month, Day, Year)";
+                        this.CbCurrentLocale.Text = "United States";
                     }
                     if (string.IsNullOrEmpty(this.CbConvertLocale.Text))
                     {
-                        this.CbConvertLocale.Text = "USA (Month, Day, Year)";
+                        this.CbConvertLocale.Text = "United States";
                     }
 
                     break;
@@ -350,7 +350,7 @@ namespace XLQuickTools
             string[] inputDateFormats;
 
             // Define date formats based on locale
-            if (locale.Equals("USA (Month, Day, Year)"))
+            if (locale.Equals("United States"))
             {
                 inputDateFormats = new[]
                 {
@@ -395,7 +395,7 @@ namespace XLQuickTools
             string[] inputDateFormats;
 
             // Define date formats based on locale
-            if (locale.Equals("USA (Month, Day, Year)"))
+            if (locale.Equals("United States"))
             {
                 inputDateFormats = new[]
                 {
@@ -610,5 +610,6 @@ namespace XLQuickTools
         {
             UpdateFieldOptions();
         }
+
     }
 }
