@@ -32,52 +32,49 @@ namespace XLQuickTools
         private void RemoveObjectsForm_Ok_Click(object sender, EventArgs e)
         {
             Excel.Application app = Globals.ThisAddIn.Application;
-            Excel.Worksheet activeSheet = app.ActiveSheet;
+            Excel.Worksheet activeSheet = app.ActiveSheet as Excel.Worksheet;
+            
+            if (activeSheet == null)
+            {
+                MessageBox.Show("Please select a worksheet.", "Remove Objects",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
             try
             {
                 // Turn off screen updating
                 app.ScreenUpdating = false;
 
-                // Shapes
-                if (CbShapes.Checked)
+                for (int i = activeSheet.Shapes.Count; i >= 1; i--)
                 {
-                    for (int i = activeSheet.Shapes.Count; i >= 1; i--)
+                    Excel.Shape shape = activeSheet.Shapes.Item(i);
+
+                    switch (shape.Type)
                     {
-                        activeSheet.Shapes.Item(i).Delete();
+                        case Microsoft.Office.Core.MsoShapeType.msoChart:
+                            if (CbCharts.Checked) shape.Delete();
+                            break;
+
+                        case Microsoft.Office.Core.MsoShapeType.msoOLEControlObject:
+                        case Microsoft.Office.Core.MsoShapeType.msoEmbeddedOLEObject:
+                            if (CbActiveX.Checked) shape.Delete();
+                            break;
+
+                        case Microsoft.Office.Core.MsoShapeType.msoFormControl:
+                            if (CbFormControls.Checked) shape.Delete();
+                            break;
+
+                        default:
+                            if (CbShapes.Checked) shape.Delete();
+                            break;
                     }
                 }
 
-                // ActiveX
-                if (CbActiveX.Checked)
-                {
-                    for (int i = activeSheet.OLEObjects().Count; i >= 1; i--)
-                    {
-                        activeSheet.OLEObjects(i).Delete();
-                    }
-                }
-
-                // Form Controls
-                if (CbFormControls.Checked)
-                {
-                    for (int i = activeSheet.DrawingObjects().Count; i >= 1; i--)
-                    {
-                        activeSheet.DrawingObjects(i).Delete();
-                    }
-                }
-
-                // Charts
-                if (CbCharts.Checked)
-                {
-                    for (int i = activeSheet.ChartObjects().Count; i >= 1; i--)
-                    {
-                        activeSheet.ChartObjects(i).Delete();
-                    }
-                }
-
-                // Comments - handles both legacy and modern comments
+                // Comments
                 if (CbComments.Checked)
                 {
-                    // Simple approach - delete all comments at once
+                    // Legacy notes
                     activeSheet.Cells.ClearComments();
                 }
 

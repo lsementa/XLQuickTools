@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using System.Windows.Forms;
 using Excel = Microsoft.Office.Interop.Excel;
 
 namespace XLQuickTools
@@ -40,9 +41,7 @@ namespace XLQuickTools
 
             if (isEntireColumnsSelected)
             {
-                // NOTE: Range.Find skips rows hidden by a filter, so it reports the last
-                // VISIBLE row and silently truncates the range - which is how a filtered
-                // column could collapse to a single cell. UsedRange is filter-agnostic.
+                // UsedRange is filter-agnostic
                 Excel.Range used = activeSheet.UsedRange;
                 int lastUsedRow = used == null ? 1 : used.Row + used.Rows.Count - 1;
                 if (lastUsedRow < 1) lastUsedRow = 1;
@@ -164,7 +163,7 @@ namespace XLQuickTools
                 return grid;
             }
 
-            // Fallback: scalar leaked through (shouldn't happen, but be safe)
+            // Fallback: scalar leaked through (shouldn't happen)
             grid[0, 0] = range.Value2;
             return grid;
         }
@@ -510,62 +509,176 @@ namespace XLQuickTools
         }
 
         // Prompt for column selection
-        public static Excel.Range ColumnSelection(Excel.Application excelApp, bool allowMultipleColumns = false)
+        public static Excel.Range ColumnSelection(Excel.Application excelApp,
+            bool allowMultipleColumns = false,
+                bool forcePrompt = false, string prompt = null,
+                string title = "Range Selector")
         {
             if (excelApp == null)
                 throw new ArgumentNullException(nameof(excelApp));
 
-            Excel.Workbook activeWorkbook = excelApp.ActiveWorkbook;
-            if (activeWorkbook == null)
+            if (excelApp.ActiveWorkbook == null)
                 return null;
 
-            Excel.Worksheet activeSheet = excelApp.ActiveSheet;
-            if (activeSheet == null)
-                return null;
-
-            Excel.Range selectedRange = excelApp.Selection;
-
-            // Validate initial selection
-            bool isValidSelection = ValidateColumnSelection(selectedRange, activeSheet, allowMultipleColumns);
-
-            if (!isValidSelection)
+            // Accept whatever is already selected, unless we were told not to
+            if (!forcePrompt)
             {
-                // Prompt the user to select column(s) using InputBox
-                object rangeInput = excelApp.InputBox(
-                    allowMultipleColumns
-                        ? "You must select one or more columns first:"
-                        : "You must select a column first:",
-                    "Range Selector",
-                    Type.Missing,
-                    Type.Missing,
-                    Type.Missing,
-                    Type.Missing,
-                    Type.Missing,
-                    8 // Type 8 allows range selection
-                );
-
-                // Handle InputBox cancellation
-                if (rangeInput is bool && (bool)rangeInput == false)
-                {
-                    return null;
-                }
-
-                selectedRange = rangeInput as Excel.Range;
-
-                // Validate the user's new selection
-                if (!ValidateColumnSelection(selectedRange, activeSheet, allowMultipleColumns))
-                {
-                    // Invalid selection, treat as canceled
-                    return null;
-                }
-                else
-                {
-                    selectedRange.Select();
-                }
+                Excel.Range current = excelApp.Selection as Excel.Range;
+                if (IsFullColumnSelection(current, allowMultipleColumns))
+                    return current;
             }
 
-            // Return the valid column selection
+            if (string.IsNullOrEmpty(prompt))
+            {
+                prompt = allowMultipleColumns
+                    ? "Select one or more entire columns:"
+                    : "Select an entire column:";
+            }
+
+            object rangeInput;
+            try
+            {
+                // Type 8 = range selection. The user may switch workbooks/sheets
+                // while this is open; the returned Range carries its own parents.
+                rangeInput = excelApp.InputBox(
+                    prompt,
+                    title,
+                    Type.Missing,
+                    Type.Missing,
+                    Type.Missing,
+                    Type.Missing,
+                    Type.Missing,
+                    8);
+            }
+            catch (System.Runtime.InteropServices.COMException)
+            {
+                // Esc, or text that won't resolve to a range.
+                return null;
+            }
+
+            // Cancel returns false.
+            if (rangeInput is bool)
+                return null;
+
+            Excel.Range selectedRange = rangeInput as Excel.Range;
+
+            if (!IsFullColumnSelection(selectedRange, allowMultipleColumns))
+            {
+                MessageBox.Show(
+                    allowMultipleColumns
+                        ? "Please select one or more entire columns (click the column headers)."
+                        : "Please select an entire column (click the column header).",
+                    "Invalid Selection",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+                return null;
+            }
+
             return selectedRange;
+        }
+
+        // Check if the range is a full column selection
+        public static bool IsFullColumnSelection(Excel.Range range, bool allowMultipleColumns)
+        {
+            if (range == null)
+                return false;
+
+            try
+            {
+                Excel.Worksheet sheet = range.Worksheet;
+                if (sheet == null)
+                    return false;
+
+                if (range.Areas.Count > 1)
+                    return false;
+
+                // Entire column => row count matches the sheet's row count.
+                if (range.Rows.Count != sheet.Rows.Count)
+                    return false;
+
+                if (!allowMultipleColumns && range.Columns.Count != 1)
+                    return false;
+
+                return true;
+            }
+            catch
+            {
+                // Chart sheet, dead RCW, etc.
+                return false;
+            }
+        }
+
+        // Selects a range that may live in another workbook
+        public static void ActivateRange(Excel.Range range)
+        {
+            if (range == null)
+                return;
+
+            try
+            {
+                Excel.Worksheet sheet = range.Worksheet;
+                Excel.Workbook book = sheet.Parent as Excel.Workbook;
+
+                if (book != null)
+                    book.Activate();
+
+                sheet.Activate();
+                range.Select();
+            }
+            catch
+            {
+                // Non-fatal
+            }
+        }
+
+        // Build a column reference string for use in formulas
+        public static string BuildColumnReference(Excel.Worksheet targetSheet,
+            Excel.Worksheet sourceSheet, int sourceColumnIndex)
+        {
+            string letter = GetColumnLetter(sourceColumnIndex);
+            string columnPart = "$" + letter + ":$" + letter;
+
+            if (IsSameSheet(targetSheet, sourceSheet))
+                return columnPart;
+
+            Excel.Workbook targetBook = targetSheet.Parent as Excel.Workbook;
+            Excel.Workbook sourceBook = sourceSheet.Parent as Excel.Workbook;
+
+            // Apostrophes inside sheet names must be doubled
+            string sheetName = sourceSheet.Name.Replace("'", "''");
+
+            bool sameBook = targetBook != null
+                && sourceBook != null
+                && string.Equals(targetBook.FullName, sourceBook.FullName, StringComparison.OrdinalIgnoreCase);
+
+            if (sameBook)
+                return "'" + sheetName + "'!" + columnPart;
+
+            return "'[" + sourceBook.Name + "]" + sheetName + "'!" + columnPart;
+        }
+
+        // Last used row in a column
+        public static int LastDataRow(Excel.Worksheet sheet, int columnIndex, int firstDataRow)
+        {
+            Excel.Range bottom = (Excel.Range)sheet.Cells[sheet.Rows.Count, columnIndex];
+            int lastRow = bottom.End[Excel.XlDirection.xlUp].Row;
+            return lastRow < firstDataRow ? firstDataRow : lastRow;
+        }
+
+        // Check if the same physical worksheet
+        public static bool IsSameSheet(Excel.Worksheet a, Excel.Worksheet b)
+        {
+            if (a == null || b == null)
+                return false;
+
+            Excel.Workbook bookA = a.Parent as Excel.Workbook;
+            Excel.Workbook bookB = b.Parent as Excel.Workbook;
+
+            if (bookA == null || bookB == null)
+                return false;
+
+            return string.Equals(bookA.FullName, bookB.FullName, StringComparison.OrdinalIgnoreCase)
+                && string.Equals(a.Name, b.Name, StringComparison.OrdinalIgnoreCase);
         }
 
         // Validate column selection

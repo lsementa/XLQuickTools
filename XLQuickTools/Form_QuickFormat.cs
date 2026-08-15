@@ -8,6 +8,10 @@ namespace XLQuickTools
 {
     public partial class FormatSettingsForm : Form
     {
+        // True while Load is assigning values, so the exclusivity handlers below do
+        // not fire and overwrite the settings being restored
+        private bool _loading;
+
         public FormatSettingsForm()
         {
             InitializeComponent();
@@ -20,6 +24,8 @@ namespace XLQuickTools
         // On Load
         private void FormatSettingsForm_Load(object sender, EventArgs e)
         {
+            _loading = true;
+
             // Load settings
             UserSettings settings = QTSettings.LoadUserSettingsFromXml();
 
@@ -68,6 +74,86 @@ namespace XLQuickTools
             else
             {
                 BtnSelectColor.BackColor = Color.Transparent;
+            }
+
+            // Apply every enable/disable rule once, from the final loaded state,
+            // then allow the handlers to run again
+            ApplyExclusivityRules();
+            _loading = false;
+        }
+
+        // Runs the same rules the CheckedChanged handlers apply, but in one pass so
+        // load order cannot clobber a setting that was just restored
+        private void ApplyExclusivityRules()
+        {
+            // Horizontal alignment
+            ApplyGroup(CbAllignLeft, CbAllignRight, CbAllignCenter);
+            ApplyGroup(CbAllignLeft_FR, CbAllignRight_FR, CbAllignCenter_FR);
+
+            // Vertical alignment
+            ApplyGroup(CbAllignTop, CbAllignMiddle, CbAllignBottom);
+            ApplyGroup(CbAllignTop_FR, CbAllignMiddle_FR, CbAllignBottom_FR);
+
+            // Explicit size versus autofit
+            ApplyPair(CbColWidth, CbAutoFit1, TbColWidth);
+            ApplyPair(CbRowHeight, CbAutoFit2, TbRowHeight);
+
+            // Value inputs
+            TbFontSize.Enabled = CbFontSize.Checked;
+            TbZoom.Enabled = CbSetZoom.Checked;
+            BtnSelectColor.Enabled = CbInteriorColor.Checked;
+        }
+
+        // Only one box in a group may be checked - the first checked one wins and
+        // any extras a stale XML file left set are cleared
+        private static void ApplyGroup(params CheckBox[] group)
+        {
+            CheckBox chosen = null;
+            foreach (CheckBox cb in group)
+            {
+                if (cb.Checked)
+                {
+                    chosen = cb;
+                    break;
+                }
+            }
+
+            foreach (CheckBox cb in group)
+            {
+                if (chosen == null)
+                {
+                    cb.Enabled = true;
+                }
+                else
+                {
+                    cb.Checked = (cb == chosen);
+                    cb.Enabled = (cb == chosen);
+                }
+            }
+        }
+
+        // An explicit width/height and its autofit box cannot both apply
+        private static void ApplyPair(CheckBox explicitSize, CheckBox autoFit, TextBox value)
+        {
+            if (explicitSize.Checked)
+            {
+                autoFit.Checked = false;
+                autoFit.Enabled = false;
+                explicitSize.Enabled = true;
+                value.Enabled = true;
+            }
+            else if (autoFit.Checked)
+            {
+                value.Text = "";
+                value.Enabled = false;
+                explicitSize.Enabled = false;
+                autoFit.Enabled = true;
+            }
+            else
+            {
+                explicitSize.Enabled = true;
+                autoFit.Enabled = true;
+                value.Enabled = false;
             }
         }
 
@@ -127,6 +213,8 @@ namespace XLQuickTools
         // Left allignment
         private void CbAllignLeft_CheckedChanged(object sender, EventArgs e)
         {
+            if (_loading) return;
+
             if (CbAllignLeft.Checked)
             {
                 CbAllignRight.Enabled = false;
@@ -142,6 +230,8 @@ namespace XLQuickTools
         // Right allignment
         private void CbAllignRight_CheckedChanged(object sender, EventArgs e)
         {
+            if (_loading) return;
+
             if (CbAllignRight.Checked)
             {
                 CbAllignLeft.Enabled = false;
@@ -157,6 +247,8 @@ namespace XLQuickTools
         // Center allignment
         private void CbAllignCenter_CheckedChanged(object sender, EventArgs e)
         {
+            if (_loading) return;
+
             if (CbAllignCenter.Checked)
             {
                 CbAllignLeft.Enabled = false;
@@ -172,6 +264,8 @@ namespace XLQuickTools
         // Font Size
         private void CbFontSize_CheckedChanged(object sender, EventArgs e)
         {
+            if (_loading) return;
+
             if (CbFontSize.Checked)
             {
                 TbFontSize.Enabled = true;
@@ -186,6 +280,8 @@ namespace XLQuickTools
         // Zoom
         private void CbSetZoom_CheckedChanged(object sender, EventArgs e)
         {
+            if (_loading) return;
+
             if (CbSetZoom.Checked)
             {
                 TbZoom.Enabled = true;
@@ -209,7 +305,7 @@ namespace XLQuickTools
                 {
                     TbZoom.Text = MAX_ZOOM.ToString();
                 }
-                if(zoomValue <= 0)
+                if (zoomValue <= 0)
                 {
                     TbZoom.Text = MIN_ZOOM.ToString();
                 }
@@ -250,6 +346,8 @@ namespace XLQuickTools
         // Column Autofit checkbox change
         private void CbAutoFit1_CheckedChanged(object sender, EventArgs e)
         {
+            if (_loading) return;
+
             if (CbAutoFit1.Checked)
             {
                 TbColWidth.Text = "";
@@ -265,6 +363,8 @@ namespace XLQuickTools
         // Rows checkbox
         private void CbAutoFit2_CheckedChanged(object sender, EventArgs e)
         {
+            if (_loading) return;
+
             if (CbAutoFit2.Checked)
             {
                 TbRowHeight.Text = "";
@@ -280,6 +380,8 @@ namespace XLQuickTools
         // Column Width
         private void CbColWidth_CheckedChanged(object sender, EventArgs e)
         {
+            if (_loading) return;
+
 
             if (CbColWidth.Checked)
             {
@@ -293,12 +395,14 @@ namespace XLQuickTools
                 TbColWidth.Enabled = false;
                 CbAutoFit1.Enabled = true;
             }
-            
+
         }
 
         // Row Height
         private void CbRowHeight_CheckedChanged(object sender, EventArgs e)
         {
+            if (_loading) return;
+
             if (CbRowHeight.Checked)
             {
                 TbRowHeight.Enabled = true;
@@ -325,7 +429,7 @@ namespace XLQuickTools
                 {
                     TbRowHeight.Text = MAX_ROW_HEIGHT.ToString();
                 }
-                if(heightValue <= 0)
+                if (heightValue <= 0)
                 {
                     TbRowHeight.Text = DEFAULT_ROW_HEIGHT.ToString();
                 }
@@ -349,7 +453,7 @@ namespace XLQuickTools
                 {
                     TbColWidth.Text = MAX_COLUMN_WIDTH.ToString();
                 }
-                if(widthValue <= 0)
+                if (widthValue <= 0)
                 {
                     TbColWidth.Text = DEFAULT_COLUMN_WIDTH.ToString();
                 }
@@ -389,6 +493,8 @@ namespace XLQuickTools
         // Color selector button change
         private void CbInteriorColor_CheckedChanged(object sender, EventArgs e)
         {
+            if (_loading) return;
+
             if (CbInteriorColor.Checked)
             {
                 BtnSelectColor.Enabled = true;
@@ -404,6 +510,8 @@ namespace XLQuickTools
         // Allign Left (Front Row)
         private void CbAllignLeft_FR_CheckedChanged(object sender, EventArgs e)
         {
+            if (_loading) return;
+
             if (CbAllignLeft_FR.Checked)
             {
                 CbAllignCenter_FR.Enabled = false;
@@ -419,6 +527,8 @@ namespace XLQuickTools
         // Allign Center (Front Row)
         private void CbAllignCenter_FR_CheckedChanged(object sender, EventArgs e)
         {
+            if (_loading) return;
+
             if (CbAllignCenter_FR.Checked)
             {
                 CbAllignLeft_FR.Enabled = false;
@@ -434,6 +544,8 @@ namespace XLQuickTools
         // Allign Right (Front Row)
         private void CbAllignRight_FR_CheckedChanged(object sender, EventArgs e)
         {
+            if (_loading) return;
+
             if (CbAllignRight_FR.Checked)
             {
                 CbAllignLeft_FR.Enabled = false;
@@ -449,6 +561,8 @@ namespace XLQuickTools
         // Allign Top (Front Row)
         private void CbAllignTop_FR_CheckedChanged(object sender, EventArgs e)
         {
+            if (_loading) return;
+
             if (CbAllignTop_FR.Checked)
             {
                 CbAllignMiddle_FR.Enabled = false;
@@ -464,6 +578,8 @@ namespace XLQuickTools
         // Allign Middle (Front Row)
         private void CbAllignMiddle_FR_CheckedChanged(object sender, EventArgs e)
         {
+            if (_loading) return;
+
             if (CbAllignMiddle_FR.Checked)
             {
                 CbAllignTop_FR.Enabled = false;
@@ -479,6 +595,8 @@ namespace XLQuickTools
         // Allign Bottom (Front Row)
         private void CbAllignBottom_FR_CheckedChanged(object sender, EventArgs e)
         {
+            if (_loading) return;
+
             if (CbAllignBottom_FR.Checked)
             {
                 CbAllignTop_FR.Enabled = false;
@@ -494,6 +612,8 @@ namespace XLQuickTools
         // Allign Top
         private void CbAllignTop_CheckedChanged(object sender, EventArgs e)
         {
+            if (_loading) return;
+
             if (CbAllignTop.Checked)
             {
                 CbAllignMiddle.Enabled = false;
@@ -509,6 +629,8 @@ namespace XLQuickTools
         // Allign Middle
         private void CbAllignMiddle_CheckedChanged(object sender, EventArgs e)
         {
+            if (_loading) return;
+
             if (CbAllignMiddle.Checked)
             {
                 CbAllignTop.Enabled = false;
@@ -524,6 +646,8 @@ namespace XLQuickTools
         // Allign Top
         private void CbAllignBottom_CheckedChanged(object sender, EventArgs e)
         {
+            if (_loading) return;
+
             if (CbAllignBottom.Checked)
             {
                 CbAllignTop.Enabled = false;

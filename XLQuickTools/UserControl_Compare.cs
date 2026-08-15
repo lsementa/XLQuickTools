@@ -268,7 +268,11 @@ namespace XLQuickTools
         private void CompareSheets(object sender, EventArgs e)
         {
             Excel.Workbook workbook = _excelApp.ActiveWorkbook;
-            Excel.Worksheet activeSheet = workbook.ActiveSheet;
+            if (workbook == null) return;
+
+            // 'as' rather than an implicit conversion - a chart sheet would otherwise
+            // throw a RuntimeBinderException from this late bound member
+            Excel.Worksheet activeSheet = workbook.ActiveSheet as Excel.Worksheet;
 
             // Ensure all required selections are made
             if (CbWorkbooks1.SelectedItem == null || CbWorkbooks2.SelectedItem == null ||
@@ -309,14 +313,22 @@ namespace XLQuickTools
                 Excel.Range range2 = sheet2.UsedRange;
 
                 // Read the entire sheet ranges into arrays
-                object[,] values1 = range1.Value2 as object[,];
-                object[,] values2 = range2.Value2 as object[,];
+                // (1-based, and safe when a sheet holds a single populated cell)
+                object[,] values1 = QTUtils.GetValueArray(range1);
+                object[,] values2 = QTUtils.GetValueArray(range2);
 
                 if (values1 == null || values2 == null)
                 {
                     MessageBox.Show("One or both sheets are empty.", "Selection", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     return;
                 }
+
+                // UsedRange does not necessarily start at A1, so array index [1,1] may be
+                // any cell. These offsets convert an array index to a real sheet position.
+                int rowOffset1 = range1.Row - 1;
+                int colOffset1 = range1.Column - 1;
+                int rowOffset2 = range2.Row - 1;
+                int colOffset2 = range2.Column - 1;
 
                 int rows = Math.Max(values1.GetLength(0), values2.GetLength(0));
                 int cols = Math.Max(values1.GetLength(1), values2.GetLength(1));
@@ -334,9 +346,9 @@ namespace XLQuickTools
                             differencesFound = true;
                             diffCount++;
 
-                            // Convert R1C1 to A1 format for the cell references
-                            string cellRef1 = ConvertToA1Reference(row, col);
-                            string cellRef2 = ConvertToA1Reference(row, col);
+                            // Convert to A1 references using each sheet's own offset
+                            string cellRef1 = ConvertToA1Reference(row + rowOffset1, col + colOffset1);
+                            string cellRef2 = ConvertToA1Reference(row + rowOffset2, col + colOffset2);
 
                             // Add differences to a list for processing later
                             diffList.Add(new Tuple<object, string, object, string>(
@@ -349,8 +361,8 @@ namespace XLQuickTools
                             // Highlight differences
                             if (CbHighlight.Checked)
                             {
-                                Excel.Range cell1 = sheet1.Cells[row, col];
-                                Excel.Range cell2 = sheet2.Cells[row, col];
+                                Excel.Range cell1 = sheet1.Cells[row + rowOffset1, col + colOffset1];
+                                Excel.Range cell2 = sheet2.Cells[row + rowOffset2, col + colOffset2];
 
                                 cell1.Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Yellow);
                                 cell2.Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Yellow);
@@ -386,10 +398,10 @@ namespace XLQuickTools
                     {
                         compareSheet.Cells[compareRow, 1].Value = diff.Item1;
                         // Add link to cell reference for sheet 1
-                        compareSheet.Cells[compareRow, 2].Formula = $"=HYPERLINK(\"#'{sheet1.Name}'!{diff.Item2}\",\"{diff.Item2}\"";
+                        compareSheet.Cells[compareRow, 2].Formula = $"=HYPERLINK(\"#'{sheet1.Name}'!{diff.Item2}\",\"{diff.Item2}\")";
                         compareSheet.Cells[compareRow, 3].Value = diff.Item3;
                         // Add link to cell reference for sheet 2
-                        compareSheet.Cells[compareRow, 4].Formula = $"=HYPERLINK(\"#'{sheet2.Name}'!{diff.Item4}\",\"{diff.Item4}\"";
+                        compareSheet.Cells[compareRow, 4].Formula = $"=HYPERLINK(\"#'{sheet2.Name}'!{diff.Item4}\",\"{diff.Item4}\")";
                         compareRow++;
                     }
 

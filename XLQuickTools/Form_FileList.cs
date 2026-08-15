@@ -21,7 +21,7 @@ namespace XLQuickTools
             // Child Folders
             CbChildFolders.Checked = true;
             // Set to active sheet
-            CbActiveSheet.Checked = true;  
+            CbActiveSheet.Checked = true;
             // Display settings
             CbDateModified.Checked = true;
             CbFileLocation.Checked = true;
@@ -69,7 +69,18 @@ namespace XLQuickTools
         private void FileListForm_Ok_Click(object sender, EventArgs e)
         {
             Excel.Workbook workbook = _excelApp.ActiveWorkbook;
-            Excel.Worksheet activeSheet = _excelApp.ActiveSheet;
+            if (workbook == null) return;
+
+            // 'as' rather than an implicit conversion - a chart sheet would otherwise
+            // throw a RuntimeBinderException from this late bound member
+            Excel.Worksheet activeSheet = _excelApp.ActiveSheet as Excel.Worksheet;
+            if (activeSheet == null)
+            {
+                MessageBox.Show("Please select a worksheet.", "File List",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
             Excel.Worksheet sheet;
 
             try
@@ -121,30 +132,51 @@ namespace XLQuickTools
                     sheet = QTUtils.AddUniqueNamedWorksheet(workbook, activeSheet, sheetName);
                 }
 
+                // Column count for the chosen options
+                int colCount = 1
+                    + (includeLocation ? 1 : 0)
+                    + (includeDateModified ? 1 : 0)
+                    + (includeFileType ? 1 : 0)
+                    + (includeFileSize ? 1 : 0);
+
+                // Build the whole grid in memory - writing cell by cell costs one COM
+                // call per field, which crawls on a folder tree with thousands of files
+                object[,] grid = new object[files.Length + 1, colCount];
+
                 // Header row
-                int col = 1;
-                sheet.Cells[1, col++] = "File Name";
-                if (includeLocation) sheet.Cells[1, col++] = "File Location";
-                if (includeDateModified) sheet.Cells[1, col++] = "Date Modified";
-                if (includeFileType) sheet.Cells[1, col++] = "File Type";
-                if (includeFileSize) sheet.Cells[1, col++] = "File Size (KB)";
+                int col = 0;
+                grid[0, col++] = "File Name";
+                if (includeLocation) grid[0, col++] = "File Location";
+                if (includeDateModified) grid[0, col++] = "Date Modified";
+                if (includeFileType) grid[0, col++] = "File Type";
+                if (includeFileSize) grid[0, col++] = "File Size (KB)";
 
                 // File rows
-                int row = 2;
-                foreach (string filePath in files)
+                for (int i = 0; i < files.Length; i++)
                 {
-                    FileInfo fi = new FileInfo(filePath);
-                    col = 1;
-                    sheet.Cells[row, col++] = fi.Name;
-                    if (includeLocation) sheet.Cells[row, col++] = fi.DirectoryName;
-                    if (includeDateModified) sheet.Cells[row, col++] = fi.LastWriteTime.ToString("yyyy-MM-dd HH:mm");
-                    if (includeFileType) sheet.Cells[row, col++] = fi.Extension;
-                    if (includeFileSize) sheet.Cells[row, col++] = (fi.Length / 1024.0).ToString("F2"); // KB
-                    row++;
+                    FileInfo fi = new FileInfo(files[i]);
+                    col = 0;
+                    grid[i + 1, col++] = fi.Name;
+                    if (includeLocation) grid[i + 1, col++] = fi.DirectoryName;
+                    if (includeDateModified) grid[i + 1, col++] = fi.LastWriteTime.ToString("yyyy-MM-dd HH:mm");
+                    if (includeFileType) grid[i + 1, col++] = fi.Extension;
+                    if (includeFileSize) grid[i + 1, col++] = (fi.Length / 1024.0).ToString("F2"); // KB
                 }
 
+                // Target range for the whole grid
+                Excel.Range target = sheet.Range[
+                    sheet.Cells[1, 1],
+                    sheet.Cells[files.Length + 1, colCount]
+                ];
+
+                // Text format so names beginning with '=' are not taken as formulas
+                target.NumberFormat = "@";
+
+                // One write for the entire list
+                target.Value2 = grid;
+
                 // Header formatting
-                Excel.Range headerRange = sheet.Range[sheet.Cells[1, 1], sheet.Cells[1, col - 1]];
+                Excel.Range headerRange = sheet.Range[sheet.Cells[1, 1], sheet.Cells[1, colCount]];
                 headerRange.Font.Bold = true;
                 headerRange.Borders.LineStyle = Excel.XlLineStyle.xlContinuous;
                 headerRange.Borders.Weight = Excel.XlBorderWeight.xlThin;

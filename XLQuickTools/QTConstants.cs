@@ -43,8 +43,5 @@ namespace XLQuickTools
         // Add/Remove hyperlinks processing
         public const int CHUNK_SIZE = 5000;
 
-        // Creating unique worksheets
-        public const int MAX_SHEETS = 50;
-
     }
 }

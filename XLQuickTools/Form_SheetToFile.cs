@@ -70,7 +70,7 @@ namespace XLQuickTools
         {
             // Get the input from the TextBox
             string delimText = this.CbDelimiter.Text;
-            string customText= this.TbCustom.Text;
+            string customText = this.TbCustom.Text;
             string extension = this.CbExtension.Text.ToLower();
             string fileName = this.TbFilename.Text;
             string fullFileName = $"{fileName}.{extension}";
@@ -102,66 +102,74 @@ namespace XLQuickTools
 
             try
             {
-                // Create the file using a StreamWriter
-                using (System.IO.StreamWriter writer = new System.IO.StreamWriter(fullPath, false, System.Text.Encoding.ASCII))
+                // Read the sheet BEFORE creating the file, so an empty sheet does not
+                // leave a zero byte file behind
+                Excel.Range usedRange = activeSheet.UsedRange;
+
+                // 1-based, and safe when the sheet holds a single cell
+                // (usedRange.Value2 returns a scalar in that case)
+                object[,] valueArray = QTUtils.GetValueArray(usedRange);
+
+                if (valueArray == null ||
+                    Convert.ToDouble(activeSheet.Application.WorksheetFunction.CountA(usedRange)) == 0)
                 {
-                    // Get the used range in the active worksheet
-                    Excel.Range usedRange = activeSheet.UsedRange;
+                    MessageBox.Show("No data found in worksheet.", "Sheet to File",
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
 
-                    // Check if the used range has any cells
-                    if (usedRange.Count > 1)
+                int lastRow = valueArray.GetLength(0);
+                int lastCol = valueArray.GetLength(1);
+
+                // UTF-8 with BOM
+                using (System.IO.StreamWriter writer =
+                    new System.IO.StreamWriter(fullPath, false, new System.Text.UTF8Encoding(true)))
+                {
+                    // Iterate through each row
+                    for (int rowIndex = 1; rowIndex <= lastRow; rowIndex++)
                     {
-                        object[,] valueArray = usedRange.Value2;
+                        List<string> rowValues = new List<string>();
 
-                        int lastRow = valueArray.GetLength(0);
-                        int lastCol = valueArray.GetLength(1);
-
-                        // Iterate through each row
-                        for (int rowIndex = 1; rowIndex <= lastRow; rowIndex++)
+                        // Iterate through each column
+                        for (int colIndex = 1; colIndex <= lastCol; colIndex++)
                         {
-                            List<string> rowValues = new List<string>();
+                            // Read the value from the array instead of querying Excel for each cell
+                            string cellValue = valueArray[rowIndex, colIndex]?.ToString() ?? string.Empty;
 
-                            // Iterate through each column
-                            for (int colIndex = 1; colIndex <= lastCol; colIndex++)
+                            // Clean and trim the value
+                            cellValue = QTFormat.Clean(cellValue);
+
+                            // Determine if text qualifiers should be added
+                            bool addQualifiers = !(rowIndex == 1 && headers) // Skip qualifiers for the first row if headers are enabled
+                                                 && !string.IsNullOrEmpty(cellValue); // Skip qualifiers for blank cell values
+
+                            if (addQualifiers)
                             {
-                                // Read the value from the array instead of querying Excel for each cell
-                                string cellValue = valueArray[rowIndex, colIndex]?.ToString() ?? string.Empty;
-
-                                // Clean and trim the value
-                                cellValue = QTFormat.Clean(cellValue);
-
-                                // Determine if text qualifiers should be added
-                                bool addQualifiers = !(rowIndex == 1 && headers) // Skip qualifiers for the first row if headers are enabled
-                                                     && !string.IsNullOrEmpty(cellValue); // Skip qualifiers for blank cell values
-
-                                if (addQualifiers)
+                                if (quoteText && IsText(cellValue) && !(cellValue.StartsWith("\"") && cellValue.EndsWith("\"")))
                                 {
-                                    if (quoteText && IsText(cellValue) && !(cellValue.StartsWith("\"") && cellValue.EndsWith("\"")))
-                                    {
-                                        // Quote the value if it's text and not already quoted
-                                        cellValue = "\"" + cellValue.Replace("\"", "\"\"") + "\"";
-                                    }
-                                    else if (!quoteText && cellValue.Contains(delimiter) && !(cellValue.StartsWith("\"") && cellValue.EndsWith("\"")))
-                                    {
-                                        // Quote the value only if it contains the delimiter and is not already quoted
-                                        cellValue = "\"" + cellValue.Replace("\"", "\"\"") + "\"";
-                                    }
+                                    // Quote the value if it's text and not already quoted
+                                    cellValue = "\"" + cellValue.Replace("\"", "\"\"") + "\"";
                                 }
-
-                                // Add the cleaned value to the list
-                                rowValues.Add(cellValue);
+                                else if (!quoteText && cellValue.Contains(delimiter) && !(cellValue.StartsWith("\"") && cellValue.EndsWith("\"")))
+                                {
+                                    // Quote the value only if it contains the delimiter and is not already quoted
+                                    cellValue = "\"" + cellValue.Replace("\"", "\"\"") + "\"";
+                                }
                             }
 
-                            // Join the row values with the delimiter and write to the file
-                            writer.WriteLine(string.Join(delimiter, rowValues));
+                            // Add the cleaned value to the list
+                            rowValues.Add(cellValue);
                         }
 
-                        // Open the folder when complete
-                        if (openFolder)
-                        {
-                            System.Diagnostics.Process.Start("explorer.exe", savePath);
-                        }
+                        // Join the row values with the delimiter and write to the file
+                        writer.WriteLine(string.Join(delimiter, rowValues));
                     }
+                }
+
+                // Open the folder once the file is closed
+                if (openFolder)
+                {
+                    System.Diagnostics.Process.Start("explorer.exe", savePath);
                 }
             }
             catch (Exception ex)
@@ -192,6 +200,6 @@ namespace XLQuickTools
             }
         }
 
-      
+
     }
 }

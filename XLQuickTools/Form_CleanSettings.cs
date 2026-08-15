@@ -7,6 +7,8 @@ namespace XLQuickTools
 {
     public partial class CleanSettingsForm : Form
     {
+        private bool _loading;
+
         public CleanSettingsForm()
         {
             InitializeComponent();
@@ -15,13 +17,45 @@ namespace XLQuickTools
         // On load
         private void Form_TrimCleanSettings_Load(object sender, EventArgs e)
         {
-            // Load settings
-            UserSettings settings = QTSettings.LoadUserSettingsFromXml();
+            _loading = true;
 
-            CbSpaces.Checked = settings.Spaces;
-            CbSpacesAll.Checked = settings.SpacesAll;
-            CbNonPrintable.Checked = settings.NonPrintable;
-            CbNonASCII.Checked = settings.NonASCII;
+            try
+            {
+                // Load settings
+                UserSettings settings = QTSettings.LoadUserSettingsFromXml();
+
+                CbSpaces.Checked = settings.Spaces;
+                CbSpacesAll.Checked = settings.SpacesAll;
+                CbNonPrintable.Checked = settings.NonPrintable;
+                CbNonASCII.Checked = settings.NonASCII;
+
+                // Apply enable/disable once, from the final loaded state
+                ApplySpaceRules();
+            }
+            finally
+            {
+                _loading = false;
+            }
+        }
+
+        private void ApplySpaceRules()
+        {
+            if (CbSpaces.Checked)
+            {
+                CbSpacesAll.Checked = false;
+                CbSpacesAll.Enabled = false;
+                CbSpaces.Enabled = true;
+            }
+            else if (CbSpacesAll.Checked)
+            {
+                CbSpaces.Enabled = false;
+                CbSpacesAll.Enabled = true;
+            }
+            else
+            {
+                CbSpaces.Enabled = true;
+                CbSpacesAll.Enabled = true;
+            }
         }
 
         // Save button
@@ -35,7 +69,7 @@ namespace XLQuickTools
             currentSettings.SpacesAll = CbSpacesAll.Checked;
             currentSettings.NonPrintable = CbNonPrintable.Checked;
             currentSettings.NonASCII = CbNonASCII.Checked;
-        
+
             // Save all settings (checkbox + other form's values)
             QTSettings.SaveUserSettingsToXml(currentSettings);
 
@@ -52,6 +86,8 @@ namespace XLQuickTools
         // Checkbox event for two or more spaces
         private void CbSpaces_CheckedChanged(object sender, EventArgs e)
         {
+            if (_loading) return;
+
             if (CbSpaces.Checked)
             {
                 CbSpacesAll.Checked = false;
@@ -66,6 +102,8 @@ namespace XLQuickTools
         // Checkbox event for all spaces
         private void CbSpacesAll_CheckedChanged(object sender, EventArgs e)
         {
+            if (_loading) return;
+
             if (CbSpacesAll.Checked)
             {
                 CbSpaces.Checked = false;

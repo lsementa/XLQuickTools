@@ -72,13 +72,13 @@ namespace XLQuickTools
                     }
                 }
 
-                var existingEntry = settings.HyperlinkEntries.FirstOrDefault(entry => entry.Name == TbName.Text);
+                var existingEntry = settings.HyperlinkEntries.FirstOrDefault(entry => entry.Name == name);
 
                 if (existingEntry != null)
                 {
                     // Update existing entry
-                    existingEntry.URL = TbURL.Text;
-                    existingEntry.Name = TbName.Text;
+                    existingEntry.URL = url;
+                    existingEntry.Name = name;
                     existingEntry.Use = isActive;
                 }
                 else
@@ -86,8 +86,8 @@ namespace XLQuickTools
                     // Add new entry
                     settings.HyperlinkEntries.Add(new HyperlinkEntry
                     {
-                        Name = TbName.Text,
-                        URL = TbURL.Text,
+                        Name = name,
+                        URL = url,
                         Use = isActive
                     });
 

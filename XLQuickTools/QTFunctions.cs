@@ -1,18 +1,22 @@
-﻿using System;
+﻿using Microsoft.Office.Interop.Excel;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using XLQuickTools;
+using static XLQuickTools.QTConstants;
 using static XLQuickTools.QTSettings;
 using static XLQuickTools.QTUtils;
-using static XLQuickTools.QTConstants;
 using Excel = Microsoft.Office.Interop.Excel;
 
 namespace XLQuickTools
 {
     internal class QTFunctions
     {
+        private const int HeaderRow = 1;
+        private const int FirstDataRow = 2;
 
         // Selection and Selection+ function
         public static void SelectionPlus(string leading = "", string trailing = "", string delimiter = ",", int newLine = 0)
@@ -872,9 +876,7 @@ namespace XLQuickTools
                 // Dictionary to track unique combinations with their original row data
                 Dictionary<string, List<object>> uniqueRowData = new Dictionary<string, List<object>>();
 
-                // Convert range to array for faster processing.
-                // NOTE: do not use rangeToProcess.Value here - it is late bound and a
-                // single cell returns a scalar, which fails to convert to object[,].
+                // Convert range to array for faster processing
                 object[,] data = QTUtils.GetValueArray(rangeToProcess);
                 if (data == null) return 0;
 
@@ -1304,6 +1306,153 @@ namespace XLQuickTools
                 QTUtils.CleanupResources(columnRange);
                 QTUtils.CleanupResources(selectedRange);
             }
+        }
+
+        // Insert COUNTIF
+        public static void AutoCountIFMissing()
+        {
+            Excel.Application excelApp = Globals.ThisAddIn.Application;
+            if (excelApp == null || excelApp.ActiveWorkbook == null)
+                return;
+
+            Excel.Range columnRange1 = null;
+            Excel.Range columnRange2 = null;
+
+            bool priorScreenUpdating = excelApp.ScreenUpdating;
+            Excel.XlCalculation priorCalculation = excelApp.Calculation;
+
+            try
+            {
+                // Collect both columns
+                columnRange1 = QTUtils.ColumnSelection(
+                    excelApp,
+                    allowMultipleColumns: false,
+                    forcePrompt: true,
+                    prompt: "Select the FIRST column (any open workbook):",
+                    title: "Column 1");
+
+                if (columnRange1 == null)
+                    return;
+
+                // Show the user what got captured before asking for the next one
+                QTUtils.ActivateRange(columnRange1);
+
+                columnRange2 = QTUtils.ColumnSelection(
+                    excelApp,
+                    allowMultipleColumns: false,
+                    forcePrompt: true,
+                    prompt: "Select the SECOND column (any open workbook):",
+                    title: "Column 2");
+
+                if (columnRange2 == null)
+                    return;
+
+                Excel.Worksheet sheet1 = columnRange1.Worksheet;
+                Excel.Worksheet sheet2 = columnRange2.Worksheet;
+
+                bool sameSheet = QTUtils.IsSameSheet(sheet1, sheet2);
+
+                int col1 = columnRange1.Column;
+                int col2 = columnRange2.Column;
+
+                if (sameSheet && col1 == col2)
+                {
+                    MessageBox.Show(
+                        "Please select two different columns.",
+                        "Insert COUNTIF",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
+                    return;
+                }
+
+                if (col1 >= sheet1.Columns.Count || col2 >= sheet2.Columns.Count)
+                {
+                    MessageBox.Show(
+                        "There is no room to insert a helper column to the right of the selection.",
+                        "Insert COUNTIF",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
+                    return;
+                }
+
+                excelApp.ScreenUpdating = false;
+                excelApp.Calculation = Excel.XlCalculation.xlCalculationManual;
+
+                // Indices are re-adjusted after each insert
+                int helper1 = col1 + 1;
+                ((Excel.Range)sheet1.Columns[helper1]).Insert(
+                    Excel.XlInsertShiftDirection.xlShiftToRight,
+                    Excel.XlInsertFormatOrigin.xlFormatFromLeftOrAbove);
+
+                if (sameSheet && col2 >= helper1)
+                    col2++;
+
+                int helper2 = col2 + 1;
+                ((Excel.Range)sheet2.Columns[helper2]).Insert(
+                    Excel.XlInsertShiftDirection.xlShiftToRight,
+                    Excel.XlInsertFormatOrigin.xlFormatFromLeftOrAbove);
+
+                if (sameSheet && col1 >= helper2)
+                {
+                    col1++;
+                    helper1++;
+                }
+
+                // Write formulas + headers
+                WriteExistsColumn(sheet1, col1, helper1, sheet2, col2, sameSheet);
+                WriteExistsColumn(sheet2, col2, helper2, sheet1, col1, sameSheet);
+
+                excelApp.Calculation = priorCalculation;
+                excelApp.ScreenUpdating = true;
+
+                QTUtils.ActivateRange((Excel.Range)sheet1.Columns[helper1]);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    "Insert COUNTIF could not complete:\n\n" + ex.Message,
+                    "Insert COUNTIF",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
+            finally
+            {
+                excelApp.Calculation = priorCalculation;
+                excelApp.ScreenUpdating = priorScreenUpdating;
+            }
+        }
+
+        // Fills a helper column with =COUNTIF(otherColumn, thisCell)>0
+        private static void WriteExistsColumn(
+            Excel.Worksheet sheet,
+            int dataColumn,
+            int helperColumn,
+            Excel.Worksheet otherSheet,
+            int otherColumn,
+            bool sameSheet)
+        {
+            string lookupReference = QTUtils.BuildColumnReference(sheet, otherSheet, otherColumn);
+            string dataLetter = QTUtils.GetColumnLetter(dataColumn);
+            string otherLetter = QTUtils.GetColumnLetter(otherColumn);
+
+            int lastRow = QTUtils.LastDataRow(sheet, dataColumn, FirstDataRow);
+
+            // Header
+            Excel.Range header = (Excel.Range)sheet.Cells[HeaderRow, helperColumn];
+            header.Value2 = sameSheet
+                ? "Exists in Column " + otherLetter + "?"
+                : "Exists in " + otherSheet.Name + " Column " + otherLetter + "?";
+            header.Font.Bold = true;
+
+            // Formula. Assigning to a multi-cell range lets Excel roll the
+            // relative row reference down for us.
+            Excel.Range target = sheet.Range[
+                sheet.Cells[FirstDataRow, helperColumn],
+                sheet.Cells[lastRow, helperColumn]];
+
+            target.Formula = "=COUNTIF(" + lookupReference + "," + dataLetter + FirstDataRow + ")>0";
+
+            ((Excel.Range)sheet.Columns[helperColumn]).AutoFit();
         }
     }
 }

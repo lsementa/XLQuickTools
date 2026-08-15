@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
-using Excel = Microsoft.Office.Interop.Excel; 
+using Excel = Microsoft.Office.Interop.Excel;
 
 namespace XLQuickTools
 {
@@ -34,9 +34,14 @@ namespace XLQuickTools
             {
                 newLine = 2; // New lines no delimiter
             }
-            else if(RbNewLine3.Checked) 
+            else if (RbNewLine3.Checked)
             {
                 newLine = 0; // Default no new lines
+            }
+
+            if (_selectedRange != null)
+            {
+                _selectedRange.Select();
             }
 
             // Call the method and pass the user input
@@ -96,11 +101,6 @@ namespace XLQuickTools
                 // Enable
                 this.TbCustom.Enabled = true;
             }
-        }
-
-        private void RbNewLine2_CheckedChanged(object sender, EventArgs e)
-        {
-
         }
     }
 }

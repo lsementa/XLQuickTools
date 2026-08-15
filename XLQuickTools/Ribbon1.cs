@@ -455,6 +455,11 @@ namespace XLQuickTools
             QTFunctions.CountValuesInColumn();
         }
 
+        // Auto CountIF Missing Values
+        private void BtnAutoCountIF_Click(object sender, RibbonControlEventArgs e)
+        {
+            QTFunctions.AutoCountIFMissing();
+        }
     }
 }
 

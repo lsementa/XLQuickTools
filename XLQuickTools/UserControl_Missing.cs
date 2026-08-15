@@ -91,7 +91,10 @@ namespace XLQuickTools
         // Method to highlight missing cells
         private void HighlightMissingCells(Excel.Range range, List<object> missingValues)
         {
-            object[,] values = range.Value2 as object[,];
+            // 1-based and safe when the range is a single cell
+            object[,] values = QTUtils.GetValueArray(range);
+            if (values == null) return;
+
             int rowCount = values.GetLength(0);
             int colCount = values.GetLength(1);
 
@@ -112,7 +115,11 @@ namespace XLQuickTools
         private void FindMissing(object sender, EventArgs e)
         {
             Excel.Workbook workbook = _excelApp.ActiveWorkbook;
-            Excel.Worksheet activeSheet = workbook.ActiveSheet;
+            if (workbook == null) return;
+
+            // 'as' rather than an implicit conversion - a chart sheet would otherwise
+            // throw a RuntimeBinderException from this late bound member
+            Excel.Worksheet activeSheet = workbook.ActiveSheet as Excel.Worksheet;
 
             if (!int.TryParse(TbMaxRows.Text, out int maxRows))
             {
@@ -140,8 +147,11 @@ namespace XLQuickTools
                     return;
                 }
 
-                // Check for null values in arrays
-                if (!(myRange1.Value2 is object[,] array1) || !(myRange2.Value2 is object[,] array2))
+                // Read both ranges (handles a single cell, which Value2 returns as a scalar)
+                object[,] array1 = QTUtils.GetValueArray(myRange1);
+                object[,] array2 = QTUtils.GetValueArray(myRange2);
+
+                if (array1 == null || array2 == null)
                 {
                     MessageBox.Show("One of the ranges does not contain valid data.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
