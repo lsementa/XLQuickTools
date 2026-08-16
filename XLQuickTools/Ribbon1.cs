@@ -200,6 +200,12 @@ namespace XLQuickTools
             Globals.ThisAddIn.ToggleMissingTaskPaneVisibility();
         }
 
+        // Compare columns button
+        private void BtnColumnCheck_Click(object sender, RibbonControlEventArgs e)
+        {
+            QTFunctions.CompareColumns();
+        }
+
         // Copy to new sheets
         private void BtnCopyToSheets_Click(object sender, RibbonControlEventArgs e)
         {
@@ -453,12 +459,6 @@ namespace XLQuickTools
         private void BtnColumnInfo_Click(object sender, RibbonControlEventArgs e)
         {
             QTFunctions.CountValuesInColumn();
-        }
-
-        // Auto CountIF Missing Values
-        private void BtnAutoCountIF_Click(object sender, RibbonControlEventArgs e)
-        {
-            QTFunctions.AutoCountIFMissing();
         }
     }
 }

@@ -87,13 +87,13 @@
             this.BtnCopyFormatting = this.Factory.CreateRibbonButton();
             this.BtnCopyHighlightedValues = this.Factory.CreateRibbonButton();
             this.BtnCopyHighlightedRows = this.Factory.CreateRibbonButton();
-            this.separator6 = this.Factory.CreateRibbonSeparator();
             this.BtnSheetNames = this.Factory.CreateRibbonButton();
+            this.separator6 = this.Factory.CreateRibbonSeparator();
             this.BtnFileList = this.Factory.CreateRibbonButton();
             this.BtnDisplayLength = this.Factory.CreateRibbonButton();
-            this.BtnMissing = this.Factory.CreateRibbonSplitButton();
-            this.BtnAutoCountIF = this.Factory.CreateRibbonButton();
             this.BtnDuplicates = this.Factory.CreateRibbonButton();
+            this.BtnMissing = this.Factory.CreateRibbonButton();
+            this.BtnColumnCheck = this.Factory.CreateRibbonButton();
             this.BtnCompare = this.Factory.CreateRibbonButton();
             this.BtnFilter = this.Factory.CreateRibbonButton();
             this.SBtnUniqueClipboard = this.Factory.CreateRibbonSplitButton();
@@ -109,6 +109,7 @@
             this.BtnAddHyperlinks = this.Factory.CreateRibbonButton();
             this.BtnAddHyperlinksCell = this.Factory.CreateRibbonButton();
             this.BtnRemoveHyperlinks = this.Factory.CreateRibbonButton();
+            this.BtnAutoCountIF = this.Factory.CreateRibbonButton();
             this.XLQuickTools_Tab.SuspendLayout();
             this.Group_Formatting.SuspendLayout();
             this.Group_Data.SuspendLayout();
@@ -147,12 +148,14 @@
             // 
             // Group_Data
             // 
-            this.Group_Data.Items.Add(this.BtnMissing);
             this.Group_Data.Items.Add(this.BtnDuplicates);
+            this.Group_Data.Items.Add(this.BtnMissing);
+            this.Group_Data.Items.Add(this.BtnColumnCheck);
             this.Group_Data.Items.Add(this.BtnCompare);
             this.Group_Data.Items.Add(this.Separator_Data);
             this.Group_Data.Items.Add(this.BtnFilter);
             this.Group_Data.Items.Add(this.SBtnUniqueClipboard);
+            this.Group_Data.Items.Add(this.BtnColumnInfo);
             this.Group_Data.Label = "Data";
             this.Group_Data.Name = "Group_Data";
             // 
@@ -523,8 +526,8 @@
             this.AdditionalMenu.Items.Add(this.BtnCopyFormatting);
             this.AdditionalMenu.Items.Add(this.BtnCopyHighlightedValues);
             this.AdditionalMenu.Items.Add(this.BtnCopyHighlightedRows);
-            this.AdditionalMenu.Items.Add(this.separator6);
             this.AdditionalMenu.Items.Add(this.BtnSheetNames);
+            this.AdditionalMenu.Items.Add(this.separator6);
             this.AdditionalMenu.Items.Add(this.BtnFileList);
             this.AdditionalMenu.Items.Add(this.BtnDisplayLength);
             this.AdditionalMenu.Label = "Additional Options";
@@ -603,18 +606,18 @@
     " row that contains at least one highlighted cell.";
             this.BtnCopyHighlightedRows.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnCopyHighlightedRows_Click);
             // 
-            // separator6
-            // 
-            this.separator6.Name = "separator6";
-            // 
             // BtnSheetNames
             // 
-            this.BtnSheetNames.Label = "Sheet &Names to Clipboard";
+            this.BtnSheetNames.Label = "Copy Sheet &Names to Clipboard";
             this.BtnSheetNames.Name = "BtnSheetNames";
             this.BtnSheetNames.OfficeImageId = "PasteMergeList";
             this.BtnSheetNames.ShowImage = true;
             this.BtnSheetNames.SuperTip = "Create a list of worksheet names using the active workbook.";
             this.BtnSheetNames.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnSheetNames_Click);
+            // 
+            // separator6
+            // 
+            this.separator6.Name = "separator6";
             // 
             // BtnFileList
             // 
@@ -635,26 +638,9 @@
     "Off].";
             this.BtnDisplayLength.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnDisplayLength_Click);
             // 
-            // BtnMissing
-            // 
-            this.BtnMissing.Items.Add(this.BtnAutoCountIF);
-            this.BtnMissing.Label = "Find Missing";
-            this.BtnMissing.Name = "BtnMissing";
-            this.BtnMissing.OfficeImageId = "WhatIfAnalysisMenu";
-            this.BtnMissing.SuperTip = "Find Missing Data\n\nToggle on/off the task pane used for finding missing data betw" +
-    "een two ranges.";
-            this.BtnMissing.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnMissing_Click);
-            // 
-            // BtnAutoCountIF
-            // 
-            this.BtnAutoCountIF.Label = "&Insert COUNTIF";
-            this.BtnAutoCountIF.Name = "BtnAutoCountIF";
-            this.BtnAutoCountIF.OfficeImageId = "Formula";
-            this.BtnAutoCountIF.ShowImage = true;
-            this.BtnAutoCountIF.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnAutoCountIF_Click);
-            // 
             // BtnDuplicates
             // 
+            this.BtnDuplicates.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
             this.BtnDuplicates.Label = "Duplicates [Off]";
             this.BtnDuplicates.Name = "BtnDuplicates";
             this.BtnDuplicates.OfficeImageId = "PivotPlusMinusFieldHeadersShowHide";
@@ -662,6 +648,26 @@
             this.BtnDuplicates.SuperTip = "Check for Duplicates\n\nCheck if a selected column contains duplicates. Toggle on/o" +
     "ff a count column based on the selected column.";
             this.BtnDuplicates.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnDuplicates_Click);
+            // 
+            // BtnMissing
+            // 
+            this.BtnMissing.Label = "Find Missing";
+            this.BtnMissing.Name = "BtnMissing";
+            this.BtnMissing.OfficeImageId = "WhatIfAnalysisMenu";
+            this.BtnMissing.ShowImage = true;
+            this.BtnMissing.SuperTip = "Find Missing Data\n\nToggle on/off the task pane used for finding missing data betw" +
+    "een two ranges.";
+            this.BtnMissing.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnMissing_Click);
+            // 
+            // BtnColumnCheck
+            // 
+            this.BtnColumnCheck.Label = "&Compare Columns";
+            this.BtnColumnCheck.Name = "BtnColumnCheck";
+            this.BtnColumnCheck.OfficeImageId = "TableStyleBandedColumns";
+            this.BtnColumnCheck.ShowImage = true;
+            this.BtnColumnCheck.SuperTip = "Compare Columns\n\nCompares two columns and inserts a TRUE/FALSE column beside each" +
+    " showing whether the value exists in the other.";
+            this.BtnColumnCheck.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnColumnCheck_Click);
             // 
             // BtnCompare
             // 
@@ -687,7 +693,6 @@
             this.SBtnUniqueClipboard.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
             this.SBtnUniqueClipboard.Items.Add(this.BtnUniqueClipboard);
             this.SBtnUniqueClipboard.Items.Add(this.BtnCopyToSheets);
-            this.SBtnUniqueClipboard.Items.Add(this.BtnColumnInfo);
             this.SBtnUniqueClipboard.Label = "Unique";
             this.SBtnUniqueClipboard.Name = "SBtnUniqueClipboard";
             this.SBtnUniqueClipboard.OfficeImageId = "TableColumnSelect";
@@ -700,7 +705,8 @@
             this.BtnUniqueClipboard.Name = "BtnUniqueClipboard";
             this.BtnUniqueClipboard.OfficeImageId = "Copy";
             this.BtnUniqueClipboard.ShowImage = true;
-            this.BtnUniqueClipboard.SuperTip = "Copy the selections unique data to clipboard.";
+            this.BtnUniqueClipboard.SuperTip = "Copy the selections unique data to clipboard. Options include working with delimi" +
+    "ted cells.";
             this.BtnUniqueClipboard.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnUniqueClipboard_Click);
             // 
             // BtnCopyToSheets
@@ -709,18 +715,19 @@
             this.BtnCopyToSheets.Name = "BtnCopyToSheets";
             this.BtnCopyToSheets.OfficeImageId = "DuplicateThisPage";
             this.BtnCopyToSheets.ShowImage = true;
-            this.BtnCopyToSheets.SuperTip = "Create worksheets based on the unique values of a column and copy data to each on" +
-    "e.";
+            this.BtnCopyToSheets.SuperTip = "Creates new worksheets based on the unique value of a column and copies data to e" +
+    "ach worksheet.";
             this.BtnCopyToSheets.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnCopyToSheets_Click);
             // 
             // BtnColumnInfo
             // 
-            this.BtnColumnInfo.Label = "Column &Information";
+            this.BtnColumnInfo.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.BtnColumnInfo.Label = "Column Info";
             this.BtnColumnInfo.Name = "BtnColumnInfo";
             this.BtnColumnInfo.OfficeImageId = "Info";
             this.BtnColumnInfo.ShowImage = true;
-            this.BtnColumnInfo.SuperTip = "Displays details on the selected column: unique values, number of duplicates, bla" +
-    "nks, non-blanks, and total row count.";
+            this.BtnColumnInfo.SuperTip = "Column Information\n\nDisplays details on the selected column: unique values, numbe" +
+    "r of duplicates, blanks, non-blanks, and total row count.";
             this.BtnColumnInfo.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnColumnInfo_Click);
             // 
             // BtnCommaSelection
@@ -810,6 +817,12 @@
             this.BtnRemoveHyperlinks.SuperTip = "Remove both cell and formula based hyperlinks.";
             this.BtnRemoveHyperlinks.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnRemoveHyperlinks_Click);
             // 
+            // BtnAutoCountIF
+            // 
+            this.BtnAutoCountIF.Label = "";
+            this.BtnAutoCountIF.Name = "BtnAutoCountIF";
+            this.BtnAutoCountIF.ShowImage = true;
+            // 
             // XLQuickTools
             // 
             this.Name = "XLQuickTools";
@@ -842,7 +855,7 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup Group_Data;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnQuickSettings;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup Group_Hyperlinks;
-        internal Microsoft.Office.Tools.Ribbon.RibbonSplitButton BtnMissing;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnMissing;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnDuplicates;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnCompare;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnHyperlinkSettings;
@@ -906,6 +919,7 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnTrimCleanSettings;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnAddHyperlinksCell;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnAutoCountIF;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnColumnCheck;
     }
 
     partial class ThisRibbonCollection

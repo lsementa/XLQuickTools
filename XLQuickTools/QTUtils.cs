@@ -608,7 +608,7 @@ namespace XLQuickTools
             }
         }
 
-        // Selects a range that may live in another workbook
+        // Range.Select() throws unless the owning book and sheet are active
         public static void ActivateRange(Excel.Range range)
         {
             if (range == null)
@@ -627,45 +627,11 @@ namespace XLQuickTools
             }
             catch
             {
-                // Non-fatal
+                // Cosmetic only.
             }
         }
 
-        // Build a column reference string for use in formulas
-        public static string BuildColumnReference(Excel.Worksheet targetSheet,
-            Excel.Worksheet sourceSheet, int sourceColumnIndex)
-        {
-            string letter = GetColumnLetter(sourceColumnIndex);
-            string columnPart = "$" + letter + ":$" + letter;
-
-            if (IsSameSheet(targetSheet, sourceSheet))
-                return columnPart;
-
-            Excel.Workbook targetBook = targetSheet.Parent as Excel.Workbook;
-            Excel.Workbook sourceBook = sourceSheet.Parent as Excel.Workbook;
-
-            // Apostrophes inside sheet names must be doubled
-            string sheetName = sourceSheet.Name.Replace("'", "''");
-
-            bool sameBook = targetBook != null
-                && sourceBook != null
-                && string.Equals(targetBook.FullName, sourceBook.FullName, StringComparison.OrdinalIgnoreCase);
-
-            if (sameBook)
-                return "'" + sheetName + "'!" + columnPart;
-
-            return "'[" + sourceBook.Name + "]" + sheetName + "'!" + columnPart;
-        }
-
-        // Last used row in a column
-        public static int LastDataRow(Excel.Worksheet sheet, int columnIndex, int firstDataRow)
-        {
-            Excel.Range bottom = (Excel.Range)sheet.Cells[sheet.Rows.Count, columnIndex];
-            int lastRow = bottom.End[Excel.XlDirection.xlUp].Row;
-            return lastRow < firstDataRow ? firstDataRow : lastRow;
-        }
-
-        // Check if the same physical worksheet
+        //  Check if two worksheets are the same by comparing their parent workbook and name
         public static bool IsSameSheet(Excel.Worksheet a, Excel.Worksheet b)
         {
             if (a == null || b == null)
@@ -681,25 +647,12 @@ namespace XLQuickTools
                 && string.Equals(a.Name, b.Name, StringComparison.OrdinalIgnoreCase);
         }
 
-        // Validate column selection
-        public static bool ValidateColumnSelection(Excel.Range range, Excel.Worksheet sheet, bool allowMultipleColumns)
+        // Last used row in a column, never below firstDataRow
+        public static int LastDataRow(Excel.Worksheet sheet, int columnIndex, int firstDataRow)
         {
-            if (range == null)
-                return false;
-
-            int selectedColumnCount = range.Columns.Count;
-            int sheetRowCount = sheet.Rows.Count;
-
-            if (allowMultipleColumns)
-            {
-                // Check if multiple columns span the entire row range
-                return range.Rows.Count == sheetRowCount && selectedColumnCount >= 1;
-            }
-            else
-            {
-                // Check if a single column spans the entire row range
-                return range.Rows.Count == sheetRowCount && selectedColumnCount == 1;
-            }
+            Excel.Range bottom = (Excel.Range)sheet.Cells[sheet.Rows.Count, columnIndex];
+            int lastRow = bottom.End[Excel.XlDirection.xlUp].Row;
+            return lastRow < firstDataRow ? firstDataRow : lastRow;
         }
 
         // Method to get Effective used range

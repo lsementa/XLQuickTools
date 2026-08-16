@@ -291,7 +291,7 @@ namespace XLQuickTools
         {
             Excel.Range myRange = null;
             // Display InputBox for selecting a range (Type 8 allows range selection)
-            object rangeInput = _excelApp.InputBox("Please select the first range:", "Range Selector", Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, 8);
+            object rangeInput = _excelApp.InputBox("Please select the FIRST range (any open workbook):", "Range Selector", Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, 8);
 
             if (rangeInput is bool && (bool)rangeInput == false)
             {
@@ -314,7 +314,7 @@ namespace XLQuickTools
         {
             Excel.Range myRange = null;
             // Display InputBox for selecting a range (Type 8 allows range selection)
-            object rangeInput = _excelApp.InputBox("Please select the second range:", "Range Selector", Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, 8);
+            object rangeInput = _excelApp.InputBox("Please select the SECOND range (any open workbook):", "Range Selector", Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, 8);
 
             if (rangeInput is bool && (bool)rangeInput == false)
             {

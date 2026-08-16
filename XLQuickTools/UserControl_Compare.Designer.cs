@@ -207,7 +207,7 @@
             this.BtnClear.Name = "BtnClear";
             this.BtnClear.Size = new System.Drawing.Size(164, 56);
             this.BtnClear.TabIndex = 13;
-            this.BtnClear.Text = "Refresh";
+            this.BtnClear.Text = "Reset";
             this.BtnClear.UseVisualStyleBackColor = true;
             this.BtnClear.Click += new System.EventHandler(this.BtnClear_Click);
             // 

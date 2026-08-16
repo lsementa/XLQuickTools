@@ -1,11 +1,9 @@
-﻿using Microsoft.Office.Interop.Excel;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using XLQuickTools;
 using static XLQuickTools.QTConstants;
 using static XLQuickTools.QTSettings;
 using static XLQuickTools.QTUtils;
@@ -17,6 +15,7 @@ namespace XLQuickTools
     {
         private const int HeaderRow = 1;
         private const int FirstDataRow = 2;
+        private const bool TreatNumericTextAsNumber = true;
 
         // Selection and Selection+ function
         public static void SelectionPlus(string leading = "", string trailing = "", string delimiter = ",", int newLine = 0)
@@ -430,7 +429,6 @@ namespace XLQuickTools
                         activeSheet.Cells[1, nextColumn].Value = "Count";
 
                         // Apply AutoFilter to the count column
-                        // Ensure no previous AutoFilter exists
                         if (activeSheet.AutoFilterMode)
                         {
                             activeSheet.AutoFilterMode = false; // Clear any existing AutoFilter
@@ -453,8 +451,7 @@ namespace XLQuickTools
                             MessageBox.Show($"Error applying AutoFilter: {ex.Message}\nCount column has been left unfilterd.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                         }
 
-                        // Store the location last, so a failure above leaves the button
-                        // in the off state - matching what is actually on the sheet
+                        // Store the location last, so a failure above leaves the button in the off state
                         clipboard.StoreDuplicatesState(columnRange, nextColumn);
                     }
                     else
@@ -503,8 +500,7 @@ namespace XLQuickTools
                 // Remove the filter that was applied to the Count column
                 if (worksheet.AutoFilterMode) worksheet.AutoFilterMode = false;
 
-                // Only delete if it is still our column - guards against the user
-                // inserting or deleting columns while the toggle was on
+                // Only delete if it is still the Count column
                 Excel.Range header = worksheet.Cells[1, countColumn];
                 if (header.Value2 != null &&
                     string.Equals(header.Value2.ToString(), "Count", StringComparison.OrdinalIgnoreCase))
@@ -1308,41 +1304,39 @@ namespace XLQuickTools
             }
         }
 
-        // Insert COUNTIF
-        public static void AutoCountIFMissing()
+        // Compare two columns and insert true/false column to the right of each
+        public static void CompareColumns()
         {
             Excel.Application excelApp = Globals.ThisAddIn.Application;
             if (excelApp == null || excelApp.ActiveWorkbook == null)
                 return;
 
-            Excel.Range columnRange1 = null;
-            Excel.Range columnRange2 = null;
-
             bool priorScreenUpdating = excelApp.ScreenUpdating;
+            bool priorEnableEvents = excelApp.EnableEvents;
             Excel.XlCalculation priorCalculation = excelApp.Calculation;
+            bool settingsChanged = false;
 
             try
             {
                 // Collect both columns
-                columnRange1 = QTUtils.ColumnSelection(
+                Excel.Range columnRange1 = QTUtils.ColumnSelection(
                     excelApp,
                     allowMultipleColumns: false,
                     forcePrompt: true,
                     prompt: "Select the FIRST column (any open workbook):",
-                    title: "Column 1");
+                    title: "Range Selector");
 
                 if (columnRange1 == null)
                     return;
 
-                // Show the user what got captured before asking for the next one
                 QTUtils.ActivateRange(columnRange1);
 
-                columnRange2 = QTUtils.ColumnSelection(
+                Excel.Range columnRange2 = QTUtils.ColumnSelection(
                     excelApp,
                     allowMultipleColumns: false,
                     forcePrompt: true,
                     prompt: "Select the SECOND column (any open workbook):",
-                    title: "Column 2");
+                    title: "Range Selector");
 
                 if (columnRange2 == null)
                     return;
@@ -1359,7 +1353,7 @@ namespace XLQuickTools
                 {
                     MessageBox.Show(
                         "Please select two different columns.",
-                        "Insert COUNTIF",
+                        "Compare Columns",
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Warning);
                     return;
@@ -1368,17 +1362,21 @@ namespace XLQuickTools
                 if (col1 >= sheet1.Columns.Count || col2 >= sheet2.Columns.Count)
                 {
                     MessageBox.Show(
-                        "There is no room to insert a helper column to the right of the selection.",
-                        "Insert COUNTIF",
+                        "There is no room to insert a column to the right of the selection.",
+                        "Compare Columns",
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Warning);
                     return;
                 }
 
+                settingsChanged = true;
                 excelApp.ScreenUpdating = false;
+                excelApp.EnableEvents = false;
+                excelApp.DisplayStatusBar = true;
                 excelApp.Calculation = Excel.XlCalculation.xlCalculationManual;
 
-                // Indices are re-adjusted after each insert
+                // Insert the two columns
+                // On a shared sheet re-adust the second column
                 int helper1 = col1 + 1;
                 ((Excel.Range)sheet1.Columns[helper1]).Insert(
                     Excel.XlInsertShiftDirection.xlShiftToRight,
@@ -1398,61 +1396,184 @@ namespace XLQuickTools
                     helper1++;
                 }
 
-                // Write formulas + headers
-                WriteExistsColumn(sheet1, col1, helper1, sheet2, col2, sameSheet);
-                WriteExistsColumn(sheet2, col2, helper2, sheet1, col1, sameSheet);
+                int lastRow1 = QTUtils.LastDataRow(sheet1, col1, FirstDataRow);
+                int lastRow2 = QTUtils.LastDataRow(sheet2, col2, FirstDataRow);
 
-                excelApp.Calculation = priorCalculation;
-                excelApp.ScreenUpdating = true;
+                // Read both columns
+                object[] values1 = ReadColumnChunked(excelApp, sheet1, col1, lastRow1);
+                object[] values2 = ReadColumnChunked(excelApp, sheet2, col2, lastRow2);
 
-                QTUtils.ActivateRange((Excel.Range)sheet1.Columns[helper1]);
+                // Index
+                HashSet<string> keys1 = BuildKeySet(values1);
+                HashSet<string> keys2 = BuildKeySet(values2);
+
+                // Write results
+                WriteExistsColumn(excelApp, sheet1, helper1, sheet2, col2,
+                    values1, keys2, lastRow1, sameSheet);
+                WriteExistsColumn(excelApp, sheet2, helper2, sheet1, col1,
+                    values2, keys1, lastRow2, sameSheet);
+
+                QTUtils.ActivateRange((Excel.Range)sheet1.Cells[HeaderRow, helper1]);
             }
             catch (Exception ex)
             {
                 MessageBox.Show(
-                    "Insert COUNTIF could not complete:\n\n" + ex.Message,
-                    "Insert COUNTIF",
+                    "Compare Columns could not complete:\n\n" + ex.Message,
+                    "Compare Columns",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
             }
             finally
             {
-                excelApp.Calculation = priorCalculation;
-                excelApp.ScreenUpdating = priorScreenUpdating;
+                if (settingsChanged)
+                {
+                    excelApp.Calculation = priorCalculation;
+                    excelApp.EnableEvents = priorEnableEvents;
+                    excelApp.ScreenUpdating = priorScreenUpdating;
+                    excelApp.StatusBar = false;
+                }
             }
         }
 
-        // Fills a helper column with =COUNTIF(otherColumn, thisCell)>0
-        private static void WriteExistsColumn(
+        // Reads a column into a flat 0-based array, one chunk per COM call
+        private static object[] ReadColumnChunked(
+            Excel.Application excelApp,
             Excel.Worksheet sheet,
-            int dataColumn,
+            int column,
+            int lastRow)
+        {
+            int totalRows = lastRow - FirstDataRow + 1;
+            if (totalRows <= 0)
+                return new object[0];
+
+            object[] values = new object[totalRows];
+
+            for (int startRow = FirstDataRow; startRow <= lastRow; startRow += CHUNK_SIZE)
+            {
+                int endRow = Math.Min(startRow + CHUNK_SIZE - 1, lastRow);
+                int rowsToProcess = endRow - startRow + 1;
+
+                Excel.Range source = sheet.Range[
+                    sheet.Cells[startRow, column],
+                    sheet.Cells[endRow, column]];
+
+                object raw = source.Value2;
+
+                // A single cell returns a scalar rather than a 2D array.
+                object[,] block = raw as object[,];
+
+                if (block == null)
+                {
+                    values[startRow - FirstDataRow] = raw;
+                }
+                else
+                {
+                    for (int i = 0; i < rowsToProcess; i++)
+                        values[startRow - FirstDataRow + i] = block[i + 1, 1];
+                }
+
+            }
+
+            return values;
+        }
+
+        // Build a set of normalized keys for fast existence checking
+        private static HashSet<string> BuildKeySet(object[] values)
+        {
+            HashSet<string> set = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+            for (int i = 0; i < values.Length; i++)
+            {
+                string key = NormalizeKey(values[i]);
+                if (key != null)
+                    set.Add(key);
+            }
+
+            return set;
+        }
+
+        // Converts a cell value to a comparable key
+        private static string NormalizeKey(object value)
+        {
+            if (value == null)
+                return null;
+
+            if (value is double)
+            {
+                // "R" round-trips, so 1 and 1.0 produce the same key
+                return ((double)value).ToString("R", CultureInfo.InvariantCulture);
+            }
+
+            if (value is bool)
+                return ((bool)value) ? "TRUE" : "FALSE";
+
+            string text = Convert.ToString(value, CultureInfo.InvariantCulture);
+            if (text == null)
+                return null;
+
+            text = text.Trim();
+            if (text.Length == 0)
+                return null;
+
+            if (TreatNumericTextAsNumber)
+            {
+                double parsed;
+                if (double.TryParse(text, NumberStyles.Any, CultureInfo.InvariantCulture, out parsed))
+                    return parsed.ToString("R", CultureInfo.InvariantCulture);
+            }
+
+            return text;
+        }
+
+        // Fills a column with TRUE/FALSE, chunked, and labels the header
+        private static void WriteExistsColumn(
+            Excel.Application excelApp,
+            Excel.Worksheet sheet,
             int helperColumn,
             Excel.Worksheet otherSheet,
             int otherColumn,
+            object[] values,
+            HashSet<string> otherKeys,
+            int lastRow,
             bool sameSheet)
         {
-            string lookupReference = QTUtils.BuildColumnReference(sheet, otherSheet, otherColumn);
-            string dataLetter = QTUtils.GetColumnLetter(dataColumn);
             string otherLetter = QTUtils.GetColumnLetter(otherColumn);
 
-            int lastRow = QTUtils.LastDataRow(sheet, dataColumn, FirstDataRow);
-
-            // Header
             Excel.Range header = (Excel.Range)sheet.Cells[HeaderRow, helperColumn];
             header.Value2 = sameSheet
                 ? "Exists in Column " + otherLetter + "?"
                 : "Exists in " + otherSheet.Name + " Column " + otherLetter + "?";
-            header.Font.Bold = true;
+            //header.Font.Bold = true;
 
-            // Formula. Assigning to a multi-cell range lets Excel roll the
-            // relative row reference down for us.
-            Excel.Range target = sheet.Range[
+            int totalRows = values.Length;
+            if (totalRows <= 0)
+                return;
+
+            // Inserted columns inherit formatting from the left so set to general
+            Excel.Range fullTarget = sheet.Range[
                 sheet.Cells[FirstDataRow, helperColumn],
                 sheet.Cells[lastRow, helperColumn]];
+            fullTarget.NumberFormat = "General";
 
-            target.Formula = "=COUNTIF(" + lookupReference + "," + dataLetter + FirstDataRow + ")>0";
+            for (int startRow = FirstDataRow; startRow <= lastRow; startRow += CHUNK_SIZE)
+            {
+                int endRow = Math.Min(startRow + CHUNK_SIZE - 1, lastRow);
+                int rowsToProcess = endRow - startRow + 1;
 
-            ((Excel.Range)sheet.Columns[helperColumn]).AutoFit();
+                object[,] processArray = new object[rowsToProcess, 1];
+
+                for (int i = 0; i < rowsToProcess; i++)
+                {
+                    string key = NormalizeKey(values[startRow - FirstDataRow + i]);
+                    processArray[i, 0] = key != null && otherKeys.Contains(key);
+                }
+
+                Excel.Range rangeToUpdate = sheet.Range[
+                    sheet.Cells[startRow, helperColumn],
+                    sheet.Cells[endRow, helperColumn]];
+
+                rangeToUpdate.Value2 = processArray;
+            }
         }
     }
 }
