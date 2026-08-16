@@ -647,12 +647,19 @@ namespace XLQuickTools
                 && string.Equals(a.Name, b.Name, StringComparison.OrdinalIgnoreCase);
         }
 
-        // Last used row in a column, never below firstDataRow
-        public static int LastDataRow(Excel.Worksheet sheet, int columnIndex, int firstDataRow)
+        // Last used row in a column, or 0 when nothing sits at or below firstDataRow
+        public static int LastDataRowOrZero(Excel.Worksheet sheet, int columnIndex, int firstDataRow)
         {
             Excel.Range bottom = (Excel.Range)sheet.Cells[sheet.Rows.Count, columnIndex];
             int lastRow = bottom.End[Excel.XlDirection.xlUp].Row;
-            return lastRow < firstDataRow ? firstDataRow : lastRow;
+            return lastRow < firstDataRow ? 0 : lastRow;
+        }
+
+        // Last used row in a column, never below firstDataRow
+        public static int LastDataRow(Excel.Worksheet sheet, int columnIndex, int firstDataRow)
+        {
+            int lastRow = LastDataRowOrZero(sheet, columnIndex, firstDataRow);
+            return lastRow == 0 ? firstDataRow : lastRow;
         }
 
         // Method to get Effective used range

@@ -255,7 +255,7 @@
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Tag = "";
-            this.groupBox1.Text = "Conversion Settings";
+            this.groupBox1.Text = "Settings";
             // 
             // TextConvertForm
             // 
@@ -272,7 +272,7 @@
             this.Name = "TextConvertForm";
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Date/Text Converter";
+            this.Text = "Date / Text Converter";
             this.Load += new System.EventHandler(this.TextConvertForm_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();

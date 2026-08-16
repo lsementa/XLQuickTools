@@ -1323,7 +1323,7 @@ namespace XLQuickTools
                     excelApp,
                     allowMultipleColumns: false,
                     forcePrompt: true,
-                    prompt: "Select the FIRST column (any open workbook):",
+                    prompt: "Select the FIRST column:\n(any open workbook)",
                     title: "Range Selector");
 
                 if (columnRange1 == null)
@@ -1335,7 +1335,7 @@ namespace XLQuickTools
                     excelApp,
                     allowMultipleColumns: false,
                     forcePrompt: true,
-                    prompt: "Select the SECOND column (any open workbook):",
+                    prompt: "Select the SECOND column:\n(any open workbook)",
                     title: "Range Selector");
 
                 if (columnRange2 == null)
@@ -1369,6 +1369,33 @@ namespace XLQuickTools
                     return;
                 }
 
+                // Check if data exists before inserting anything
+                int lastRow1 = QTUtils.LastDataRowOrZero(sheet1, col1, FirstDataRow);
+                int lastRow2 = QTUtils.LastDataRowOrZero(sheet2, col2, FirstDataRow);
+
+                bool empty1 = lastRow1 < FirstDataRow;
+                bool empty2 = lastRow2 < FirstDataRow;
+
+                if (empty1 || empty2)
+                {
+                    string which;
+                    if (empty1 && empty2)
+                        which = "Both selected columns are empty.";
+                    else if (empty1)
+                        which = "Column " + QTUtils.GetColumnLetter(col1) +
+                                " on " + sheet1.Name + " is empty.";
+                    else
+                        which = "Column " + QTUtils.GetColumnLetter(col2) +
+                                " on " + sheet2.Name + " is empty.";
+
+                    MessageBox.Show(
+                        which + "\nThere is nothing to compare.",
+                        "Compare Columns",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information);
+                    return;
+                }
+
                 settingsChanged = true;
                 excelApp.ScreenUpdating = false;
                 excelApp.EnableEvents = false;
@@ -1395,9 +1422,6 @@ namespace XLQuickTools
                     col1++;
                     helper1++;
                 }
-
-                int lastRow1 = QTUtils.LastDataRow(sheet1, col1, FirstDataRow);
-                int lastRow2 = QTUtils.LastDataRow(sheet2, col2, FirstDataRow);
 
                 // Read both columns
                 object[] values1 = ReadColumnChunked(excelApp, sheet1, col1, lastRow1);
