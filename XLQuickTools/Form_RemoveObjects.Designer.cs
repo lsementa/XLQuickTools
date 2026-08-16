@@ -36,13 +36,14 @@
             this.CbActiveX = new System.Windows.Forms.CheckBox();
             this.CbFormControls = new System.Windows.Forms.CheckBox();
             this.CbComments = new System.Windows.Forms.CheckBox();
+            this.CbNotes = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // RemoveObjectsForm_Cancel
             // 
             this.RemoveObjectsForm_Cancel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.RemoveObjectsForm_Cancel.Location = new System.Drawing.Point(336, 266);
+            this.RemoveObjectsForm_Cancel.Location = new System.Drawing.Point(336, 313);
             this.RemoveObjectsForm_Cancel.Margin = new System.Windows.Forms.Padding(4);
             this.RemoveObjectsForm_Cancel.Name = "RemoveObjectsForm_Cancel";
             this.RemoveObjectsForm_Cancel.Size = new System.Drawing.Size(164, 56);
@@ -54,7 +55,7 @@
             // RemoveObjectsForm_Ok
             // 
             this.RemoveObjectsForm_Ok.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.RemoveObjectsForm_Ok.Location = new System.Drawing.Point(153, 266);
+            this.RemoveObjectsForm_Ok.Location = new System.Drawing.Point(153, 313);
             this.RemoveObjectsForm_Ok.Margin = new System.Windows.Forms.Padding(4);
             this.RemoveObjectsForm_Ok.Name = "RemoveObjectsForm_Ok";
             this.RemoveObjectsForm_Ok.Size = new System.Drawing.Size(164, 56);
@@ -65,6 +66,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.CbNotes);
             this.groupBox1.Controls.Add(this.CbShapes);
             this.groupBox1.Controls.Add(this.CbCharts);
             this.groupBox1.Controls.Add(this.CbActiveX);
@@ -73,7 +75,7 @@
             this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox1.Location = new System.Drawing.Point(24, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(476, 234);
+            this.groupBox1.Size = new System.Drawing.Size(476, 283);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Objects";
@@ -133,11 +135,22 @@
             this.CbComments.Text = "Co&mments";
             this.CbComments.UseVisualStyleBackColor = true;
             // 
+            // CbNotes
+            // 
+            this.CbNotes.AutoSize = true;
+            this.CbNotes.Location = new System.Drawing.Point(39, 229);
+            this.CbNotes.Margin = new System.Windows.Forms.Padding(4);
+            this.CbNotes.Name = "CbNotes";
+            this.CbNotes.Size = new System.Drawing.Size(109, 33);
+            this.CbNotes.TabIndex = 16;
+            this.CbNotes.Text = "&Notes";
+            this.CbNotes.UseVisualStyleBackColor = true;
+            // 
             // RemoveObjectsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(526, 346);
+            this.ClientSize = new System.Drawing.Size(527, 397);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.RemoveObjectsForm_Cancel);
             this.Controls.Add(this.RemoveObjectsForm_Ok);
@@ -162,5 +175,6 @@
         private System.Windows.Forms.CheckBox CbCharts;
         private System.Windows.Forms.CheckBox CbShapes;
         private System.Windows.Forms.CheckBox CbComments;
+        private System.Windows.Forms.CheckBox CbNotes;
     }
 }
