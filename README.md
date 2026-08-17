@@ -16,8 +16,9 @@ An Excel VSTO Add-in featuring a collection of different tools.
   - [Date/Text Converter](#datetext-converter)
   - [Text Tools](#text-tools)
   - [Additional Options](#additional-options)
-  - [Find Missing Data](#find-missing-data)
   - [Check for Duplicates](#check-for-duplicates)
+  - [Find Missing Data](#find-missing-data)
+  - [Compare Columns](#compare-columns)
   - [Compare Worksheets](#compare-worksheets)
   - [Unique Data Options](#unique-data-options)
   - [Selection/Selection+ to Clipboard](#selection)
@@ -91,12 +92,8 @@ Restores the range back to its original state. Excels Undo button will not work 
 - **Create File List:** Create a list of files for a selected folder.
 - **Display Length:** Displays the active cells length in the status bar. You can toggle this on or off.
 
-### **Find Missing Data**
-Displays missing data between two selected ranges. This can be extended across multiple columns, worksheets or open workbooks. If you prefer to have the results on a new worksheet you can adjust the threshold.
-
-<div align="center">
-<img src="images/FindMissing.png" alt="Screenshot">
-</div>
+### **Filter**
+The built-in Excel Filter button, placed on the Quick Tools tab for easier access while using other tools in the add-in.
 
 ### **Check for Duplicates**
 Checks for duplicates in a selected column:
@@ -108,15 +105,22 @@ Checks for duplicates in a selected column:
 <img src="images/Duplicates.png" alt="Screenshot">
 </div>
 
+### **Find Missing Data**
+Displays missing data between two selected ranges. This can be extended across multiple columns, worksheets or open workbooks. If you prefer to have the results on a new worksheet you can adjust the threshold.
+
+<div align="center">
+<img src="images/FindMissing.png" alt="Screenshot">
+</div>
+
+### **Compare Columns**
+Compares two columns and inserts a TRUE/FALSE column beside each showing whether the value exists in the other.
+
 ### **Compare Worksheets**
 Compares two worksheets, even if they belong to different workbooks, provided both are open. Highlights any differences between the selected worksheets and provides a link to each difference. The refresh button clears the form and updates the dropdown lists if a new workbook has been opened. If you prefer to view the results on a new worksheet, you can adjust the threshold.
 
 <div align="center">
 <img src="images/CompareSheets.png" alt="Screenshot">
 </div>
-
-### **Filter**
-The built-in Excel Filter button, placed on the Quick Tools tab for easier access while using other tools in the add-in.
 
 ### **Unique Data Options**
 - **Selection to Clipboard:** Copy the selections unique data to clipboard. Option to use a delimiter is also available.

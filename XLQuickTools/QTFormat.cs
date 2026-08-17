@@ -390,8 +390,9 @@ namespace XLQuickTools
                 excelApp.ActiveWindow.Zoom = 100;
 
                 // Reset row height and column width
-                sheet.Rows.RowHeight = sheet.StandardHeight;
-                sheet.Columns.ColumnWidth = sheet.StandardWidth;
+                sheet.StandardWidth = QTConstants.DEFAULT_COLUMN_WIDTH;
+                entireSheet.UseStandardHeight = true;
+                entireSheet.UseStandardWidth = true;
             }
             catch (Exception ex)
             {
