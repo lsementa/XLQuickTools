@@ -1,6 +1,6 @@
 # XLQuickTools
 
-An Excel VSTO Add-in featuring a collection of different tools.
+An Excel VSTO Add-in featuring a suite of productivity tools, automation, and utilities developed and refined throughout my career to simplify repetitive tasks, streamline workflows, and improve efficiency.
 
 <div align="center">
 <img src="images/MainIcons.png" alt="Screenshot">
