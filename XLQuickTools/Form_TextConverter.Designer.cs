@@ -117,7 +117,7 @@
             this.TbExample.Location = new System.Drawing.Point(228, 306);
             this.TbExample.Margin = new System.Windows.Forms.Padding(4);
             this.TbExample.Name = "TbExample";
-            this.TbExample.Size = new System.Drawing.Size(286, 35);
+            this.TbExample.Size = new System.Drawing.Size(337, 35);
             this.TbExample.TabIndex = 12;
             this.TbExample.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.TbExample.TextChanged += new System.EventHandler(this.TbExample_TextChanged);
@@ -131,7 +131,7 @@
             this.TbExFormatted.Location = new System.Drawing.Point(228, 363);
             this.TbExFormatted.Margin = new System.Windows.Forms.Padding(4);
             this.TbExFormatted.Name = "TbExFormatted";
-            this.TbExFormatted.Size = new System.Drawing.Size(286, 35);
+            this.TbExFormatted.Size = new System.Drawing.Size(337, 35);
             this.TbExFormatted.TabIndex = 14;
             this.TbExFormatted.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
