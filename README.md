@@ -1,6 +1,6 @@
 # XLQuickTools
 
-An Excel VSTO Add-in featuring a suite of productivity tools, automation, and utilities developed and refined throughout my career to simplify repetitive tasks, streamline workflows, and improve efficiency.
+An Excel VSTO Add-in that provides a suite of productivity tools, automation features, and utilities designed to eliminate repetitive tasks, streamline workflows, and enhance efficiency.
 
 <div align="center">
 <img src="images/MainIcons.png" alt="Screenshot">
@@ -16,6 +16,7 @@ An Excel VSTO Add-in featuring a suite of productivity tools, automation, and ut
   - [Date/Text Converter](#datetext-converter)
   - [Text Tools](#text-tools)
   - [Additional Options](#additional-options)
+  - [Filter Options](#filter)
   - [Check for Duplicates](#check-for-duplicates)
   - [Find Missing Data](#find-missing-data)
   - [Compare Columns](#compare-columns)
@@ -94,6 +95,9 @@ Restores the range back to its original state. Excels Undo button will not work 
 
 ### **Filter**
 The built-in Excel Filter button, placed on the Quick Tools tab for easier access while using other tools in the add-in.
+- **Clear All:** Clears the sheet-level AutoFilter leaving filter mode in place.
+- **Active Cell:** Filters the column by the active cells text value.
+- **Exclude Cell:** Hides rows matching the active cells text value.
 
 ### **Check for Duplicates**
 Checks for duplicates in a selected column:
