@@ -1599,5 +1599,109 @@ namespace XLQuickTools
                 rangeToUpdate.Value2 = processArray;
             }
         }
+
+        // Active Cell Filter
+        public static void ApplyActiveCellFilter(bool exclude = false)
+        {
+            Excel.Application excelApp = Globals.ThisAddIn.Application;
+            Excel.Workbook activeWorkbook = excelApp.ActiveWorkbook;
+            if (activeWorkbook == null) return;
+
+            Excel.Worksheet activeSheet = excelApp.ActiveSheet as Excel.Worksheet;
+            if (activeSheet == null) return;
+
+            Excel.Range activeCell = null;
+            Excel.Range filterRange = null;
+            Excel.AutoFilter existingFilter = null;
+
+            try
+            {
+                activeCell = excelApp.ActiveCell;
+                if (activeCell == null) return;
+
+                // Use the displayed text
+                string value = Convert.ToString(activeCell.Text);
+
+                // If the sheet already has an AutoFilter, filter within that range;
+                // otherwise use the current region around the active cell
+                if (activeSheet.AutoFilterMode)
+                {
+                    existingFilter = activeSheet.AutoFilter;
+                    filterRange = existingFilter.Range;
+                }
+                else
+                {
+                    filterRange = activeCell.CurrentRegion;
+
+                    // Nothing to filter: empty cell with no data around it
+                    if (excelApp.WorksheetFunction.CountA(filterRange) == 0)
+                    {
+                        return;
+                    }
+                }
+
+                // Field index relative to the first column of the filter range
+                int field = activeCell.Column - filterRange.Column + 1;
+                if (field < 1 || field > filterRange.Columns.Count) return;
+
+                // Blank cell: "=" matches blanks, "<>" matches non-blanks
+                object criteria;
+                if (exclude)
+                    criteria = string.IsNullOrEmpty(value) ? "<>" : (object)("<>" + value);
+                else
+                    criteria = string.IsNullOrEmpty(value) ? "=" : (object)value;
+
+                filterRange.AutoFilter(field, criteria, Excel.XlAutoFilterOperator.xlAnd);
+
+                // Keep focus on the original cell
+                activeCell.Select();
+            }
+            catch (System.Runtime.InteropServices.COMException)
+            {
+                // Any other AutoFilter refusal (protected sheet, merged cells, etc.)
+                MessageBox.Show("A filter can't be applied here. Check that the sheet isn't protected " +
+                                "and the cell is inside a data range.",
+                    "Filter by Active Cell", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                QTUtils.ShowError(ex);
+            }
+            finally
+            {
+                QTUtils.CleanupResources(filterRange);
+                QTUtils.CleanupResources(activeCell);
+            }
+        }
+
+        // Clear All Filters (keeps the filter arrows)
+        public static void ClearAllFilters()
+        {
+            Excel.Application excelApp = Globals.ThisAddIn.Application;
+            Excel.Workbook activeWorkbook = excelApp.ActiveWorkbook;
+            if (activeWorkbook == null) return;
+
+            Excel.Worksheet activeSheet = excelApp.ActiveSheet as Excel.Worksheet;
+            if (activeSheet == null) return;
+
+            try
+            {
+                // Sheet-level AutoFilter (or Advanced Filter)
+                if (activeSheet.FilterMode)
+                {
+                    activeSheet.ShowAllData();
+                }
+            }
+            catch (System.Runtime.InteropServices.COMException)
+            {
+                MessageBox.Show("Filters couldn't be cleared. Check that the sheet isn't protected.",
+                    "Clear All Filters", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                QTUtils.ShowError(ex);
+            }
+
+        }
     }
 }

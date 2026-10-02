@@ -460,6 +460,24 @@ namespace XLQuickTools
         {
             QTFunctions.CountValuesInColumn();
         }
+
+        // Active Cell Filter
+        private void btnActiveCellFilter_Click(object sender, RibbonControlEventArgs e)
+        {
+            QTFunctions.ApplyActiveCellFilter();
+        }
+
+        // Exclude Active Cell Filter
+        private void BtnExcludeFilter_Click(object sender, RibbonControlEventArgs e)
+        {
+            QTFunctions.ApplyActiveCellFilter(true);
+        }
+
+        // Clear all filters
+        private void BtnClearFilters_Click(object sender, RibbonControlEventArgs e)
+        {
+            QTFunctions.ClearAllFilters();
+        }
     }
 }
 
